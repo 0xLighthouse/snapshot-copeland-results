@@ -2,9 +2,10 @@ import type { CopelandScores, Project } from "./types";
 
 /**
  * Calculate Copeland scores for all projects based on voter preferences
+ * Uses the 1/0.5/0 scoring method (win/tie/loss)
  * @param {Array} projects - List of all projects
  * @param {Array} votes - Voters' ranked choices
- * @returns {Object} - Projects with their Copeland scores
+ * @returns {Object} - Projects with their Copeland scores (wins, ties, losses, final score)
  */
 export const scoreWithCopeland = (
 	projects: Project[],
@@ -14,9 +15,10 @@ export const scoreWithCopeland = (
 	const scores: CopelandScores = {};
 	for (const project of projects) {
 		scores[project.id] = {
-			score: 0,
+			wins: 0,
+			ties: 0,
+			losses: 0,
 			points: 0,
-			tiebreakers: 0,
 		};
 	}
 
@@ -42,25 +44,31 @@ export const scoreWithCopeland = (
 						prefB++;
 					}
 				} else if (rankA !== -1) {
-					prefA++;
+					prefA++; // A is ranked, B is not
 				} else if (rankB !== -1) {
-					prefB++;
+					prefB++; // B is ranked, A is not
 				}
 			}
 
-			// Award points based on which project won this pairwise comparison
+			// Record wins, losses, or ties based on pairwise comparison
 			if (prefA > prefB) {
-				scores[projectA].score++;
-				scores[projectA].points += prefA;
+				scores[projectA].wins++;
+				scores[projectB].losses++;
 			} else if (prefB > prefA) {
-				scores[projectB].score++;
-				scores[projectB].points += prefB;
+				scores[projectB].wins++;
+				scores[projectA].losses++;
 			} else {
-				// In case of a tie, record it as a tiebreaker
-				scores[projectA].tiebreakers++;
-				scores[projectB].tiebreakers++;
+				// Tie in preferences
+				scores[projectA].ties++;
+				scores[projectB].ties++;
 			}
 		}
+	}
+
+	// Calculate the final Copeland score for each project
+	for (const projectId in scores) {
+		scores[projectId].points =
+			scores[projectId].wins + 0.5 * scores[projectId].ties;
 	}
 
 	return scores;

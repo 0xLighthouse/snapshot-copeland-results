@@ -4,13 +4,7 @@ export interface Project {
 	team: string;
 	scope: string;
 	budget: number;
-	metadata?: {
-		priority?: number;
-		risk?: "low" | "medium" | "high";
-		strategic?: boolean;
-		requester?: string;
-		[key: string]: any; // Allow for any additional metadata
-	};
+	metadata?: Record<string, unknown>;
 }
 
 export interface AllocationResult {
@@ -22,9 +16,10 @@ export interface AllocationResult {
 
 export interface CopelandScores {
 	[key: string]: {
-		score: number;
-		points: number;
-		tiebreakers: number;
+		wins: number; // Number of pairwise wins
+		ties: number; // Number of pairwise ties
+		losses: number; // Number of pairwise losses
+		points: number; // Calculated as wins + 0.5 * ties
 	};
 }
 

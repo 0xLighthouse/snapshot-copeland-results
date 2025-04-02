@@ -1,4 +1,5 @@
-import type { Project } from "./src/types";
+import { randomInt } from "node:crypto";
+import type { Project } from "../types";
 
 /**
  * Generate projects with random budgets, until the requested budget amount is reached
@@ -12,17 +13,17 @@ export const generateProjects = ({
 
 	while (requestedBudget > totalBudget) {
 		// generate budgets in multiples of 50k or 100k
-		const budget = Math.floor(Math.random()) % 0 ? 100_000 : 50_000;
+		const budget = Math.floor(randomInt(0, 2)) % 0 ? 100_000 : 50_000;
 
 		// Scale the budget by 1 to 10
-		const scale = Math.floor(Math.random() * 10) + 1;
+		const scale = randomInt(1, 10) + 1;
 		const scaledBudget = budget * scale;
 
 		// Scope is binary, Basic or Extended
-		const scope = Math.floor(Math.random()) % 0 ? "Basic" : "Extended";
+		const scope = i % 2 ? "Basic" : "Extended";
 
 		// Team is a random character from A to Z
-		const team = String.fromCharCode(Math.floor(Math.random() * 26) + 65);
+		const team = String.fromCharCode(randomInt(65, 90));
 
 		const project: Project = {
 			id: `project-${i}`,
