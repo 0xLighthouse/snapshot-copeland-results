@@ -8,13 +8,15 @@ import type { CopelandScores, Project } from "./types";
  * @returns {Object} - Projects with their Copeland scores (wins, ties, losses, final score)
  */
 export const scoreWithCopeland = (
-	projects: Project[],
+	projectsByChoice: Map<string, Project | undefined>,
 	votes: string[][],
 ): CopelandScores => {
-	// Initialize scores
+	// Initialize scores using CHOICE identifiers as keys
 	const scores: CopelandScores = {};
-	for (const project of projects) {
-		scores[project.id] = {
+	// Ensure every choice key from the map has an initialized score entry
+	for (const choice of projectsByChoice.keys()) {
+		// Use choice as the key
+		scores[choice] = {
 			wins: 0,
 			ties: 0,
 			losses: 0,
@@ -22,19 +24,22 @@ export const scoreWithCopeland = (
 		};
 	}
 
-	// For each pair of projects, count which one is preferred by more voters
-	for (let i = 0; i < projects.length; i++) {
-		for (let j = i + 1; j < projects.length; j++) {
-			const projectA = projects[i].id;
-			const projectB = projects[j].id;
+	// Get project choice identifiers (keys)
+	const projectChoices = Array.from(projectsByChoice.keys());
+
+	// For each pair of projects (by choice identifier), count which one is preferred by more voters
+	for (let i = 0; i < projectChoices.length; i++) {
+		for (let j = i + 1; j < projectChoices.length; j++) {
+			const choiceA = projectChoices[i];
+			const choiceB = projectChoices[j];
 
 			let prefA = 0;
 			let prefB = 0;
 
-			// Count preferences across all voters
+			// Count preferences across all voters using CHOICE identifiers
 			for (const preferences of votes) {
-				const rankA = preferences.indexOf(projectA);
-				const rankB = preferences.indexOf(projectB);
+				const rankA = preferences.indexOf(choiceA);
+				const rankB = preferences.indexOf(choiceB);
 
 				// Lower index means higher preference
 				if (rankA !== -1 && rankB !== -1) {
@@ -50,25 +55,25 @@ export const scoreWithCopeland = (
 				}
 			}
 
-			// Record wins, losses, or ties based on pairwise comparison
+			// Record wins, losses, or ties based on pairwise comparison using CHOICE identifiers for scores
 			if (prefA > prefB) {
-				scores[projectA].wins++;
-				scores[projectB].losses++;
+				scores[choiceA].wins++;
+				scores[choiceB].losses++;
 			} else if (prefB > prefA) {
-				scores[projectB].wins++;
-				scores[projectA].losses++;
+				scores[choiceB].wins++;
+				scores[choiceA].losses++;
 			} else {
 				// Tie in preferences
-				scores[projectA].ties++;
-				scores[projectB].ties++;
+				scores[choiceA].ties++;
+				scores[choiceB].ties++;
 			}
 		}
 	}
 
-	// Calculate the final Copeland score for each project
-	for (const projectId in scores) {
-		scores[projectId].points =
-			scores[projectId].wins + 0.5 * scores[projectId].ties;
+	// Calculate the final Copeland score for each project (keyed by choice)
+	for (const choiceId in scores) {
+		scores[choiceId].points =
+			scores[choiceId].wins + 0.5 * scores[choiceId].ties;
 	}
 
 	return scores;

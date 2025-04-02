@@ -1,16 +1,31 @@
 import Table from "cli-table3";
 
-import type { OptimizationStrategy } from "./types";
+import type { OptimizationStrategy, Project } from "./types";
 import { scoreWithCopeland } from "./score-with-copeland";
 import { generateProjects, generateVotes } from "./__tests__";
 import { allocateBudget } from "./allocate";
 
+const NOT_BELOW = "Not Below";
+
 // Simulate projects
 const projects = generateProjects({ requestedBudget: 7_500_000 });
 
+const projectsByChoice = new Map<string, Project | undefined>();
+projectsByChoice.set(NOT_BELOW, undefined);
+
+// Create a map of project choices
+for (const project of projects) {
+	projectsByChoice.set(
+		`${project.team} - ${project.name} (${project.scope})`,
+		project,
+	);
+}
+
+const choices = [...projectsByChoice.keys()];
+
 // Simulate voting population
 const numVoters = 1000;
-const votes = generateVotes(projects, numVoters);
+const votes = generateVotes(choices, numVoters);
 
 // Calculate the total requested budget
 const TOTAL_REQUESTED_BUDGET = projects.reduce(
@@ -25,19 +40,21 @@ const TOTAL_BUDGET = 4_500_000;
 const optimizationStrategy: OptimizationStrategy = "lower-budget"; // Change to 'lower-budget' or 'higher-budget'
 console.log(`Optimization strategy: ${optimizationStrategy}`);
 
+console.log(JSON.stringify(votes, null, 2));
+
+// Discard votes at and below "Not Below", preserving the order of the votes
+const votesAboveNotBelow = votes.map((vote) => {
+	const index = vote.indexOf(NOT_BELOW);
+	return vote.slice(index + 1);
+});
+
 // Calculate scores once for all projects
-const scores = scoreWithCopeland(projects, votes);
+const scores = scoreWithCopeland(projectsByChoice, votesAboveNotBelow);
+
+console.log(JSON.stringify(scores, null, 2));
 
 // Allocate budget
-const results = allocateBudget(projects, votes, TOTAL_BUDGET);
-
-const choices = projects
-	.map((project) => {
-		return `${project.team} - ${project.name} (${project.scope})`;
-	})
-	.sort();
-
-console.log(JSON.stringify(choices, null, 2));
+const results = allocateBudget(projects, votesAboveNotBelow, TOTAL_BUDGET);
 
 // Display the results
 console.log("=== ALLOCATION RESULTS ===");
