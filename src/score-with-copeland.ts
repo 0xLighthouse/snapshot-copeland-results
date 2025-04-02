@@ -13,6 +13,7 @@ export const scoreWithCopeland = (
 ): CopelandScores => {
 	// Initialize scores using CHOICE identifiers as keys
 	const scores: CopelandScores = {};
+
 	// Ensure every choice key from the map has an initialized score entry
 	for (const choice of projectsByChoice.keys()) {
 		// Use choice as the key

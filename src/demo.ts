@@ -5,7 +5,7 @@ import { scoreWithCopeland } from "./score-with-copeland";
 import { generateProjects, generateVotes } from "./__tests__";
 import { allocateBudget } from "./allocate";
 
-const NOT_BELOW = "Not Below";
+export const NOT_BELOW = "Not Below";
 
 // Simulate projects
 const projects = generateProjects({ requestedBudget: 7_500_000 });
@@ -23,6 +23,8 @@ for (const project of projects) {
 
 const choices = [...projectsByChoice.keys()];
 
+console.log(choices);
+
 // Simulate voting population
 const numVoters = 1000;
 const votes = generateVotes(choices, numVoters);
@@ -34,7 +36,7 @@ const TOTAL_REQUESTED_BUDGET = projects.reduce(
 );
 
 // Define the total budget available
-const TOTAL_BUDGET = 4_500_000;
+const BUDGET_AVAILABLE = 4_500_000;
 
 // TODO: ??
 const optimizationStrategy: OptimizationStrategy = "lower-budget"; // Change to 'lower-budget' or 'higher-budget'
@@ -54,28 +56,30 @@ const scores = scoreWithCopeland(projectsByChoice, votesAboveNotBelow);
 console.log(JSON.stringify(scores, null, 2));
 
 // Allocate budget
-const results = allocateBudget(projects, votesAboveNotBelow, TOTAL_BUDGET);
+const { accepted, excluded, totalBudgetSpent, remainingBudget } =
+	allocateBudget(projectsByChoice, votesAboveNotBelow, BUDGET_AVAILABLE);
 
 // Display the results
 console.log("=== ALLOCATION RESULTS ===");
 console.log(`Requested Budget: $${TOTAL_REQUESTED_BUDGET}`);
 console.log(`Count projects: ${projects.length}`);
-console.log(`Total Budget: $${TOTAL_BUDGET}`);
-console.log(`Budget Spent: $${results.totalBudgetSpent}`);
-console.log(`Remaining Budget: $${results.remainingBudget}`);
+console.log(`Total Budget: $${BUDGET_AVAILABLE}`);
+console.log(`Budget Spent: $${totalBudgetSpent}`);
+console.log(`Remaining Budget: $${remainingBudget}`);
 console.log(`Voters: ${numVoters}`);
 console.log(
-	`\n=== FUNDED PROJECTS (${results.acceptedProjects.length}/${projects.length}) ===`,
+	`\n=== FUNDED PROJECTS (${accepted.length}/${projects.length}) ===`,
 );
 const funded = new Table({
 	head: ["Rank", "Project", "Budget", "Wins", "Losses", "Ties", "Total Points"],
 });
-for (const [index, project] of results.acceptedProjects.entries()) {
-	const score = scores[project.id];
+for (const [index, choice] of accepted.entries()) {
+	const score = scores[choice];
+	const project = projectsByChoice.get(choice);
 	funded.push([
 		index + 1,
-		`${project.team} - ${project.name} (${project.scope})`,
-		project.budget,
+		choice,
+		project?.budget,
 		score.wins,
 		score.losses,
 		score.ties,
@@ -83,19 +87,19 @@ for (const [index, project] of results.acceptedProjects.entries()) {
 	]);
 }
 console.log(funded.toString());
-
 console.log(
-	`\n=== UNFUNDED PROJECTS (${results.rejectedProjects.length}/${projects.length}) ===`,
+	`\n=== UNFUNDED PROJECTS (${excluded.length}/${projects.length}) ===`,
 );
 const unfunded = new Table({
 	head: ["Rank", "Project", "Budget", "Wins", "Losses", "Ties", "Total Points"],
 });
-for (const [index, project] of results.rejectedProjects.entries()) {
-	const score = scores[project.id];
+for (const [index, choice] of excluded.entries()) {
+	const score = scores[choice];
+	const project = projectsByChoice.get(choice);
 	unfunded.push([
 		index + 1,
-		`${project.team} - ${project.name} (${project.scope})`,
-		project.budget,
+		choice,
+		project?.budget,
 		score.wins,
 		score.losses,
 		score.ties,

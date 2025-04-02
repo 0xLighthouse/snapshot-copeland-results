@@ -8,8 +8,8 @@ export interface Project {
 }
 
 export interface AllocationResult {
-	acceptedProjects: Project[];
-	rejectedProjects: Project[];
+	accepted: string[];
+	excluded: string[];
 	totalBudgetSpent: number;
 	remainingBudget: number;
 }
