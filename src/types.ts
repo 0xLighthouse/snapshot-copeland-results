@@ -24,5 +24,6 @@ export interface PairwiseResults {
 		wins: number; // Number of pairwise wins
 		ties: number; // Number of pairwise ties
 		losses: number; // Number of pairwise losses
+		avgSupport?: number; // Average support (used as tiebreaker)
 	};
 }

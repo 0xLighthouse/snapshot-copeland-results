@@ -1,4 +1,4 @@
-import type { PairwiseResults } from "../types";
+import type { PairwiseResults } from "../../types";
 
 export const combine = (
 	comparision: PairwiseResults,
@@ -8,5 +8,6 @@ export const combine = (
 		key,
 		...value,
 		score: scores[key].score,
+		avgSupport: value.avgSupport || 0,
 	}));
 };

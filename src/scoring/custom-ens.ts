@@ -9,11 +9,11 @@ export const customENS = (
 	votes: Vote[],
 	options: ScoringOptions,
 ) => {
-	// Order our mainifest based on how they were input Snapshot.
+	// Order our manifest based on how they were input in Snapshot.
 	const orderedChoices = orderChoices(manifest, snapshotChoices);
 	let cleanedVotes = votes;
 
-	// If the user has spefified an "omitBelowChoice",
+	// If the user has specified an "omitBelowChoice" option.
 	// we need to remove all votes at and below that choice.
 	if (options.omitBelowChoice) {
 		const notBelowIndex = orderedChoices.findIndex(
@@ -25,7 +25,7 @@ export const customENS = (
 		cleanedVotes = cleanVotes(votes, notBelowIndex);
 	}
 
-	// If the user has spefified a "groupBy" option,
+	// If the user has specified a "groupBy" option,
 	// we need to group the choices by the specified field.
 	if (options.groupBy) {
 		// Maps multiple selections to a single selection
@@ -51,11 +51,28 @@ export const customENS = (
 		}
 	}
 
-	const comparision = pairwiseResults(cleanedVotes, orderedChoices.length);
-	const scores = calculateRank(comparision, [1, 0, 0]);
+	// Calculate pairwise comparisons with proper handling of ranked vs unranked
+	const comparison = pairwiseResults(cleanedVotes, orderedChoices.length);
 
+	// Score calculation:
+	// 1 point for each win, 0 for ties or losses
+	const scores = calculateRank(comparison, [1, 0, 0]);
+
+	// Sort results by score and use average support as tiebreaker
 	return {
-		results: combine(comparision, scores).sort((a, b) => b.score - a.score),
+		results: combine(comparison, scores).sort((a, b) => {
+			// Sort by score (primary sort)
+			if (b.score !== a.score) {
+				return b.score - a.score;
+			}
+
+			// If scores are tied, use average support as tiebreaker (if available)
+			if (a.avgSupport !== undefined && b.avgSupport !== undefined) {
+				return b.avgSupport - a.avgSupport;
+			}
+
+			return 0;
+		}),
 		orderedChoices,
 	};
 };
