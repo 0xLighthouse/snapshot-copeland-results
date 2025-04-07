@@ -1,16 +1,15 @@
-import { NOT_BELOW } from "../demo";
 import type { Project, ScoringOptions, Vote } from "../types";
 import { cleanVotes } from "./utils";
 import { groupBy } from "./utils/group-by";
 import { pairwiseResults } from "./utils/pairwise-results";
 import { orderChoices } from "./utils/order-choices";
+
 export const customENS = (
 	manifest: Project[],
 	snapshotList: string[],
 	votes: Vote[],
 	options: ScoringOptions,
 ) => {
-
 	const orderedChoices = orderChoices(manifest, snapshotList);
 	let cleanedVotes = votes;
 
@@ -26,6 +25,7 @@ export const customENS = (
 	}
 
 	if (options.groupBy) {
+		// Maps multiple selections to a single selection
 		const mapTo = new Map<number, number>();
 		const existing = new Map<string, number>();
 		for (let i = 0; i < orderedChoices.length; i++) {
@@ -42,21 +42,11 @@ export const customENS = (
 			}
 		}
 
-		// cleanedVotes
-		// TODO: For of and set choice to mapTo.get(choice)
-		// });
+		// For each vote, translate choice to mapTo
+		for (const vote of cleanedVotes) {
+			vote.choice = vote.choice.map((choice) => mapTo.get(choice) ?? choice);
+		}
 
-
-		
-		for (let i = 0; i < orderedChoices.length; i++) {
-			const firstInstance = orderedChoices.findIndex
-
-		cleanedVotes = groupBy(
-			cleanedVotes,
-			projectsByChoice,
-			mappings,
-			options.groupBy,
-		);
 		console.log(cleanedVotes);
 	}
 
