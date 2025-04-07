@@ -20,7 +20,7 @@ export interface ScoringOptions {
 }
 
 export interface PairwiseResults {
-	[key: string]: {
+	[key: number]: {
 		wins: number; // Number of pairwise wins
 		ties: number; // Number of pairwise ties
 		losses: number; // Number of pairwise losses

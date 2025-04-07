@@ -32,7 +32,7 @@ const manifestChoices = ensProposal.data.map((o) => o.choice);
 const snapshotChoices = [...manifestChoices].sort(() => 0.5 - Math.random());
 
 // Simulate voting population
-const numVoters = 5;
+const numVoters = 10;
 const votes = generateVotes(snapshotChoices, numVoters);
 
 const manifest = ensProposal.data;
@@ -44,25 +44,24 @@ const results = customENS(
 	ensProposal.scoring as ScoringOptions,
 );
 
-// // // console.log(JSON.stringify(results, null, 2));
+// console.log(JSON.stringify(results, null, 2));
 
-// // // // const results2 = copelandNoneBelow(projectsByChoice, votes);
+// Display the results
+console.log("=== COPELAND RESULTS ===");
+console.log(`Count projects: ${manifest.length}`);
+console.log(`Voters: ${numVoters}`);
 
-// // // // Display the results
-// // // console.log("=== COPELAND RESULTS ===");
-// // // console.log(`Count projects: ${projects.length}`);
-// // // console.log(`Voters: ${numVoters}`);
-// // // const ranking = new Table({
-// // // 	head: ["Rank", "Choice", "Wins", "Losses", "Ties", "Points"],
-// // // });
-// // // for (const [index, choice] of results.entries()) {
-// // // 	ranking.push([
-// // // 		index + 1,
-// // // 		choice.key,
-// // // 		choice.wins,
-// // // 		choice.losses,
-// // // 		choice.ties,
-// // // 		choice.score,
-// // // 	]);
-// // // }
-// // // console.log(ranking.toString());
+const ranking = new Table({
+	head: ["Rank", "Choice", "Wins", "Losses", "Ties", "Points"],
+});
+for (const [key, result] of Object.entries(results)) {
+	ranking.push([
+		"-- TODO: Add rank --",
+		manifest[key].choice,
+		result.wins,
+		result.losses,
+		result.ties,
+		result.score,
+	]);
+}
+console.log(ranking.toString());

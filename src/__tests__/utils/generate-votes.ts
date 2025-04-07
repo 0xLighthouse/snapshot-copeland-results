@@ -17,7 +17,6 @@ export const generateVotes = (choices: string[], numVoters: number): Vote[] => {
 		const shuffled = [...choices].sort(() => 0.5 - Math.random());
 		return {
 			choice: shuffled.map((choice) => choices.indexOf(choice)),
-			labels: shuffled,
 			votingPower: Math.floor(randomSupport()),
 			voter: randomVoter(),
 		};

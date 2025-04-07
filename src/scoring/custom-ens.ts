@@ -26,6 +26,8 @@ export const customENS = (
 		cleanedVotes = cleanVotes(votes, notBelowIndex);
 	}
 
+	// If the user has spefified a "groupBy" option,
+	// we need to group the choices by the specified field.
 	if (options.groupBy) {
 		// Maps multiple selections to a single selection
 		const mapTo = new Map<number, number>();
@@ -48,16 +50,10 @@ export const customENS = (
 		for (const vote of cleanedVotes) {
 			vote.choice = vote.choice.map((choice) => mapTo.get(choice) ?? choice);
 		}
-
-		console.log(cleanedVotes);
 	}
 
-	const results = pairwiseResults(projectsByChoice, cleanedVotes);
-
-	console.log(results);
-
-	//
-	// return results;
+	const results = pairwiseResults(cleanedVotes, orderedChoices.length);
+	return results;
 };
 
 /*

@@ -8,24 +8,22 @@ import type { PairwiseResults, Project, Vote } from "../../types";
  * @returns {Object} - Projects with their pairwise results (wins, ties, losses)
  */
 export const pairwiseResults = (
-	projectsByChoice: Map<string, Project | undefined>,
 	votes: Vote[],
+	numberOfChoices: number,
 ): PairwiseResults => {
 	// Initialize scores using CHOICE identifiers as keys
 	const scores: PairwiseResults = {};
+	const choices: number[] = [];
 
-	// Ensure every choice key from the map has an initialized score entry
-	for (const choice of projectsByChoice.keys()) {
-		// Use choice as the key
-		scores[choice] = {
+	// Initialize scores for each choice
+	for (let i = 0; i < numberOfChoices; i++) {
+		choices.push(i);
+		scores[i] = {
 			wins: 0,
 			ties: 0,
 			losses: 0,
 		};
 	}
-
-	// Get project choice identifiers (keys)
-	const choices = Array.from(projectsByChoice.keys());
 
 	// For each pair of projects (by choice identifier), count which one is preferred by more voters
 	for (let i = 0; i < choices.length; i++) {
