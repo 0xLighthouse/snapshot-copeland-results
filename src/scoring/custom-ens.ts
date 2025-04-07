@@ -1,5 +1,5 @@
 import type { Project, ScoringOptions, Vote } from "../types";
-import { calculateRank, cleanVotes, combine } from "./utils";
+import { calculatePoints, cleanVotes, combine } from "./utils";
 import { pairwiseResults } from "./utils/pairwise-results";
 import { orderChoices } from "./utils/order-choices";
 
@@ -56,7 +56,7 @@ export const customENS = (
 
 	// Score calculation:
 	// 1 point for each win, 0 for ties or losses
-	const scores = calculateRank(comparison, [1, 0, 0]);
+	const scores = calculatePoints(comparison, [1, 0, 0]);
 
 	// Sort results by score and use average support as tiebreaker
 	return {
@@ -76,21 +76,3 @@ export const customENS = (
 		orderedChoices,
 	};
 };
-
-/*
-Clean data: votes which are converted into [group, group (group A basic), group (grou A extend)]
-
-Run canonical copeland => (indexOf => highest-ranking entry of that group in the list)
-
-groupA = wins 
-groupB = wins
-groupC = wins
-
-Iterate through the results and for each entry, figure out if basic or extended was more popular (pairwise comparison between basic and extended)
-(e.g. Pairwise comparison of groupA basic and groupA extended)
-
-groupA - Basic  = wins
-broupB - Extended = wins....
-
-Finally, if there is a tie between groupA and groupB, add up "average support" for each to determine where on the list it o
-*/

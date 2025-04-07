@@ -2,12 +2,12 @@ import type { PairwiseResults } from "../../types";
 
 export const combine = (
 	comparision: PairwiseResults,
-	scores: Record<string, { score: number }>,
+	points: Record<string, { points: number }>,
 ) => {
 	return Object.entries(comparision).map(([key, value]) => ({
 		key,
 		...value,
-		score: scores[key].score,
+		points: points[key].points,
 		avgSupport: value.avgSupport || 0,
 	}));
 };
