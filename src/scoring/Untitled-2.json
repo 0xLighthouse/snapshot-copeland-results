@@ -1,0 +1,200 @@
+{
+    "version": "0.1.0",
+    "scoring": {
+        "algorithm": "copeland",
+        "tiebreaker": "average-support",
+        "omitBelowChoice": "None Below"
+    },
+    "data": [
+        {
+            "choice": "AlphaGrowth - Basic Scope",
+            "groupBy": "alphagrowth",
+            "label": "Basic Scope for 400k USD"
+        },
+        {
+            "choice": "AlphaGrowth - Extended Scope",
+            "groupBy": "alphagrowth",
+            "label": "Extended Scope for 800k USD"
+        },
+        {
+            "choice": "ZK.Email - Basic Scope",
+            "groupBy": "zk-email",
+            "label": "Basic Scope for 400k USD"
+        },
+        {
+            "choice": "ZK.Email - Extended Scope",
+            "groupBy": "zk-email",
+            "label": "Extended Scope for 800k USD"
+        },
+        {
+            "choice": "Blockful - Basic Scope",
+            "groupBy": "blockful",
+            "label": "Basic Scope for 400k USD"
+        },
+        {
+            "choice": "Blockful - Extended Scope",
+            "groupBy": "blockful",
+            "label": "Extended Scope for 700k USD"
+        },
+        {
+            "choice": "Unruggable - Basic Scope",
+            "groupBy": "unruggable",
+            "label": "Basic Scope for 400k USD"
+        },
+        {
+            "choice": "Unruggable - Extended Scope",
+            "groupBy": "unruggable",
+            "label": "Extended Scope for 700k USD"
+        },
+        {
+            "choice": "3DNS - Basic Scope",
+            "groupBy": "3dns",
+            "label": "Basic Scope for 500k USD"
+        },
+        {
+            "choice": "3DNS - Extended Scope",
+            "groupBy": "3dns",
+            "label": "Extended Scope for 700k USD"
+        },
+        {
+            "choice": "Ethereum.Identity.Foundation - Basic Scope",
+            "groupBy": "ethereum-identity-foundation",
+            "label": "Basic Scope for 500k USD"
+        },
+        {
+            "choice": "Ethereum.Identity.Foundation - Extended Scope",
+            "groupBy": "ethereum-identity-foundation",
+            "label": "Extended Scope for 700k USD"
+        },
+        {
+            "choice": "JustaName - Basic Scope",
+            "groupBy": "justaname",
+            "label": "Basic Scope for 400k USD"
+        },
+        {
+            "choice": "JustaName - Extended Scope",
+            "groupBy": "justaname",
+            "label": "Extended Scope for 600k USD"
+        },
+        {
+            "choice": "NameHash.Labs - Basic Scope",
+            "groupBy": "namehash-labs",
+            "label": "Basic Scope for 1.1M USD"
+        },
+        {
+            "choice": "NameHash.Labs - Extended Scope",
+            "groupBy": "namehash-labs",
+            "label": "Extended Scope for 1.3M USD"
+        },
+        {
+            "choice": "Namespace - Basic Scope",
+            "groupBy": "namespace",
+            "label": "Basic Scope for 400k USD"
+        },
+        {
+            "choice": "Namespace - Extended Scope",
+            "groupBy": "namespace",
+            "label": "Extended Scope for 600k USD"
+        },
+        {
+            "choice": "Agora - Basic Scope",
+            "groupBy": "agora",
+            "label": "Basic Scope for 300k USD"
+        },
+        {
+            "choice": "Agora - Extended Scope",
+            "groupBy": "agora",
+            "label": "Extended Scope for 400k USD"
+        },
+        {
+            "choice": "dWeb.host - Basic Scope",
+            "groupBy": "dweb-host",
+            "label": "Basic Scope for 300k USD"
+        },
+        {
+            "choice": "dWeb.host - Extended Scope",
+            "groupBy": "dweb-host",
+            "label": "Extended Scope for 400k USD"
+        },
+        {
+            "choice": "EthLimo - Basic Scope",
+            "groupBy": "ethlimo",
+            "label": "Basic Scope for 700k USD"
+        },
+        {
+            "choice": "EthLimo - Extended Scope",
+            "groupBy": "ethlimo",
+            "label": "Extended Scope for 800k USD"
+        },
+        {
+            "choice": "Wildcard.Labs - Basic Scope",
+            "groupBy": "wildcard-labs",
+            "label": "Basic Scope for 300k USD"
+        },
+        {
+            "choice": "Wildcard.Labs - Extended Scope",
+            "groupBy": "wildcard-labs",
+            "label": "Extended Scope for 400k USD"
+        },
+        {
+            "choice": "Curia.Lab - Basic Scope",
+            "groupBy": "curia-lab",
+            "label": "Basic Scope for 300k USD"
+        },
+        {
+            "choice": "Decent - Basic Scope",
+            "groupBy": "decent",
+            "label": "Basic Scope for 300k USD"
+        },
+        {
+            "choice": "Enscribe - Basic Scope",
+            "groupBy": "enscribe",
+            "label": "Basic Scope for 400k USD"
+        },
+        {
+            "choice": "GovPal - Basic Scope",
+            "groupBy": "govpal",
+            "label": "Basic Scope for 300k USD"
+        },
+        {
+            "choice": "Lighthouse_Labs - Basic Scope",
+            "groupBy": "lighthouse-labs",
+            "label": "Basic Scope for 400k USD"
+        },
+        {
+            "choice": "Namestone - Basic Scope",
+            "groupBy": "namestone",
+            "label": "Basic Scope for 800k USD"
+        },
+        {
+            "choice": "PYOR - Basic Scope",
+            "groupBy": "pyor",
+            "label": "Basic Scope for 300k USD"
+        },
+        {
+            "choice": "Tally - Basic Scope",
+            "groupBy": "tally",
+            "label": "Basic Scope for 300k USD"
+        },
+        {
+            "choice": "Unicorn.eth - Basic Scope",
+            "groupBy": "unicorn-eth",
+            "label": "Basic Scope for 300k USD"
+        },
+        {
+            "choice": "Web3bio - Basic Scope",
+            "groupBy": "web3bio",
+            "label": "Basic Scope for 500k USD"
+        },
+        {
+            "choice": "WebHash - Basic Scope",
+            "groupBy": "webhash",
+            "label": "Basic Scope for 300k USD"
+        },
+        {
+            "choice": "x23.ai - Basic Scope",
+            "groupBy": "x23-ai",
+            "label": "Basic Scope for 300k USD"
+        }
+    ]
+}

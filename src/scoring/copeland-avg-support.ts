@@ -1,13 +1,14 @@
-import type { CopelandScores, Project } from "./types";
+import type { CopelandScores, Project } from "../types";
 
 /**
  * Calculate Copeland scores for all projects based on voter preferences
  * Uses the 1/0.5/0 scoring method (win/tie/loss)
+ *
  * @param {Array} projects - List of all projects
  * @param {Array} votes - Voters' ranked choices
  * @returns {Object} - Projects with their Copeland scores (wins, ties, losses, final score)
  */
-export const scoreWithCopeland = (
+export const copelandAvgSupport = (
 	projectsByChoice: Map<string, Project | undefined>,
 	votes: string[][],
 ): CopelandScores => {
@@ -26,34 +27,40 @@ export const scoreWithCopeland = (
 	}
 
 	// Get project choice identifiers (keys)
-	const projectChoices = Array.from(projectsByChoice.keys());
+	const choices = Array.from(projectsByChoice.keys());
 
 	// For each pair of projects (by choice identifier), count which one is preferred by more voters
-	for (let i = 0; i < projectChoices.length; i++) {
-		for (let j = i + 1; j < projectChoices.length; j++) {
-			const choiceA = projectChoices[i];
-			const choiceB = projectChoices[j];
+	for (let i = 0; i < choices.length; i++) {
+		for (let j = i + 1; j < choices.length; j++) {
+			const choiceA = choices[i];
+			const choiceB = choices[j];
 
 			let prefA = 0;
 			let prefB = 0;
 
 			// Count preferences across all voters using CHOICE identifiers
-			for (const preferences of votes) {
-				const rankA = preferences.indexOf(choiceA);
-				const rankB = preferences.indexOf(choiceB);
+			for (const ballot of votes) {
+				const rankA = ballot.indexOf(choiceA);
+				const rankB = ballot.indexOf(choiceB);
 
 				// Lower index means higher preference
 				if (rankA !== -1 && rankB !== -1) {
+					// Both projects are ranked by this voter
 					if (rankA < rankB) {
-						prefA++;
+						prefA++; // Voter prefers A over B
 					} else if (rankB < rankA) {
-						prefB++;
+						prefB++; // Voter prefers B over A
 					}
+					// If ranks are equal, it's implicitly a tie for this pair in this vote,
+					// but we only count overall wins/losses/ties after summing preferences.
 				} else if (rankA !== -1) {
-					prefA++; // A is ranked, B is not
+					// When only choiceA is ranked by this voter, assume preference for A
+					prefA++;
 				} else if (rankB !== -1) {
-					prefB++; // B is ranked, A is not
+					// When only choiceB is ranked by this voter, assume preference for B
+					prefB++;
 				}
+				// When neither choices are ranked, this ballot doesn't affect the pairwise comparison.
 			}
 
 			// Record wins, losses, or ties based on pairwise comparison using CHOICE identifiers for scores

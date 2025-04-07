@@ -1,7 +1,7 @@
 import Table from "cli-table3";
 
 import type { OptimizationStrategy, Project } from "./types";
-import { scoreWithCopeland } from "./score-with-copeland";
+import { copeland } from "./scoring/copeland";
 import { generateProjects, generateVotes } from "./__tests__";
 import { allocateBudget } from "./allocate";
 
@@ -51,7 +51,7 @@ const votesAboveNotBelow = votes.map((vote) => {
 });
 
 // Calculate scores once for all projects
-const scores = scoreWithCopeland(projectsByChoice, votesAboveNotBelow);
+const scores = copeland(projectsByChoice, votesAboveNotBelow);
 
 console.log(JSON.stringify(scores, null, 2));
 

@@ -1,5 +1,5 @@
 import type { Project, AllocationResult } from "./types";
-import { scoreWithCopeland } from "./score-with-copeland";
+import { copeland } from "./scoring/copeland";
 import { NOT_BELOW } from "./demo";
 
 /**
@@ -15,7 +15,7 @@ export const allocateBudget = (
 	totalBudget: number,
 ): AllocationResult => {
 	// Use provided scores or calculate them if not provided
-	const scores = scoreWithCopeland(projectsByChoice, votes);
+	const scores = copeland(projectsByChoice, votes);
 
 	// Sort all projects by Copeland score (highest first)
 	// If scores are the same, use points as tiebreaker
