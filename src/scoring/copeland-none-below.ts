@@ -33,7 +33,7 @@ export const copelandNoneBelow = (
 	const comparison = pairwiseResults(cleanedVotes, orderedChoices.length);
 
 	// Score calculation:
-	// 1 point for each win, 0 for ties or losses
+	// 1 point for each win, 0.5 for ties or losses
 	const points = calculatePoints(comparison, [1, 0.5, 0]);
 
 	// Sort results by score and use average support as tiebreaker

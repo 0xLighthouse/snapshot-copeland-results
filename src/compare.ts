@@ -80,7 +80,7 @@ const { results: resultsC, orderedChoices: orderedChoicesC } = copeland(
 	manifest,
 	snapshotChoices,
 	votes,
-	scoringOptions,
+	// scoringOptions,
 );
 console.log("=== COPELAND RESULTS ===");
 displayResults(resultsC, orderedChoicesC);
