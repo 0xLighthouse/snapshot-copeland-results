@@ -1,6 +1,7 @@
 import { cleanVotes } from "../scoring/utils";
 import { orderChoices } from "../scoring/utils/order-choices";
-import type { Project } from "../types";
+import { pairwiseResults } from "../scoring/utils/pairwise-results";
+import type { Project, Vote } from "../types";
 
 const manifest = {
 	version: "0.2.0",

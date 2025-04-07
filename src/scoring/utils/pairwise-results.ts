@@ -47,27 +47,28 @@ export const pairwiseResults = (
 			for (const ballot of votes) {
 				const rankA = ballot.choice.indexOf(choiceA);
 				const rankB = ballot.choice.indexOf(choiceB);
+				const votingPower = ballot.votingPower;
 
 				// Lower index means higher preference
 				if (rankA !== -1 && rankB !== -1) {
 					// Both projects are ranked by this voter
 					if (rankA < rankB) {
-						prefA += ballot.votingPower; // Voter prefers A over B
-						totalVotesInMatch += ballot.votingPower;
+						prefA += votingPower; // Voter prefers A over B
+						totalVotesInMatch += votingPower;
 					} else if (rankB < rankA) {
-						prefB += ballot.votingPower; // Voter prefers B over A
-						totalVotesInMatch += ballot.votingPower;
+						prefB += votingPower; // Voter prefers B over A
+						totalVotesInMatch += votingPower;
 					}
 					// If ranks are equal, it's implicitly a tie for this pair in this vote,
 					// but we only count overall wins/losses/ties after summing preferences.
 				} else if (rankA !== -1) {
 					// When only choiceA is ranked by this voter, A wins automatically
-					prefA += ballot.votingPower;
-					totalVotesInMatch += ballot.votingPower;
+					prefA += votingPower;
+					totalVotesInMatch += votingPower;
 				} else if (rankB !== -1) {
 					// When only choiceB is ranked by this voter, B wins automatically
-					prefB += ballot.votingPower;
-					totalVotesInMatch += ballot.votingPower;
+					prefB += votingPower;
+					totalVotesInMatch += votingPower;
 				}
 				// When neither choices are ranked, ballot doesn't count for this match
 			}
