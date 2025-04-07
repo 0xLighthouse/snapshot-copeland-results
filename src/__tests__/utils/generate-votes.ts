@@ -12,11 +12,16 @@ const randomVoter = () => `0x${Math.random().toString(16).slice(2)}`;
  * @param {Number} numVoters - Number of voters
  * @returns {Array} - List of voter preferences
  */
-export const generateVotes = (choices: string[], numVoters: number): Vote[] => {
+export const generateVotes = (
+	choices: string[],
+	mapIndexByChoice: Map<string, number>,
+	numVoters: number,
+): Vote[] => {
 	return Array.from({ length: numVoters }, () => {
 		const shuffled = [...choices].sort(() => 0.5 - Math.random());
 		return {
-			choice: shuffled,
+			choice: shuffled.map((choice) => mapIndexByChoice.get(choice)),
+			labels: shuffled,
 			votingPower: Math.floor(randomSupport()),
 			voter: randomVoter(),
 		};

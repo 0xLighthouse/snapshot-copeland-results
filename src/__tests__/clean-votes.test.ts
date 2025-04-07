@@ -1,4 +1,4 @@
-import { cleanVotes } from "../scoring/clean-votes";
+import { cleanVotes } from "../scoring/utils/clean-votes";
 
 describe("cleanVotes", () => {
 	it("should clean votes", () => {
@@ -11,5 +11,20 @@ describe("cleanVotes", () => {
 		const result = cleanVotes(votes, notBelow);
 
 		expect(result).toEqual([["A"], ["A", "C"], []]);
+	});
+
+	it("should clean votes with not below", () => {
+		const choices = [
+			"Not Below",
+			"AlphaGrowth - Basic Scope",
+			"AlphaGrowth - Extended Scope",
+			"ZK.Email - Basic Scope",
+			"ZK.Email - Extended Scope",
+		];
+		const votes = [
+			["A", "B", "C"],
+			["A", "C", "B"],
+			["B", "A", "C"],
+		];
 	});
 });
