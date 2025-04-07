@@ -25,5 +25,7 @@ export interface PairwiseResults {
 		ties: number; // Number of pairwise ties
 		losses: number; // Number of pairwise losses
 		avgSupport?: number; // Average support (used as tiebreaker)
+		appearsInBallots: number; // Number of ballots this choice appears in
+		points: number; // Number of points this choice has
 	};
 }

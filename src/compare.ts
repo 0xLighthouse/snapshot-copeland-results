@@ -31,29 +31,31 @@ const displayResults = (_results: any, orderedChoices: Project[]) => {
 	const ranking = new Table({
 		head: [
 			"Rank",
-			"Vendor",
+			// "Vendor",
 			"Choice",
 			"Wins",
 			"Losses",
 			"Ties",
 			"Points",
+			"{n} Appearances",
 			"Avg Support",
 		],
 	});
-	let rankA = 1;
+	let rank = 1;
 	for (const result of _results) {
-		if (rankA === 21) {
+		if (rank === orderedChoices.length / 2) {
 			continue;
 		}
 		const key = Number(result.key);
 		ranking.push([
-			rankA++,
-			orderedChoices[key]?.group || "",
+			rank++,
+			// orderedChoices[key]?.group || "",
 			orderedChoices[key]?.choice || "",
 			result.wins,
 			result.losses,
 			result.ties,
-			result.score,
+			result.points,
+			result.appearsInBallots,
 			result.avgSupport ? result.avgSupport.toFixed(2) : "0",
 		]);
 	}
@@ -68,17 +70,17 @@ const { results: resultsA, orderedChoices } = copelandENS(
 );
 displayResults(resultsA, orderedChoices);
 
-const { results: resultsB, orderedChoices: orderedChoicesB } =
-	copelandNoneBelow(manifest, snapshotChoices, votes, scoringOptions);
+// const { results: resultsB, orderedChoices: orderedChoicesB } =
+// 	copelandNoneBelow(manifest, snapshotChoices, votes, scoringOptions);
 
-console.log("=== COPELAND NONE BELOW RESULTS ===");
-displayResults(resultsB, orderedChoicesB);
+// console.log("=== COPELAND NONE BELOW RESULTS ===");
+// displayResults(resultsB, orderedChoicesB);
 
-const { results: resultsC, orderedChoices: orderedChoicesC } = copeland(
-	manifest,
-	snapshotChoices,
-	votes,
-	scoringOptions,
-);
-console.log("=== COPELAND RESULTS ===");
-displayResults(resultsC, orderedChoicesC);
+// const { results: resultsC, orderedChoices: orderedChoicesC } = copeland(
+// 	manifest,
+// 	snapshotChoices,
+// 	votes,
+// 	scoringOptions,
+// );
+// console.log("=== COPELAND RESULTS ===");
+// displayResults(resultsC, orderedChoicesC);

@@ -62,8 +62,8 @@ export const copelandENS = (
 	return {
 		results: combine(comparison, points).sort((a, b) => {
 			// Sort by score (primary sort)
-			if (b.score !== a.score) {
-				return b.score - a.score;
+			if (b.points !== a.points) {
+				return b.points - a.points;
 			}
 
 			// If scores are tied, use average support as tiebreaker (if available)
