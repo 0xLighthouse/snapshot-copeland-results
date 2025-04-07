@@ -1,4 +1,4 @@
-import { pairwiseResults } from "../scoring/utils/pairwise-results";
+import { pairwiseResults } from "../scoring/pipeline/pairwise-results";
 import type { Ballot } from "../types";
 
 describe("pairwiseResults", () => {

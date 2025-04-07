@@ -1,6 +1,11 @@
 import type { Project, ScoringOptions, Ballot } from "../types";
-import { calculatePoints, cleanVotes, combine, pairwiseResults } from "./utils";
-import { orderChoices } from "./utils/order-choices";
+import {
+	calculatePoints,
+	cleanVotes,
+	combine,
+	pairwiseResults,
+} from "./pipeline";
+import { orderChoices } from "./pipeline/order-choices";
 
 export const copeland = (
 	manifest: Project[],
