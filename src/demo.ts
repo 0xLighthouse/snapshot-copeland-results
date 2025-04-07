@@ -4,7 +4,7 @@ import type { Project, ScoringOptions } from "./types";
 
 import { default as metadata } from "../data/ens-with-group-by.json";
 import { generateVotes } from "./__tests__/utils";
-import { customENS } from "./scoring/custom-ens";
+import { copelandENS } from "./scoring/copeland-ens";
 
 const scoringOptions = metadata.scoring as ScoringOptions;
 const projectsByChoice = new Map<string, Project | undefined>();
@@ -19,7 +19,7 @@ const votes = generateVotes(snapshotChoices, numVoters);
 
 const manifest = metadata.data;
 
-const { results, orderedChoices } = customENS(
+const { results, orderedChoices } = copelandENS(
 	manifest,
 	snapshotChoices,
 	votes,

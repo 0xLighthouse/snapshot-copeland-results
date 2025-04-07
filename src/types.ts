@@ -13,7 +13,7 @@ export interface Vote {
 }
 
 export interface ScoringOptions {
-	algorithm: "copeland";
+	algorithm: "copeland" | "copeland-ens" | "copeland-none-below";
 	tiebreaker?: "average-support";
 	omitBelowChoice?: string; // e.g. "None Below"
 	groupBy?: string; // e.g. "group"

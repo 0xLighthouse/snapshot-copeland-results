@@ -15,15 +15,15 @@ export const copeland = (
 	const comparison = pairwiseResults(votes, orderedChoices.length);
 
 	// Score calculation:
-	// 1 point for each win, 0 for ties or losses
-	const scores = calculatePoints(comparison, [1, 0.5, 0]);
+	// 1 point for each win, 0.5 for ties, 0 for losses
+	const points = calculatePoints(comparison, [1, 0.5, 0]);
 
-	// Sort results by score and use average support as tiebreaker
+	// Sort results by points
 	return {
-		results: combine(comparison, scores).sort((a, b) => {
+		results: combine(comparison, points).sort((a, b) => {
 			// Sort by score (primary sort)
-			if (b.score !== a.score) {
-				return b.score - a.score;
+			if (b.points !== a.points) {
+				return b.points - a.points;
 			}
 
 			return 0;

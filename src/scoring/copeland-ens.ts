@@ -3,7 +3,7 @@ import { calculatePoints, cleanVotes, combine } from "./utils";
 import { pairwiseResults } from "./utils/pairwise-results";
 import { orderChoices } from "./utils/order-choices";
 
-export const customENS = (
+export const copelandENS = (
 	manifest: Project[],
 	snapshotChoices: string[],
 	votes: Vote[],
@@ -56,11 +56,11 @@ export const customENS = (
 
 	// Score calculation:
 	// 1 point for each win, 0 for ties or losses
-	const scores = calculatePoints(comparison, [1, 0, 0]);
+	const points = calculatePoints(comparison, [1, 0, 0]);
 
 	// Sort results by score and use average support as tiebreaker
 	return {
-		results: combine(comparison, scores).sort((a, b) => {
+		results: combine(comparison, points).sort((a, b) => {
 			// Sort by score (primary sort)
 			if (b.score !== a.score) {
 				return b.score - a.score;
