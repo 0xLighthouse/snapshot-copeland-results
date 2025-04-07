@@ -10,3 +10,7 @@ Once a Snapshot vote has been executed. Use this libary to compute the final res
 * `copeland-none-below` Use a control choice to zero ranks at and below this selection
 
 Consider individual voter preferences using `Copeland's method` allocate accordingly.
+
+### Tests
+
+* `pnpm jest`
