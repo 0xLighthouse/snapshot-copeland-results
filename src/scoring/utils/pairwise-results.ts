@@ -1,4 +1,4 @@
-import type { PairwiseResults, Project, Vote } from "../../types";
+import type { PairwiseResults, Project, Ballot } from "../../types";
 
 // Data structure to track match statistics for average support calculation
 interface MatchStats {
@@ -14,7 +14,7 @@ interface MatchStats {
  * @returns {Object} - Projects with their pairwise results (wins, ties, losses, avgSupport)
  */
 export const pairwiseResults = (
-	votes: Vote[],
+	votes: Ballot[],
 	numberOfChoices: number,
 ): PairwiseResults => {
 	const scores: PairwiseResults = {};

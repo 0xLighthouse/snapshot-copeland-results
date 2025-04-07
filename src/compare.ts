@@ -37,7 +37,7 @@ const displayResults = (_results: any, orderedChoices: Project[]) => {
 			"Losses",
 			"Ties",
 			"Points",
-			"{n} Appearances",
+			"Appearances",
 			"Avg Support",
 		],
 	});
@@ -70,17 +70,17 @@ const { results: resultsA, orderedChoices } = copelandENS(
 );
 displayResults(resultsA, orderedChoices);
 
-// const { results: resultsB, orderedChoices: orderedChoicesB } =
-// 	copelandNoneBelow(manifest, snapshotChoices, votes, scoringOptions);
+const { results: resultsB, orderedChoices: orderedChoicesB } =
+	copelandNoneBelow(manifest, snapshotChoices, votes, scoringOptions);
 
-// console.log("=== COPELAND NONE BELOW RESULTS ===");
-// displayResults(resultsB, orderedChoicesB);
+console.log("=== COPELAND NONE BELOW RESULTS ===");
+displayResults(resultsB, orderedChoicesB);
 
-// const { results: resultsC, orderedChoices: orderedChoicesC } = copeland(
-// 	manifest,
-// 	snapshotChoices,
-// 	votes,
-// 	scoringOptions,
-// );
-// console.log("=== COPELAND RESULTS ===");
-// displayResults(resultsC, orderedChoicesC);
+const { results: resultsC, orderedChoices: orderedChoicesC } = copeland(
+	manifest,
+	snapshotChoices,
+	votes,
+	scoringOptions,
+);
+console.log("=== COPELAND RESULTS ===");
+displayResults(resultsC, orderedChoicesC);

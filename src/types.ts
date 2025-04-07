@@ -5,7 +5,7 @@ export interface Project {
 	[key: string]: string | undefined;
 }
 
-export interface Vote {
+export interface Ballot {
 	choice: number[];
 	// Maps to "vp" in Snapshots GraphQL API terminology
 	votingPower: number;

@@ -1,4 +1,4 @@
-import type { Project, ScoringOptions, Vote } from "../types";
+import type { Project, ScoringOptions, Ballot } from "../types";
 import { calculatePoints, cleanVotes, combine } from "./utils";
 import { pairwiseResults } from "./utils/pairwise-results";
 import { orderChoices } from "./utils/order-choices";
@@ -6,7 +6,7 @@ import { orderChoices } from "./utils/order-choices";
 export const copelandENS = (
 	manifest: Project[],
 	snapshotChoices: string[],
-	votes: Vote[],
+	votes: Ballot[],
 	options: ScoringOptions,
 ) => {
 	// Order our manifest based on how they were input in Snapshot.
