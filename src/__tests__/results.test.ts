@@ -1,7 +1,6 @@
 import { cleanVotes } from "../scoring/utils";
 import { orderChoices } from "../scoring/utils/order-choices";
 import type { Project } from "../types";
-import { generateVotes } from "./utils";
 
 const manifest = {
 	version: "0.2.0",
@@ -49,12 +48,12 @@ const snapshotChoices = [
 
 const votes = [
 	{
-		choice: [0, 1, 2, 3, 4],
+		choice: [0, 1, 3, 2, 4],
 		votingPower: 100,
 		voter: "0x1",
 	},
 	{
-		choice: [4, 3, 2, 1, 0],
+		choice: [4, 3, 1, 2, 0],
 		votingPower: 100,
 		voter: "0x2",
 	},
@@ -94,23 +93,43 @@ describe("results", () => {
 		]);
 	});
 
-	it("omits votes below the 'None Below' choice as expected", () => {
-		// Find the index of the "None Below" choice
-		const notBelowIndex = orderedChoices.findIndex(
-			(choice) => choice.choice === manifest.scoring.omitBelowChoice,
-		);
-		const cleanedVotes = cleanVotes(votes, notBelowIndex);
-		expect(cleanedVotes).toEqual([
-			{
-				choice: [0, 1],
-				voter: "0x1",
-				votingPower: 100,
-			},
-			{
-				choice: [4, 3],
-				voter: "0x2",
-				votingPower: 100,
-			},
-		]);
+	describe("cleanVotes", () => {
+		it("omits votes below the 'None Below' choice as expected", () => {
+			// Find the index of the "None Below" choice
+			const notBelowIndex = orderedChoices.findIndex(
+				(choice) => choice.choice === manifest.scoring.omitBelowChoice,
+			);
+			const cleanedVotes = cleanVotes(votes, notBelowIndex);
+			expect(cleanedVotes).toEqual([
+				{
+					choice: [0, 1, 3],
+					voter: "0x1",
+					votingPower: 100,
+				},
+				{
+					choice: [4, 3, 1],
+					voter: "0x2",
+					votingPower: 100,
+				},
+			]);
+		});
+
+		it("works with no 'None Below' choice", () => {
+			// Find the index of the "None Below" choice
+			const cleanedVotes = cleanVotes(votes);
+
+			expect(cleanedVotes).toEqual([
+				{
+					choice: [0, 1, 3, 2, 4],
+					voter: "0x1",
+					votingPower: 100,
+				},
+				{
+					choice: [4, 3, 1, 2, 0],
+					voter: "0x2",
+					votingPower: 100,
+				},
+			]);
+		});
 	});
 });
