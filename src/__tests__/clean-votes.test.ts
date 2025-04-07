@@ -18,7 +18,7 @@ describe("cleanVotes", () => {
 		]);
 	});
 
-	it("should clean votes when not below is omitted", () => {
+	it("should NOT clean votes when notBelow is omitted", () => {
 		const votes: Ballot[] = [
 			{ choice: [0, 1, 2], votingPower: 1, voter: "0x1" },
 			{ choice: [0, 2, 1], votingPower: 1, voter: "0x2" },
