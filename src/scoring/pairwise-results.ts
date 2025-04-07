@@ -1,14 +1,13 @@
 import type { CopelandScores, Project } from "../types";
 
 /**
- * Calculate Copeland scores for all projects based on voter preferences
- * Uses the 1/0.5/0 scoring method (win/tie/loss)
+ * Calculate pairwise results for all projects based on voter preferences
  *
  * @param {Array} projects - List of all projects
  * @param {Array} votes - Voters' ranked choices
- * @returns {Object} - Projects with their Copeland scores (wins, ties, losses, final score)
+ * @returns {Object} - Projects with their pairwise results (wins, ties, losses)
  */
-export const copeland = (
+export const pairwiseResults = (
 	projectsByChoice: Map<string, Project | undefined>,
 	votes: string[][],
 ): CopelandScores => {
@@ -22,7 +21,6 @@ export const copeland = (
 			wins: 0,
 			ties: 0,
 			losses: 0,
-			points: 0,
 		};
 	}
 
@@ -76,12 +74,6 @@ export const copeland = (
 				scores[choiceB].ties++;
 			}
 		}
-	}
-
-	// Calculate the final Copeland score for each project (keyed by choice)
-	for (const choiceId in scores) {
-		scores[choiceId].points =
-			scores[choiceId].wins + 0.5 * scores[choiceId].ties;
 	}
 
 	return scores;

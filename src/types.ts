@@ -19,7 +19,6 @@ export interface CopelandScores {
 		wins: number; // Number of pairwise wins
 		ties: number; // Number of pairwise ties
 		losses: number; // Number of pairwise losses
-		points: number; // Calculated as wins + 0.5 * ties
 	};
 }
 

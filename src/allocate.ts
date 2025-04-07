@@ -1,5 +1,5 @@
 import type { Project, AllocationResult } from "./types";
-import { copeland } from "./scoring/copeland";
+import { copeland } from "./scoring/pairwise-results";
 import { NOT_BELOW } from "./demo";
 
 /**
