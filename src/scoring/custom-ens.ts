@@ -1,6 +1,5 @@
 import type { Project, ScoringOptions, Vote } from "../types";
-import { cleanVotes } from "./utils";
-import { groupBy } from "./utils/group-by";
+import { calculateRank, cleanVotes, combine } from "./utils";
 import { pairwiseResults } from "./utils/pairwise-results";
 import { orderChoices } from "./utils/order-choices";
 
@@ -52,8 +51,13 @@ export const customENS = (
 		}
 	}
 
-	const results = pairwiseResults(cleanedVotes, orderedChoices.length);
-	return results;
+	const comparision = pairwiseResults(cleanedVotes, orderedChoices.length);
+	const scores = calculateRank(comparision, [1, 0, 0]);
+
+	return {
+		results: combine(comparision, scores).sort((a, b) => b.score - a.score),
+		orderedChoices,
+	};
 };
 
 /*

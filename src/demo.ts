@@ -37,14 +37,14 @@ const votes = generateVotes(snapshotChoices, numVoters);
 
 const manifest = ensProposal.data;
 
-const results = customENS(
+const { results, orderedChoices } = customENS(
 	manifest,
 	snapshotChoices,
 	votes,
 	ensProposal.scoring as ScoringOptions,
 );
 
-// console.log(JSON.stringify(results, null, 2));
+console.log(JSON.stringify(results, null, 2));
 
 // Display the results
 console.log("=== COPELAND RESULTS ===");
@@ -52,12 +52,12 @@ console.log(`Count projects: ${manifest.length}`);
 console.log(`Voters: ${numVoters}`);
 
 const ranking = new Table({
-	head: ["Rank", "Choice", "Wins", "Losses", "Ties", "Points"],
+	head: ["Vendor", "Choice", "Wins", "Losses", "Ties", "Points"],
 });
 for (const [key, result] of Object.entries(results)) {
 	ranking.push([
-		"-- TODO: Add rank --",
-		manifest[key].choice,
+		orderedChoices[Number(key)].vendor,
+		orderedChoices[Number(key)].choice,
 		result.wins,
 		result.losses,
 		result.ties,
