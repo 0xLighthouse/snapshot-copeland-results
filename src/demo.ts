@@ -1,6 +1,6 @@
 import Table from "cli-table3";
 
-import type { Project } from "./types";
+import type { Project, ScoringOptions } from "./types";
 
 export const NOT_BELOW = "Not Below";
 
@@ -35,20 +35,14 @@ const snapshotChoices = [...manifestChoices].sort(() => 0.5 - Math.random());
 const numVoters = 5;
 const votes = generateVotes(snapshotChoices, numVoters);
 
-console.log(votes);
+const manifest = ensProposal.data;
 
-// const mappings = {
-// 	mapIndexByChoice,
-// 	mapChoiceByIndex,
-// };
-
-// const results = customENS(
-// 	projectsByChoice,
-// 	snapshotChoices,
-// 	mappings,
-// 	votes,
-// 	scoringOptions,
-// );
+const results = customENS(
+	manifest,
+	snapshotChoices,
+	votes,
+	ensProposal.scoring as ScoringOptions,
+);
 
 // // // console.log(JSON.stringify(results, null, 2));
 

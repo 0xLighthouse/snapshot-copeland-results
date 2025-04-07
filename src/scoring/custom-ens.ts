@@ -6,15 +6,17 @@ import { orderChoices } from "./utils/order-choices";
 
 export const customENS = (
 	manifest: Project[],
-	snapshotList: string[],
+	snapshotChoices: string[],
 	votes: Vote[],
 	options: ScoringOptions,
 ) => {
-	const orderedChoices = orderChoices(manifest, snapshotList);
+	// Order our mainifest based on how they were input Snapshot.
+	const orderedChoices = orderChoices(manifest, snapshotChoices);
 	let cleanedVotes = votes;
 
+	// If the user has spefified an "omitBelowChoice",
+	// we need to remove all votes at and below that choice.
 	if (options.omitBelowChoice) {
-		// find index of NOT_BELOW
 		const notBelowIndex = orderedChoices.findIndex(
 			(choice) => choice.choice === options.omitBelowChoice,
 		);
