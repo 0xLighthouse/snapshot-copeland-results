@@ -31,29 +31,15 @@ export const generateUnorderedPairs = (
  */
 export const applyAppearsInBallots = (
   votes: Ballot[],
-  numberOfChoices: number,
+  results: PairwiseResults,
 ): PairwiseResults => {
-  const results: PairwiseResults = {};
-
-  // Initialize results for each choice
-  for (let i = 0; i < numberOfChoices; i++) {
-    results[i] = {
-      wins: 0,
-      ties: 0,
-      losses: 0,
-      points: 0,
-      avgSupport: 0,
-      appearsInBallots: 0,
-    };
-  }
-
   // Count how many ballots each choice index appears in
   for (const ballot of votes) {
     // Build a set of all choice indices that exist in this ballot
     const choicesInBallot = new Set(ballot.choice);
 
     // For each possible choice index
-    for (let i = 0; i < numberOfChoices; i++) {
+    for (let i = 0; i < Object.keys(results).length; i++) {
       // If this choice index appears in the ballot
       if (choicesInBallot.has(i)) {
         results[i].appearsInBallots += 1;
@@ -93,16 +79,16 @@ export const initializeResults = (numberOfChoices: number): PairwiseResults => {
  * @param results - Pre-initialized PairwiseResults (optional)
  * @returns PairwiseResults with wins, ties, losses calculated (avgSupport is not calculated here)
  */
-export const calculatePairwiseResults = (
+export const applyPairwise = (
   votes: Ballot[],
   numberOfChoices: number,
-  results?: PairwiseResults,
+  results: PairwiseResults,
 ): {
   pairwiseResults: PairwiseResults;
   matchStats: Record<number, MatchStats>;
 } => {
   // Use provided results or create a new one
-  const pairwiseResults = results || initializeResults(numberOfChoices);
+  const pairwiseResults = results;
   const matchStats: Record<number, MatchStats> = {};
 
   // Initialize match stats
@@ -175,7 +161,7 @@ export const calculatePairwiseResults = (
  * @param matchStats - Statistics about match results for calculating average support
  * @returns Updated PairwiseResults with avgSupport calculated
  */
-export const applyAverageSupport = (
+export const applyAvgSupport = (
   scores: PairwiseResults,
   matchStats: Record<number, MatchStats>,
 ): PairwiseResults => {
@@ -188,32 +174,4 @@ export const applyAverageSupport = (
       stats.matches > 0 ? stats.totalVotes / stats.matches : 0;
   }
   return resultsCopy;
-};
-
-/**
- * Calculate complete pairwise results for all projects
- * This composes the other functions to provide the same API as before
- * @param votes - Voters' ranked choices
- * @param numberOfChoices - Total number of choices
- * @returns PairwiseResults with wins, ties, losses, and avgSupport
- */
-export const pairwiseResults = (
-  votes: Ballot[],
-  numberOfChoices: number,
-): {
-  pairwiseResults: PairwiseResults;
-  matchStats: Record<number, MatchStats>;
-} => {
-  // Create clean results objects
-  const initialResults = initializeResults(numberOfChoices);
-
-  // Update with ballot appearances count
-  const resultsWithAppearances = applyAppearsInBallots(votes, numberOfChoices);
-
-  // Calculate pairwise comparisons
-  return calculatePairwiseResults(
-    votes,
-    numberOfChoices,
-    resultsWithAppearances,
-  );
 };

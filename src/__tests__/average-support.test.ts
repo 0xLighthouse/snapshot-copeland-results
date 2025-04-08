@@ -1,6 +1,8 @@
 import {
-  pairwiseResults,
-  applyAverageSupport,
+  applyPairwise,
+  applyAvgSupport,
+  applyAppearsInBallots,
+  initializeResults,
 } from "../scoring/pipeline/pairwise";
 import type { Ballot } from "../types";
 
@@ -18,11 +20,19 @@ describe("pairwiseResults", () => {
       { choice: [0, 1], votingPower: 1, voter: "voter4" },
     ];
 
-    const { pairwiseResults: pairwiseData, matchStats } = pairwiseResults(
+    let results = initializeResults(3);
+    // Initialize with ballot appearances count
+    results = applyAppearsInBallots(testVotes, results);
+
+    // Apply pairwise calculations
+    const { pairwiseResults: pairwiseData, matchStats } = applyPairwise(
       testVotes,
       3,
+      results,
     );
-    const results = applyAverageSupport(pairwiseData, matchStats);
+
+    // Calculate average support
+    results = applyAvgSupport(pairwiseData, matchStats);
 
     // Expected pairwise comparisons:
     // - Choice 0 vs 1: 3 voters prefer 0, 1 voter prefers 1 (totalVotes = 4)
@@ -70,11 +80,19 @@ describe("pairwiseResults", () => {
       { choice: [0], votingPower: 1, voter: "voter7" },
     ];
 
-    const { pairwiseResults: pairwiseData, matchStats } = pairwiseResults(
+    let results = initializeResults(3);
+    // Initialize with ballot appearances count
+    results = applyAppearsInBallots(testVotes, results);
+
+    // Apply pairwise calculations
+    const { pairwiseResults: pairwiseData, matchStats } = applyPairwise(
       testVotes,
       3,
+      results,
     );
-    const results = applyAverageSupport(pairwiseData, matchStats);
+
+    // Calculate average support
+    results = applyAvgSupport(pairwiseData, matchStats);
 
     // Expected pairwise comparisons with voting power:
     // - Choice 0 vs 1:
