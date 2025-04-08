@@ -51,14 +51,16 @@ export const pairwiseResults = (
 		stats[i] = { totalVotes: 0, matches: 0 };
 	}
 
-	// Count how many ballots each choice appears in
+	// Count how many ballots each choice index appears in
 	for (const ballot of votes) {
-		// Track which choices have been seen in this ballot
-		const seen = new Set<number>();
-		for (const choice of ballot.choice) {
-			if (!seen.has(choice)) {
-				results[choice].appearsInBallots += 1;
-				seen.add(choice);
+		// Build a set of all choice indices that exist in this ballot
+		const choicesInBallot = new Set(ballot.choice);
+		
+		// For each possible choice index
+		for (let i = 0; i < numberOfChoices; i++) {
+			// If this choice index appears in the ballot
+			if (choicesInBallot.has(i)) {
+				results[i].appearsInBallots += 1;
 			}
 		}
 	}
@@ -87,12 +89,12 @@ export const pairwiseResults = (
 					prefB += votingPower;
 					totalVotesInMatch += votingPower;
 				}
-			} else if (rankA !== -1 && rankB === -1) {
-				// If A is ranked but B is not, A wins
+			} // If A is ranked but B is not, A wins
+			else if (rankA !== -1 && rankB === -1) {
 				prefA += votingPower;
 				totalVotesInMatch += votingPower;
-			} else if (rankB !== -1 && rankA === -1) {
-				// If B is ranked but A is not, B wins
+			} // If B is ranked but A is not, B wins
+			else if (rankB !== -1 && rankA === -1) {
 				prefB += votingPower;
 				totalVotesInMatch += votingPower;
 			}
