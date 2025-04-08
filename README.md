@@ -11,6 +11,6 @@ Once a Snapshot vote has been executed. This libary can be configured to compute
 
 Consider individual voter preferences using `Copeland's method` allocate accordingly.
 
-### Tests
+### Getting started
 
-* `pnpm jest`
+* Tests `pnpm jest`

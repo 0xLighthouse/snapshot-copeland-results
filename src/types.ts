@@ -29,3 +29,25 @@ export interface PairwiseResults {
 		points: number; // Number of points this choice has
 	};
 }
+
+export interface AllocationBudget {
+	twoYear: number;
+	oneYear: number;
+}
+
+export interface AllocationOptions {
+	budgets: {
+		basic: AllocationBudget;
+		extended: AllocationBudget;
+	};
+	spp1Candidates: string[]; // List of candidate choice IDs that participated in SPP1
+	noneBelowOption?: string; // Same as omitBelowChoice in ScoringOptions
+}
+
+export interface AllocationResult {
+	choice: string;
+	rank: number;
+	budgetType: 'basic' | 'extended';
+	stream: '1-year' | '2-year' | 'rejected';
+	allocationAmount: number;
+}
