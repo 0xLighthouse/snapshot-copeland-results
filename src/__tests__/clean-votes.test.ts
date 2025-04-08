@@ -1,30 +1,35 @@
-import { cleanVotes } from "../scoring/utils/clean-votes";
+import { cleanVotes } from "../scoring/pipeline/clean-votes";
+import type { Ballot } from "../types";
 
 describe("cleanVotes", () => {
 	it("should clean votes", () => {
-		const votes = [
-			["A", "B", "C"],
-			["A", "C", "B"],
-			["B", "A", "C"],
+		const votes: Ballot[] = [
+			{ choice: [0, 1, 2], votingPower: 1, voter: "0x1" },
+			{ choice: [0, 2, 1], votingPower: 1, voter: "0x2" },
+			{ choice: [1, 0, 2], votingPower: 1, voter: "0x3" },
 		];
-		const notBelow = "B";
+		const notBelow = 1;
 		const result = cleanVotes(votes, notBelow);
 
-		expect(result).toEqual([["A"], ["A", "C"], []]);
+		expect(result).toEqual([
+			{ choice: [0], votingPower: 1, voter: "0x1" },
+			{ choice: [0, 2], votingPower: 1, voter: "0x2" },
+			{ choice: [], votingPower: 1, voter: "0x3" },
+		]);
 	});
 
-	it("should clean votes with not below", () => {
-		const choices = [
-			"Not Below",
-			"AlphaGrowth - Basic Scope",
-			"AlphaGrowth - Extended Scope",
-			"ZK.Email - Basic Scope",
-			"ZK.Email - Extended Scope",
+	it("should NOT clean votes when notBelow is omitted", () => {
+		const votes: Ballot[] = [
+			{ choice: [0, 1, 2], votingPower: 1, voter: "0x1" },
+			{ choice: [0, 2, 1], votingPower: 1, voter: "0x2" },
+			{ choice: [1, 0, 2], votingPower: 1, voter: "0x3" },
 		];
-		const votes = [
-			["A", "B", "C"],
-			["A", "C", "B"],
-			["B", "A", "C"],
-		];
+		const result = cleanVotes(votes);
+
+		expect(result).toEqual([
+			{ choice: [0, 1, 2], votingPower: 1, voter: "0x1" },
+			{ choice: [0, 2, 1], votingPower: 1, voter: "0x2" },
+			{ choice: [1, 0, 2], votingPower: 1, voter: "0x3" },
+		]);
 	});
 });

@@ -1,7 +1,7 @@
-import type { Vote } from "../types";
+import type { Ballot } from "../../types";
 
-// Generate a random number between 50k and 250k
-const randomSupport = () => Math.random() * 200_000 + 50_000;
+// Generate a random number between 5k and 10k
+const randomSupport = () => Math.random() * 5_000 + 5_000;
 
 // Generate a random voter address
 const randomVoter = () => `0x${Math.random().toString(16).slice(2)}`;
@@ -14,14 +14,12 @@ const randomVoter = () => `0x${Math.random().toString(16).slice(2)}`;
  */
 export const generateVotes = (
 	choices: string[],
-	mapIndexByChoice: Map<string, number>,
 	numVoters: number,
-): Vote[] => {
+): Ballot[] => {
 	return Array.from({ length: numVoters }, () => {
 		const shuffled = [...choices].sort(() => 0.5 - Math.random());
 		return {
-			choice: shuffled.map((choice) => mapIndexByChoice.get(choice)),
-			labels: shuffled,
+			choice: shuffled.map((choice) => choices.indexOf(choice)),
 			votingPower: Math.floor(randomSupport()),
 			voter: randomVoter(),
 		};

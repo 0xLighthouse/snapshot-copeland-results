@@ -1,13 +1,13 @@
-import type { PairwiseResults } from "../types";
+import type { PairwiseResults } from "../../types";
 
-export const calculateRank = (
+export const calculatePoints = (
 	pairwiseResults: PairwiseResults,
 	weights: [number, number, number],
 ) => {
-	const scores: Record<string, { score: number }> = {};
+	const scores: Record<string, { points: number }> = {};
 	Object.entries(pairwiseResults).map(([key, results]) => {
 		scores[key] = {
-			score:
+			points:
 				weights[0] * results.wins +
 				weights[1] * results.ties +
 				weights[2] * results.losses,

@@ -1,13 +1,9 @@
 import type { Project, ScoringOptions, Ballot } from "../types";
-import {
-	calculatePoints,
-	cleanVotes,
-	combine,
-	pairwiseResults,
-} from "./pipeline";
+import { calculatePoints, cleanVotes, combine } from "./pipeline";
+import { pairwiseResults } from "./pipeline/pairwise-results";
 import { orderChoices } from "./pipeline/order-choices";
 
-export const copelandNoneBelow = (
+export const copelandENS = (
 	manifest: Project[],
 	snapshotChoices: string[],
 	votes: Ballot[],
@@ -29,12 +25,38 @@ export const copelandNoneBelow = (
 		cleanedVotes = cleanVotes(votes, notBelowIndex);
 	}
 
+	// If the user has specified a "groupBy" option,
+	// we need to group the choices by the specified field.
+	if (options.groupBy) {
+		// Maps multiple selections to a single selection
+		const mapTo = new Map<number, number>();
+		const existing = new Map<string, number>();
+		for (let i = 0; i < orderedChoices.length; i++) {
+			const groupName = orderedChoices[i][options.groupBy];
+			if (!groupName) {
+				mapTo.set(i, i);
+				continue;
+			}
+			if (existing.has(groupName)) {
+				mapTo.set(i, existing.get(groupName) ?? i);
+			} else {
+				existing.set(groupName, i);
+				mapTo.set(i, i);
+			}
+		}
+
+		// For each vote, translate choice to mapTo
+		for (const vote of cleanedVotes) {
+			vote.choice = vote.choice.map((choice) => mapTo.get(choice) ?? choice);
+		}
+	}
+
 	// Calculate pairwise comparisons with proper handling of ranked vs unranked
 	const comparison = pairwiseResults(cleanedVotes, orderedChoices.length);
 
 	// Score calculation:
-	// 1 point for each win, 0.5 for ties or losses
-	const points = calculatePoints(comparison, [1, 0.5, 0]);
+	// 1 point for each win, 0 for ties or losses
+	const points = calculatePoints(comparison, [1, 0, 0]);
 
 	// Sort results by score and use average support as tiebreaker
 	return {
@@ -42,6 +64,11 @@ export const copelandNoneBelow = (
 			// Sort by score (primary sort)
 			if (b.points !== a.points) {
 				return b.points - a.points;
+			}
+
+			// If scores are tied, use average support as tiebreaker (if available)
+			if (a.avgSupport !== undefined && b.avgSupport !== undefined) {
+				return b.avgSupport - a.avgSupport;
 			}
 
 			return 0;

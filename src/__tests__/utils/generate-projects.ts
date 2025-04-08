@@ -1,5 +1,5 @@
 import { randomInt } from "node:crypto";
-import type { Project } from "../types";
+import type { Project } from "../../types";
 
 /**
  * Generate projects with random budgets, until the requested budget amount is reached
