@@ -1,4 +1,4 @@
-import type { PairwiseResults, Project, Ballot } from "../../types";
+import type { PairwiseResults, Ballot } from "../../types";
 
 // Data structure to track match statistics for average support calculation
 interface MatchStats {
@@ -30,8 +30,8 @@ export const generateUnorderedPairs = (
  * @returns Initialized PairwiseResults with ballot appearances counted
  */
 export const applyAppearsInBallots = (
-  votes: Ballot[],
   results: PairwiseResults,
+  votes: Ballot[],
 ): PairwiseResults => {
   // Count how many ballots each choice index appears in
   for (const ballot of votes) {
@@ -74,15 +74,17 @@ export const initializeResults = (numberOfChoices: number): PairwiseResults => {
 
 /**
  * Calculate pairwise results for all projects based on voter preferences
+ *
+ * @param results - Initialized PairwiseResults
  * @param votes - Voters' ranked choices
  * @param numberOfChoices - Total number of choices
- * @param results - Pre-initialized PairwiseResults (optional)
- * @returns PairwiseResults with wins, ties, losses calculated (avgSupport is not calculated here)
+ *
+ * @returns PairwiseResults with wins, ties, losses
  */
 export const applyPairwise = (
+  results: PairwiseResults,
   votes: Ballot[],
   numberOfChoices: number,
-  results: PairwiseResults,
 ): {
   pairwiseResults: PairwiseResults;
   matchStats: Record<number, MatchStats>;

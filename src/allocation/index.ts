@@ -4,7 +4,7 @@ import type {
   AllocationResult,
   Ballot,
 } from "../types";
-import { copelandNoneBelow } from "../scoring/copeland-none-below";
+import { copeland } from "../scoring/copeland";
 import { displayResults } from "../scoring/display-results";
 
 interface RankedCandidate {
@@ -29,20 +29,20 @@ export const allocateBudgets = (
   options: AllocationOptions,
 ): AllocationResult[] => {
   // Process votes with Copeland algorithm
-  const { results, orderedChoices } = copelandNoneBelow(
+  const { results, orderedChoices } = copeland(
     manifest,
     snapshotChoices,
     votes,
     {
-      algorithm: "copeland-none-below",
+      algorithm: "copeland",
       omitBelowChoice: options.noneBelowOption,
     },
   );
 
   // Generate formatted results
   const scoringResults = displayResults(results, orderedChoices, {
-    algorithm: "copeland-none-below",
-    omitBelowChoice: options.noneBelowChoice,
+    algorithm: "copeland",
+    omitBelowChoice: options.noneBelowOption,
   });
 
   // Determine budget type for each candidate by finding head-to-head match

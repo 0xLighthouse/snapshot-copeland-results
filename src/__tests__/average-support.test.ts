@@ -20,15 +20,15 @@ describe("pairwiseResults", () => {
       { choice: [0, 1], votingPower: 1, voter: "voter4" },
     ];
 
-    let results = initializeResults(3);
     // Initialize with ballot appearances count
-    results = applyAppearsInBallots(testVotes, results);
+    let results = initializeResults(3);
+    results = applyAppearsInBallots(results, testVotes);
 
     // Apply pairwise calculations
     const { pairwiseResults: pairwiseData, matchStats } = applyPairwise(
+      results,
       testVotes,
       3,
-      results,
     );
 
     // Calculate average support
@@ -82,13 +82,13 @@ describe("pairwiseResults", () => {
 
     let results = initializeResults(3);
     // Initialize with ballot appearances count
-    results = applyAppearsInBallots(testVotes, results);
+    results = applyAppearsInBallots(results, testVotes);
 
     // Apply pairwise calculations
     const { pairwiseResults: pairwiseData, matchStats } = applyPairwise(
+      results,
       testVotes,
       3,
-      results,
     );
 
     // Calculate average support

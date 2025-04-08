@@ -7,7 +7,7 @@ Once a Snapshot vote has been executed. This libary can be configured to compute
 ## Options
 
 * `copeland` Copeland's method (Cannonical)
-* `copeland-none-below` Use a control choice to zero ranks at and below this selection
+* `copeland-weighted` Include voting support for tiebreaker calculations
 
 Consider individual voter preferences using `Copeland's method` allocate accordingly.
 

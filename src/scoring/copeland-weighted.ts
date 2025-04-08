@@ -1,7 +1,6 @@
 import type { Project, ScoringOptions, Ballot } from "../types";
 import { calculatePoints, cleanVotes, pipe } from "./pipeline";
 import {
-  applyAppearsInBallots,
   applyAvgSupport,
   applyPairwise,
   initializeResults,
@@ -11,19 +10,6 @@ import {
   createChoiceGroupMapping,
   applyChoiceGrouping,
 } from "./pipeline/group-by";
-
-interface PairwiseResult {
-  wins: number;
-  ties: number;
-  losses: number;
-  avgSupport: number;
-  appearsInBallots: number;
-  points: number;
-}
-
-interface ScoredResult extends PairwiseResult {
-  key: string;
-}
 
 export const copelandWeighted = (
   manifest: Project[],
@@ -59,12 +45,12 @@ export const copelandWeighted = (
 
   const numberOfChoices = snapshotChoices.length;
   const emptyResults = initializeResults(numberOfChoices);
+
   const results = pipe(emptyResults)
-    .through((r) => applyAppearsInBallots(_votes, r))
-    .through((r) => applyPairwise(_votes, numberOfChoices, r))
+    .through((r) => applyPairwise(r, _votes, numberOfChoices))
     .through((r) => applyAvgSupport(r.pairwiseResults, r.matchStats))
     .through((r) => calculatePoints(r, [1, 0, 0]))
-    .value() as unknown as ScoredResult[];
+    .value();
 
   // Sort results by score and use average support as tiebreaker
   return {

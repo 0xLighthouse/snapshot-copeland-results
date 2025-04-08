@@ -13,7 +13,7 @@ export interface Ballot {
 }
 
 export interface ScoringOptions {
-  algorithm: "copeland" | "copeland-ens" | "copeland-none-below";
+  algorithm: "copeland" | "copeland-weighted";
   tiebreaker?: "average-support";
   omitBelowChoice?: string; // e.g. "None Below"
   groupBy?: string; // e.g. "group"
@@ -28,6 +28,19 @@ export interface PairwiseResults {
     appearsInBallots: number; // Number of ballots this choice appears in
     points: number; // Number of points this choice has
   };
+}
+
+interface PairwiseResult {
+  wins: number;
+  ties: number;
+  losses: number;
+  avgSupport: number;
+  appearsInBallots: number;
+  points: number;
+}
+
+export interface ScoredResult extends PairwiseResult {
+  key: string;
 }
 
 export interface AllocationBudget {
