@@ -4,8 +4,7 @@ import type { Project, ScoringOptions } from "./types";
 
 import { default as metadata } from "../data/ens-with-group-by.json";
 import { generateVotes } from "./__tests__/utils";
-import { copelandENS } from "./scoring/copeland-ens";
-import { copeland, copelandNoneBelow } from "./scoring";
+import { copeland, copelandNoneBelow, copelandWeighted } from "./scoring";
 
 const scoringOptions = metadata.scoring as ScoringOptions;
 const manifestChoices = metadata.data.map((o) => o.choice);
@@ -62,7 +61,7 @@ const displayResults = (_results: any, orderedChoices: Project[]) => {
 	console.log(ranking.toString());
 };
 console.log("=== CUSTOM ENS RESULTS ===");
-const { results: resultsA, orderedChoices } = copelandENS(
+const { results: resultsA, orderedChoices } = copelandWeighted(
 	manifest,
 	snapshotChoices,
 	votes,

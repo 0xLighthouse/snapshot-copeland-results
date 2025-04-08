@@ -11,6 +11,7 @@ interface MatchStats {
  *
  * @param {Array} votes - Voters' ranked choices
  * @param {number} numberOfChoices - Total number of choices
+ *
  * @returns {Object} - Projects with their pairwise results (wins, ties, losses, avgSupport)
  */
 export const pairwiseResults = (
