@@ -48,7 +48,6 @@ const displayResults = (_results: any, orderedChoices: Project[]) => {
 		const key = Number(result.key);
 		ranking.push([
 			rank++,
-			// orderedChoices[key]?.group || "",
 			orderedChoices[key]?.choice || "",
 			result.wins,
 			result.losses,

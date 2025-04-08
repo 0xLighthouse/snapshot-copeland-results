@@ -1,5 +1,5 @@
 import { copelandWeighted } from "../scoring";
-import type { Project } from "../types";
+import type { Project, ScoringOptions } from "../types";
 
 const manifest = {
 	version: "0.2.0",
@@ -49,14 +49,15 @@ const votes = [
 
 describe("results", () => {
 	it("ranks projects as expected", () => {
+		const params = {
+			algorithm: "copeland",
+			omitBelowChoice: "None Below",
+		} as ScoringOptions;
 		const { results, orderedChoices } = copelandWeighted(
 			manifest.data as Project[],
 			snapshotChoices,
 			votes,
-			{
-				algorithm: "copeland",
-				omitBelowChoice: "None Below",
-			},
+			params,
 		);
 
 		expect(results.map((r) => orderedChoices[r.key].choice)).toEqual([

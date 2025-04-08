@@ -2,7 +2,7 @@ export interface Project {
 	choice: string;
 	group?: string;
 	label: string;
-	[key: string]: string | undefined;
+	budget: number;
 }
 
 export interface Ballot {
@@ -47,7 +47,7 @@ export interface AllocationOptions {
 export interface AllocationResult {
 	choice: string;
 	rank: number;
-	budgetType: 'basic' | 'extended';
-	stream: '1-year' | '2-year' | 'rejected';
+	budgetType: "basic" | "extended";
+	stream: "1-year" | "2-year" | "rejected";
 	allocationAmount: number;
 }

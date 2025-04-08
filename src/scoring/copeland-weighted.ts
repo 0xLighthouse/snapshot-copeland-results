@@ -1,6 +1,6 @@
 import type { Project, ScoringOptions, Ballot } from "../types";
 import { calculatePoints, cleanVotes, combine } from "./pipeline";
-import { pairwiseResults } from "./pipeline/pairwise-results";
+import { pairwiseResults } from "./pipeline/pairwise";
 import { orderChoices } from "./pipeline/order-choices";
 import {
 	createChoiceGroupMapping,
