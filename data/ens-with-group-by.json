@@ -117,197 +117,236 @@
     {
       "choice": "AlphaGrowth (Basic)",
       "group": "alphagrowth",
-      "label": "Basic Scope for 400k USD"
+      "label": "Basic Scope for 400k USD",
+      "budget": 400000
     },
     {
       "choice": "AlphaGrowth (Extended)",
       "group": "alphagrowth",
-      "label": "Extended Scope for 800k USD"
+      "label": "Extended Scope for 800k USD",
+      "budget": 800000
     },
     {
       "choice": "ZK.Email (Basic)",
       "group": "zk-email",
-      "label": "Basic Scope for 400k USD"
+      "label": "Basic Scope for 400k USD",
+      "budget": 400000
     },
     {
       "choice": "ZK.Email (Extended)",
       "group": "zk-email",
-      "label": "Extended Scope for 800k USD"
+      "label": "Extended Scope for 800k USD",
+      "budget": 800000
     },
     {
       "choice": "Blockful (Basic)",
       "group": "blockful",
-      "label": "Basic Scope for 400k USD"
+      "label": "Basic Scope for 400k USD",
+      "budget": 400000
     },
     {
       "choice": "Blockful (Extended)",
       "group": "blockful",
-      "label": "Extended Scope for 700k USD"
+      "label": "Extended Scope for 700k USD",
+      "budget": 700000
     },
     {
       "choice": "Unruggable (Basic)",
       "group": "unruggable",
-      "label": "Basic Scope for 400k USD"
+      "label": "Basic Scope for 400k USD",
+      "budget": 400000
     },
     {
       "choice": "Unruggable (Extended)",
       "group": "unruggable",
-      "label": "Extended Scope for 700k USD"
+      "label": "Extended Scope for 700k USD",
+      "budget": 700000
     },
     {
       "choice": "3DNS (Basic)",
       "group": "3dns",
-      "label": "Basic Scope for 500k USD"
+      "label": "Basic Scope for 500k USD",
+      "budget": 500000
     },
     {
       "choice": "3DNS (Extended)",
       "group": "3dns",
-      "label": "Extended Scope for 700k USD"
+      "label": "Extended Scope for 700k USD",
+      "budget": 700000
     },
     {
       "choice": "Ethereum.Identity.Foundation (Basic)",
       "group": "ethereum-identity-foundation",
-      "label": "Basic Scope for 500k USD"
+      "label": "Basic Scope for 500k USD",
+      "budget": 500000
     },
     {
       "choice": "Ethereum.Identity.Foundation (Extended)",
       "group": "ethereum-identity-foundation",
-      "label": "Extended Scope for 700k USD"
+      "label": "Extended Scope for 700k USD",
+      "budget": 700000
     },
     {
       "choice": "JustaName (Basic)",
       "group": "justaname",
-      "label": "Basic Scope for 400k USD"
+      "label": "Basic Scope for 400k USD",
+      "budget": 400000
     },
     {
       "choice": "JustaName (Extended)",
       "group": "justaname",
-      "label": "Extended Scope for 600k USD"
+      "label": "Extended Scope for 600k USD",
+      "budget": 600000
     },
     {
       "choice": "NameHash.Labs (Basic)",
       "group": "namehash-labs",
-      "label": "Basic Scope for 1.1M USD"
+      "label": "Basic Scope for 1.1M USD",
+      "budget": 1100000
     },
     {
       "choice": "NameHash.Labs (Extended)",
       "group": "namehash-labs",
-      "label": "Extended Scope for 1.3M USD"
+      "label": "Extended Scope for 1.3M USD",
+      "budget": 1300000
     },
     {
       "choice": "Namespace (Basic)",
       "group": "namespace",
-      "label": "Basic Scope for 400k USD"
+      "label": "Basic Scope for 400k USD",
+      "budget": 400000
     },
     {
       "choice": "Namespace (Extended)",
       "group": "namespace",
-      "label": "Extended Scope for 600k USD"
+      "label": "Extended Scope for 600k USD",
+      "budget": 600000
     },
     {
       "choice": "Agora (Basic)",
       "group": "agora",
-      "label": "Basic Scope for 300k USD"
+      "label": "Basic Scope for 300k USD",
+      "budget": 300000
     },
     {
       "choice": "Agora (Extended)",
       "group": "agora",
-      "label": "Extended Scope for 400k USD"
+      "label": "Extended Scope for 400k USD",
+      "budget": 400000
     },
     {
       "choice": "dWeb.host (Basic)",
       "group": "dweb-host",
-      "label": "Basic Scope for 300k USD"
+      "label": "Basic Scope for 300k USD",
+      "budget": 300000
     },
     {
       "choice": "dWeb.host (Extended)",
       "group": "dweb-host",
-      "label": "Extended Scope for 400k USD"
+      "label": "Extended Scope for 400k USD",
+      "budget": 400000
     },
     {
       "choice": "EthLimo (Basic)",
       "group": "ethlimo",
-      "label": "Basic Scope for 700k USD"
+      "label": "Basic Scope for 700k USD",
+      "budget": 700000
     },
     {
       "choice": "EthLimo (Extended)",
       "group": "ethlimo",
-      "label": "Extended Scope for 800k USD"
+      "label": "Extended Scope for 800k USD",
+      "budget": 800000
     },
     {
       "choice": "Wildcard.Labs (Basic)",
       "group": "wildcard-labs",
-      "label": "Basic Scope for 300k USD"
+      "label": "Basic Scope for 300k USD",
+      "budget": 300000
     },
     {
       "choice": "Wildcard.Labs (Extended)",
       "group": "wildcard-labs",
-      "label": "Extended Scope for 400k USD"
+      "label": "Extended Scope for 400k USD",
+      "budget": 400000
     },
     {
       "choice": "Curia.Lab (Basic)",
       "group": "curia-lab",
-      "label": "Basic Scope for 300k USD"
+      "label": "Basic Scope for 300k USD",
+      "budget": 300000
     },
     {
       "choice": "Decent (Basic)",
       "group": "decent",
-      "label": "Basic Scope for 300k USD"
+      "label": "Basic Scope for 300k USD",
+      "budget": 300000
     },
     {
       "choice": "Enscribe (Basic)",
       "group": "enscribe",
-      "label": "Basic Scope for 400k USD"
+      "label": "Basic Scope for 400k USD",
+      "budget": 400000
     },
     {
       "choice": "GovPal (Basic)",
       "group": "govpal",
-      "label": "Basic Scope for 300k USD"
+      "label": "Basic Scope for 300k USD",
+      "budget": 300000
     },
     {
       "choice": "Lighthouse_Labs (Basic)",
       "group": "lighthouse-labs",
-      "label": "Basic Scope for 400k USD"
+      "label": "Basic Scope for 400k USD",
+      "budget": 400000
     },
     {
       "choice": "Namestone (Basic)",
       "group": "namestone",
-      "label": "Basic Scope for 800k USD"
+      "label": "Basic Scope for 800k USD",
+      "budget": 800000
     },
     {
       "choice": "PYOR (Basic)",
       "group": "pyor",
-      "label": "Basic Scope for 300k USD"
+      "label": "Basic Scope for 300k USD",
+      "budget": 300000
     },
     {
       "choice": "Tally (Basic)",
       "group": "tally",
-      "label": "Basic Scope for 300k USD"
+      "label": "Basic Scope for 300k USD",
+      "budget": 300000
     },
     {
       "choice": "Unicorn.eth (Basic)",
       "group": "unicorn-eth",
-      "label": "Basic Scope for 300k USD"
+      "label": "Basic Scope for 300k USD",
+      "budget": 300000
     },
     {
       "choice": "Web3bio (Basic)",
       "group": "web3bio",
-      "label": "Basic Scope for 500k USD"
+      "label": "Basic Scope for 500k USD",
+      "budget": 500000
     },
     {
       "choice": "WebHash (Basic)",
       "group": "webhash",
-      "label": "Basic Scope for 300k USD"
+      "label": "Basic Scope for 300k USD",
+      "budget": 300000
     },
     {
       "choice": "x23.ai (Basic)",
       "group": "x23-ai",
-      "label": "Basic Scope for 300k USD"
+      "label": "Basic Scope for 300k USD",
+      "budget": 300000
     },
     {
       "choice": "None Below",
       "group": "none-below",
-      "label": "None Below"
+      "label": "None Below",
+      "budget": 0
     }
   ]
 }
