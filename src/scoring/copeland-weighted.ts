@@ -2,8 +2,12 @@ import type { Project, ScoringOptions, Ballot } from "../types";
 import { calculatePoints, cleanVotes, combine } from "./pipeline";
 import { pairwiseResults } from "./pipeline/pairwise-results";
 import { orderChoices } from "./pipeline/order-choices";
+import {
+	createChoiceGroupMapping,
+	applyChoiceGrouping,
+} from "./pipeline/group-by";
 
-export const copelandENS = (
+export const copelandWeighted = (
 	manifest: Project[],
 	snapshotChoices: string[],
 	votes: Ballot[],
@@ -28,27 +32,11 @@ export const copelandENS = (
 	// If the user has specified a "groupBy" option,
 	// we need to group the choices by the specified field.
 	if (options.groupBy) {
-		// Maps multiple selections to a single selection
-		const mapTo = new Map<number, number>();
-		const existing = new Map<string, number>();
-		for (let i = 0; i < orderedChoices.length; i++) {
-			const groupName = orderedChoices[i][options.groupBy];
-			if (!groupName) {
-				mapTo.set(i, i);
-				continue;
-			}
-			if (existing.has(groupName)) {
-				mapTo.set(i, existing.get(groupName) ?? i);
-			} else {
-				existing.set(groupName, i);
-				mapTo.set(i, i);
-			}
-		}
-
-		// For each vote, translate choice to mapTo
-		for (const vote of cleanedVotes) {
-			vote.choice = vote.choice.map((choice) => mapTo.get(choice) ?? choice);
-		}
+		const groupByMapping = createChoiceGroupMapping(
+			orderedChoices,
+			options.groupBy,
+		);
+		cleanedVotes = applyChoiceGrouping(cleanedVotes, groupByMapping);
 	}
 
 	// Calculate pairwise comparisons with proper handling of ranked vs unranked
