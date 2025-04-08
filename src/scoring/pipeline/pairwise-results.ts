@@ -17,21 +17,22 @@ export const pairwiseResults = (
 	votes: Ballot[],
 	numberOfChoices: number,
 ): PairwiseResults => {
-	const scores: PairwiseResults = {};
 	const choices: number[] = [];
-	const matchStats: Record<number, MatchStats> = {};
+	const results: PairwiseResults = {};
+	const stats: Record<number, MatchStats> = {};
 
+	// Initialize results and stats for each choice
 	for (let i = 0; i < numberOfChoices; i++) {
 		choices.push(i);
-		scores[i] = {
+		results[i] = {
 			wins: 0,
 			ties: 0,
 			losses: 0,
+			points: 0,
 			avgSupport: 0,
 			appearsInBallots: 0,
-			points: 0,
 		};
-		matchStats[i] = { totalVotes: 0, matches: 0 };
+		stats[i] = { totalVotes: 0, matches: 0 };
 	}
 
 	// Count how many ballots each choice appears in
@@ -40,7 +41,7 @@ export const pairwiseResults = (
 		const seen = new Set<number>();
 		for (const choice of ballot.choice) {
 			if (!seen.has(choice)) {
-				scores[choice].appearsInBallots += 1;
+				results[choice].appearsInBallots += 1;
 				seen.add(choice);
 			}
 		}
@@ -89,27 +90,27 @@ export const pairwiseResults = (
 
 			// Update average support per candidate with actual support received
 			if (totalVotesInMatch > 0) {
-				matchStats[choiceA].totalVotes += prefA;
-				matchStats[choiceA].matches += 1;
-				matchStats[choiceB].totalVotes += prefB;
-				matchStats[choiceB].matches += 1;
+				stats[choiceA].totalVotes += prefA;
+				stats[choiceA].matches += 1;
+				stats[choiceB].totalVotes += prefB;
+				stats[choiceB].matches += 1;
 			}
 
 			// Update win/loss/tie scores
 			if (prefA > prefB) {
-				scores[choiceA].wins++;
-				scores[choiceB].losses++;
+				results[choiceA].wins++;
+				results[choiceB].losses++;
 			} else if (prefB > prefA) {
-				scores[choiceB].wins++;
-				scores[choiceA].losses++;
+				results[choiceB].wins++;
+				results[choiceA].losses++;
 			} else {
-				scores[choiceA].ties++;
-				scores[choiceB].ties++;
+				results[choiceA].ties++;
+				results[choiceB].ties++;
 			}
 		}
 	}
 
-	return calculateAverageSupport(scores, matchStats);
+	return calculateAverageSupport(results, stats);
 };
 
 /**
