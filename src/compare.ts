@@ -23,62 +23,61 @@ console.log("=== COPELAND RESULTS ===");
 console.log(`Count projects: ${manifest.length}`);
 console.log(`Voters: ${numVoters}`);
 console.log(
-	`Voting power deployed: ${votes.reduce((acc, vote) => acc + vote.votingPower, 0)}`,
+  `Voting power deployed: ${votes.reduce((acc, vote) => acc + vote.votingPower, 0)}`,
 );
 
 const displayResults = (_results: any, orderedChoices: Project[]) => {
-	const ranking = new Table({
-		head: [
-			"Rank",
-			// "Vendor",
-			"Choice",
-			"Wins",
-			"Losses",
-			"Ties",
-			"Points",
-			"Appearances",
-			"Avg Support",
-		],
-	});
-	let rank = 1;
-	for (const result of _results) {
-		if (rank === orderedChoices.length / 2) {
-			continue;
-		}
-		const key = Number(result.key);
-		ranking.push([
-			rank++,
-			orderedChoices[key]?.choice || "",
-			result.wins,
-			result.losses,
-			result.ties,
-			result.points,
-			result.appearsInBallots,
-			result.avgSupport ? result.avgSupport.toFixed(2) : "0",
-		]);
-	}
-	console.log(ranking.toString());
+  const ranking = new Table({
+    head: [
+      "Rank",
+      "Choice",
+      "Wins",
+      "Losses",
+      "Ties",
+      "Points",
+      "Appearances",
+      "Avg Support",
+    ],
+  });
+  let rank = 1;
+  for (const result of _results) {
+    if (rank === orderedChoices.length / 2) {
+      continue;
+    }
+    const key = Number(result.key);
+    ranking.push([
+      rank++,
+      orderedChoices[key]?.choice || "",
+      result.wins,
+      result.losses,
+      result.ties,
+      result.points,
+      result.appearsInBallots,
+      result.avgSupport ? result.avgSupport.toFixed(2) : "0",
+    ]);
+  }
+  console.log(ranking.toString());
 };
 console.log("=== CUSTOM ENS RESULTS ===");
 const { results: resultsA, orderedChoices } = copelandWeighted(
-	manifest,
-	snapshotChoices,
-	votes,
-	scoringOptions,
+  manifest,
+  snapshotChoices,
+  votes,
+  scoringOptions,
 );
 displayResults(resultsA, orderedChoices);
 
 const { results: resultsB, orderedChoices: orderedChoicesB } =
-	copelandNoneBelow(manifest, snapshotChoices, votes, scoringOptions);
+  copelandNoneBelow(manifest, snapshotChoices, votes, scoringOptions);
 
 console.log("=== COPELAND NONE BELOW RESULTS ===");
 displayResults(resultsB, orderedChoicesB);
 
 const { results: resultsC, orderedChoices: orderedChoicesC } = copeland(
-	manifest,
-	snapshotChoices,
-	votes,
-	// scoringOptions,
+  manifest,
+  snapshotChoices,
+  votes,
+  // scoringOptions,
 );
 console.log("=== COPELAND RESULTS ===");
 displayResults(resultsC, orderedChoicesC);

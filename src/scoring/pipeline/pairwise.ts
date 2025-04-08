@@ -2,8 +2,8 @@ import type { PairwiseResults, Project, Ballot } from "../../types";
 
 // Data structure to track match statistics for average support calculation
 interface MatchStats {
-	totalVotes: number; // total support votes *received* by this candidate across matches
-	matches: number; // number of pairwise matches this candidate appeared in
+  totalVotes: number; // total support votes *received* by this candidate across matches
+  matches: number; // number of pairwise matches this candidate appeared in
 }
 
 /**
@@ -12,15 +12,15 @@ interface MatchStats {
  * @returns Array of [choiceA, choiceB] pairs where choiceA < choiceB
  */
 export const generateUnorderedPairs = (
-	numberOfChoices: number,
+  numberOfChoices: number,
 ): [number, number][] => {
-	const pairs: [number, number][] = [];
-	for (let i = 0; i < numberOfChoices; i++) {
-		for (let j = i + 1; j < numberOfChoices; j++) {
-			pairs.push([i, j]);
-		}
-	}
-	return pairs;
+  const pairs: [number, number][] = [];
+  for (let i = 0; i < numberOfChoices; i++) {
+    for (let j = i + 1; j < numberOfChoices; j++) {
+      pairs.push([i, j]);
+    }
+  }
+  return pairs;
 };
 
 /**
@@ -29,39 +29,39 @@ export const generateUnorderedPairs = (
  * @param numberOfChoices - Total number of choices
  * @returns Initialized PairwiseResults with ballot appearances counted
  */
-export const countBallotAppearances = (
-	votes: Ballot[],
-	numberOfChoices: number,
+export const applyAppearsInBallots = (
+  votes: Ballot[],
+  numberOfChoices: number,
 ): PairwiseResults => {
-	const results: PairwiseResults = {};
+  const results: PairwiseResults = {};
 
-	// Initialize results for each choice
-	for (let i = 0; i < numberOfChoices; i++) {
-		results[i] = {
-			wins: 0,
-			ties: 0,
-			losses: 0,
-			points: 0,
-			avgSupport: 0,
-			appearsInBallots: 0,
-		};
-	}
+  // Initialize results for each choice
+  for (let i = 0; i < numberOfChoices; i++) {
+    results[i] = {
+      wins: 0,
+      ties: 0,
+      losses: 0,
+      points: 0,
+      avgSupport: 0,
+      appearsInBallots: 0,
+    };
+  }
 
-	// Count how many ballots each choice index appears in
-	for (const ballot of votes) {
-		// Build a set of all choice indices that exist in this ballot
-		const choicesInBallot = new Set(ballot.choice);
+  // Count how many ballots each choice index appears in
+  for (const ballot of votes) {
+    // Build a set of all choice indices that exist in this ballot
+    const choicesInBallot = new Set(ballot.choice);
 
-		// For each possible choice index
-		for (let i = 0; i < numberOfChoices; i++) {
-			// If this choice index appears in the ballot
-			if (choicesInBallot.has(i)) {
-				results[i].appearsInBallots += 1;
-			}
-		}
-	}
+    // For each possible choice index
+    for (let i = 0; i < numberOfChoices; i++) {
+      // If this choice index appears in the ballot
+      if (choicesInBallot.has(i)) {
+        results[i].appearsInBallots += 1;
+      }
+    }
+  }
 
-	return results;
+  return results;
 };
 
 /**
@@ -69,23 +69,21 @@ export const countBallotAppearances = (
  * @param numberOfChoices - Total number of choices
  * @returns Empty PairwiseResults with zeroed values
  */
-export const initializeResults = (
-	numberOfChoices: number,
-): PairwiseResults => {
-	const results: PairwiseResults = {};
-	
-	for (let i = 0; i < numberOfChoices; i++) {
-		results[i] = {
-			wins: 0,
-			ties: 0,
-			losses: 0,
-			points: 0,
-			avgSupport: 0,
-			appearsInBallots: 0,
-		};
-	}
-	
-	return results;
+export const initializeResults = (numberOfChoices: number): PairwiseResults => {
+  const results: PairwiseResults = {};
+
+  for (let i = 0; i < numberOfChoices; i++) {
+    results[i] = {
+      wins: 0,
+      ties: 0,
+      losses: 0,
+      points: 0,
+      avgSupport: 0,
+      appearsInBallots: 0,
+    };
+  }
+
+  return results;
 };
 
 /**
@@ -96,80 +94,79 @@ export const initializeResults = (
  * @returns PairwiseResults with wins, ties, losses calculated (avgSupport is not calculated here)
  */
 export const calculatePairwiseResults = (
-	votes: Ballot[],
-	numberOfChoices: number,
-	results?: PairwiseResults,
+  votes: Ballot[],
+  numberOfChoices: number,
+  results?: PairwiseResults,
 ): {
-	pairwiseResults: PairwiseResults;
-	matchStats: Record<number, MatchStats>;
+  pairwiseResults: PairwiseResults;
+  matchStats: Record<number, MatchStats>;
 } => {
-	// Use provided results or create a new one
-	const pairwiseResults =
-		results || initializeResults(numberOfChoices);
-	const matchStats: Record<number, MatchStats> = {};
+  // Use provided results or create a new one
+  const pairwiseResults = results || initializeResults(numberOfChoices);
+  const matchStats: Record<number, MatchStats> = {};
 
-	// Initialize match stats
-	for (let i = 0; i < numberOfChoices; i++) {
-		matchStats[i] = { totalVotes: 0, matches: 0 };
-	}
+  // Initialize match stats
+  for (let i = 0; i < numberOfChoices; i++) {
+    matchStats[i] = { totalVotes: 0, matches: 0 };
+  }
 
-	// Compare all pairs using generateUnorderedPairs
-	const pairs = generateUnorderedPairs(numberOfChoices);
-	for (const [choiceA, choiceB] of pairs) {
-		let prefA = 0;
-		let prefB = 0;
-		let totalVotesInMatch = 0;
+  // Compare all pairs using generateUnorderedPairs
+  const pairs = generateUnorderedPairs(numberOfChoices);
+  for (const [choiceA, choiceB] of pairs) {
+    let prefA = 0;
+    let prefB = 0;
+    let totalVotesInMatch = 0;
 
-		for (const ballot of votes) {
-			const rankA = ballot.choice.indexOf(choiceA);
-			const rankB = ballot.choice.indexOf(choiceB);
-			const votingPower = ballot.votingPower;
+    for (const ballot of votes) {
+      const rankA = ballot.choice.indexOf(choiceA);
+      const rankB = ballot.choice.indexOf(choiceB);
+      const votingPower = ballot.votingPower;
 
-			// If both A and B are ranked
-			if (rankA !== -1 && rankB !== -1) {
-				// Voter prefers A over B
-				if (rankA < rankB) {
-					prefA += votingPower;
-					totalVotesInMatch += votingPower;
-				}
-				// Voter prefers B over A
-				else if (rankB < rankA) {
-					prefB += votingPower;
-					totalVotesInMatch += votingPower;
-				}
-			} // If A is ranked but B is not, A wins
-			else if (rankA !== -1 && rankB === -1) {
-				prefA += votingPower;
-				totalVotesInMatch += votingPower;
-			} // If B is ranked but A is not, B wins
-			else if (rankB !== -1 && rankA === -1) {
-				prefB += votingPower;
-				totalVotesInMatch += votingPower;
-			}
-		}
+      // If both A and B are ranked
+      if (rankA !== -1 && rankB !== -1) {
+        // Voter prefers A over B
+        if (rankA < rankB) {
+          prefA += votingPower;
+          totalVotesInMatch += votingPower;
+        }
+        // Voter prefers B over A
+        else if (rankB < rankA) {
+          prefB += votingPower;
+          totalVotesInMatch += votingPower;
+        }
+      } // If A is ranked but B is not, A wins
+      else if (rankA !== -1 && rankB === -1) {
+        prefA += votingPower;
+        totalVotesInMatch += votingPower;
+      } // If B is ranked but A is not, B wins
+      else if (rankB !== -1 && rankA === -1) {
+        prefB += votingPower;
+        totalVotesInMatch += votingPower;
+      }
+    }
 
-		// Update average support per candidate with actual support received
-		if (totalVotesInMatch > 0) {
-			matchStats[choiceA].totalVotes += prefA;
-			matchStats[choiceA].matches += 1;
-			matchStats[choiceB].totalVotes += prefB;
-			matchStats[choiceB].matches += 1;
-		}
+    // Update average support per candidate with actual support received
+    if (totalVotesInMatch > 0) {
+      matchStats[choiceA].totalVotes += prefA;
+      matchStats[choiceA].matches += 1;
+      matchStats[choiceB].totalVotes += prefB;
+      matchStats[choiceB].matches += 1;
+    }
 
-		// Update win/loss/tie scores
-		if (prefA > prefB) {
-			pairwiseResults[choiceA].wins++;
-			pairwiseResults[choiceB].losses++;
-		} else if (prefB > prefA) {
-			pairwiseResults[choiceB].wins++;
-			pairwiseResults[choiceA].losses++;
-		} else {
-			pairwiseResults[choiceA].ties++;
-			pairwiseResults[choiceB].ties++;
-		}
-	}
+    // Update win/loss/tie scores
+    if (prefA > prefB) {
+      pairwiseResults[choiceA].wins++;
+      pairwiseResults[choiceB].losses++;
+    } else if (prefB > prefA) {
+      pairwiseResults[choiceB].wins++;
+      pairwiseResults[choiceA].losses++;
+    } else {
+      pairwiseResults[choiceA].ties++;
+      pairwiseResults[choiceB].ties++;
+    }
+  }
 
-	return { pairwiseResults, matchStats };
+  return { pairwiseResults, matchStats };
 };
 
 /**
@@ -178,19 +175,19 @@ export const calculatePairwiseResults = (
  * @param matchStats - Statistics about match results for calculating average support
  * @returns Updated PairwiseResults with avgSupport calculated
  */
-export const calculateAverageSupport = (
-	scores: PairwiseResults,
-	matchStats: Record<number, MatchStats>,
+export const applyAverageSupport = (
+  scores: PairwiseResults,
+  matchStats: Record<number, MatchStats>,
 ): PairwiseResults => {
-	// Create a copy to avoid mutating the input
-	const resultsCopy = JSON.parse(JSON.stringify(scores)) as PairwiseResults;
+  // Create a copy to avoid mutating the input
+  const resultsCopy = JSON.parse(JSON.stringify(scores)) as PairwiseResults;
 
-	for (const [key, stats] of Object.entries(matchStats)) {
-		const choiceKey = Number(key);
-		resultsCopy[choiceKey].avgSupport =
-			stats.matches > 0 ? stats.totalVotes / stats.matches : 0;
-	}
-	return resultsCopy;
+  for (const [key, stats] of Object.entries(matchStats)) {
+    const choiceKey = Number(key);
+    resultsCopy[choiceKey].avgSupport =
+      stats.matches > 0 ? stats.totalVotes / stats.matches : 0;
+  }
+  return resultsCopy;
 };
 
 /**
@@ -201,22 +198,22 @@ export const calculateAverageSupport = (
  * @returns PairwiseResults with wins, ties, losses, and avgSupport
  */
 export const pairwiseResults = (
-	votes: Ballot[],
-	numberOfChoices: number,
-): PairwiseResults => {
-	// Create clean results objects 
-	const initialResults = initializeResults(numberOfChoices);
-	
-	// Update with ballot appearances count
-	const resultsWithAppearances = countBallotAppearances(votes, numberOfChoices);
-	
-	// Calculate pairwise comparisons
-	const { pairwiseResults, matchStats } = calculatePairwiseResults(
-		votes,
-		numberOfChoices,
-		resultsWithAppearances,
-	);
+  votes: Ballot[],
+  numberOfChoices: number,
+): {
+  pairwiseResults: PairwiseResults;
+  matchStats: Record<number, MatchStats>;
+} => {
+  // Create clean results objects
+  const initialResults = initializeResults(numberOfChoices);
 
-	// Calculate average support
-	return calculateAverageSupport(pairwiseResults, matchStats);
+  // Update with ballot appearances count
+  const resultsWithAppearances = applyAppearsInBallots(votes, numberOfChoices);
+
+  // Calculate pairwise comparisons
+  return calculatePairwiseResults(
+    votes,
+    numberOfChoices,
+    resultsWithAppearances,
+  );
 };

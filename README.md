@@ -14,3 +14,4 @@ Consider individual voter preferences using `Copeland's method` allocate accordi
 ### Getting started
 
 * Tests `pnpm jest`
+* Tests `pnpm jest`

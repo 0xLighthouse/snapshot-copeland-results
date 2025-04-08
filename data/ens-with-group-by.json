@@ -2,11 +2,7 @@
   "version": "0.3.0",
   "scoring": {
     "algorithm": "copeland-weighted",
-    "scoring": [
-      1,
-      0,
-      0
-    ],
+    "scoring": [1, 0, 0],
     "tiebreaker": "average-support",
     "omitBelowChoice": "None Below",
     "groupBy": "group"
