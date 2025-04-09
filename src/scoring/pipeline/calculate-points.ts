@@ -1,5 +1,12 @@
-import type { PairwiseResults } from "../../types";
+import type { PairwiseResults, ScoredResult } from '../../types'
 
+/**
+ * Calculate points based on weights and merge with original results
+ *
+ * @param pairwiseResults - The pairwise comparison results
+ * @param weights - Array of weights for [wins, ties, losses]
+ * @returns Array of results with points calculated and merged
+ */
 export const calculatePoints = (
 	pairwiseResults: PairwiseResults,
 	weights: [number, number, number],
@@ -15,3 +22,15 @@ export const calculatePoints = (
 	});
 	return scores;
 };
+
+/**
+ * Type-safe function composition utility
+ * Processes data through a series of functions from left to right (pipeline style)
+ * Each function takes the result of the previous function as its input
+ */
+type Fn<T, R> = (arg: T) => R
+
+export const pipe = <T>(initialValue: T) => ({
+  through: <R>(fn: Fn<T, R>) => pipe(fn(initialValue)),
+  value: () => initialValue,
+})

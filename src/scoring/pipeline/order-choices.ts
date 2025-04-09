@@ -1,4 +1,4 @@
-import type { Project } from "../../types";
+import type { Project } from '../../types'
 
 /**
  * Order the choices based on the manifest and snapshot list.
@@ -9,15 +9,15 @@ import type { Project } from "../../types";
  * @returns An array of ordered choices.
  */
 export const orderChoices = (manifest: Project[], snapshotList: string[]) => {
-	const orderedChoices: Project[] = [];
+  const orderedChoices: Project[] = []
 
-	for (const choice of snapshotList) {
-		const project = manifest.find((project) => project.choice === choice);
-		if (!project) {
-			throw new Error(`Project ${choice} not found in manifest`);
-		}
-		orderedChoices.push(project);
-	}
+  for (const choice of snapshotList) {
+    const project = manifest.find((project) => project.choice === choice)
+    if (!project) {
+      throw new Error(`Project ${choice} not found in manifest`)
+    }
+    orderedChoices.push(project)
+  }
 
-	return orderedChoices;
-};
+  return orderedChoices
+}

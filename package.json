@@ -1,10 +1,22 @@
 {
-  "name": "snapshot-copeland-results",
-  "version": "1.0.0",
+  "name": "@0xLighthouse/snapshot-copeland-results",
+  "version": "1.0.1",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc || exit 0",
+    "prepublishOnly": "pnpm test && pnpm build",
+    "release:patch": "pnpm version patch --no-git-tag-version && pnpm publish --access public --no-git-checks",
+    "release:minor": "pnpm version minor --no-git-tag-version && pnpm publish --access public --no-git-checks",
+    "release:major": "pnpm version major --no-git-tag-version && pnpm publish --access public --no-git-checks"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@changesets/cli": "^2.28.1",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.17",
     "cli-table3": "^0.6.5",
@@ -13,11 +25,10 @@
     "ts-jest": "^29.3.1",
     "typescript": "^5.4.5"
   },
+  "files": ["dist", "src"],
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "testMatch": [
-      "**/__tests__/**/*.test.ts"
-    ]
+    "testMatch": ["**/__tests__/**/*.test.ts"]
   }
 }

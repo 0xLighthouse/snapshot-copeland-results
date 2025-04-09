@@ -1,4 +1,4 @@
-import type { Ballot, Project } from "../../types";
+import type { Ballot, Project } from '../../types'
 
 /**
  * Creates a mapping for choices that should be grouped together based on a common attribute.
@@ -10,37 +10,37 @@ import type { Ballot, Project } from "../../types";
  * @returns A Map where keys are choice indices and values are the indices they should map to
  */
 export function createChoiceGroupMapping(
-	orderedChoices: Project[],
-	groupByAttribute: string,
+  orderedChoices: Project[],
+  groupByAttribute: string,
 ): Map<number, number> {
-	const choiceMapping = new Map<number, number>();
-	const groupToFirstChoiceIndex = new Map<string, number>();
+  const choiceMapping = new Map<number, number>()
+  const groupToFirstChoiceIndex = new Map<string, number>()
 
-	orderedChoices.forEach((choice, index) => {
-		const groupName = choice[groupByAttribute];
+  orderedChoices.forEach((choice, index) => {
+    const groupName = choice[groupByAttribute]
 
-		// If no group name, choice maps to itself
-		if (!groupName) {
-			choiceMapping.set(index, index);
-			return;
-		}
+    // If no group name, choice maps to itself
+    if (!groupName) {
+      choiceMapping.set(index, index)
+      return
+    }
 
-		// If we've seen this group before, map to the first choice with this group
-		if (groupToFirstChoiceIndex.has(groupName)) {
-			const firstIndex = groupToFirstChoiceIndex.get(groupName);
-			if (firstIndex === undefined) {
-				throw new Error(`No first choice index found for group ${groupName}`);
-			}
-			choiceMapping.set(index, firstIndex);
-			return;
-		}
+    // If we've seen this group before, map to the first choice with this group
+    if (groupToFirstChoiceIndex.has(groupName)) {
+      const firstIndex = groupToFirstChoiceIndex.get(groupName)
+      if (firstIndex === undefined) {
+        throw new Error(`No first choice index found for group ${groupName}`)
+      }
+      choiceMapping.set(index, firstIndex)
+      return
+    }
 
-		// First time seeing this group, map choice to itself
-		groupToFirstChoiceIndex.set(groupName, index);
-		choiceMapping.set(index, index);
-	});
+    // First time seeing this group, map choice to itself
+    groupToFirstChoiceIndex.set(groupName, index)
+    choiceMapping.set(index, index)
+  })
 
-	return choiceMapping;
+  return choiceMapping
 }
 
 /**
@@ -50,11 +50,11 @@ export function createChoiceGroupMapping(
  * @returns New array of ballots with updated choices
  */
 export function applyChoiceGrouping(
-	votes: Ballot[],
-	choiceMapping: Map<number, number>,
+  votes: Ballot[],
+  choiceMapping: Map<number, number>,
 ): Ballot[] {
-	return votes.map((vote) => ({
-		...vote,
-		choice: vote.choice.map((choice) => choiceMapping.get(choice) ?? choice),
-	}));
+  return votes.map((vote) => ({
+    ...vote,
+    choice: vote.choice.map((choice) => choiceMapping.get(choice) ?? choice),
+  }))
 }
