@@ -21,14 +21,14 @@ export function deduplicateResultsByGroup(
 } {
 	
 	// Order results by score
-	const sortedResults = Object.entries(results).sort((a, b) => b[1].score - a[1].score);
+	const sortedScores = Object.entries(scores).sort((a, b) => b[1].points - a[1].points);
 
 	// Keep track of which groups already have an entry
 	const groupsWithEntries = new Set<string>();
 	const deduplicatedResults: PairwiseResults = {};
 	const deduplicatedScores: Record<string, { points: number }> = {};
 	// Iterate through the sorted results
-	for (const [listing, result] of sortedResults) {
+	for (const [listing, score] of sortedScores) {
 		const group = orderedChoices[Number(listing)][groupVariableName];
 		if (group) {
 			if (groupsWithEntries.has(group)) {
@@ -36,9 +36,12 @@ export function deduplicateResultsByGroup(
 			}
 			groupsWithEntries.add(group);
 		}
-		deduplicatedResults[Number(listing)] = result;
-		deduplicatedScores[listing] = { points: scores[Number(listing)].points };
+		deduplicatedResults[Number(listing)] = results[Number(listing)];
+		deduplicatedScores[listing] = score;
 	}
+
+	console.log("deduplicatedResults", JSON.stringify(deduplicatedResults, null, 2));
+	console.log("deduplicatedScores", JSON.stringify(deduplicatedScores, null, 2));
 
 	return {
 		results: deduplicatedResults,

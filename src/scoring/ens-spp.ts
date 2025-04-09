@@ -24,7 +24,9 @@ export const ensSpp = (
 			options.groupBy,
 			cleanedVotes,
 		);
+		console.log("grouped", JSON.stringify(cleanedVotes, null, 2));
 	}
+	
 	
 	// If the user has specified an "omitBelowChoice" option.
 	// we need to remove all votes at and below that choice.
@@ -36,19 +38,26 @@ export const ensSpp = (
 			throw new Error(`${options.omitBelowChoice} not found in manifest`);
 		}
 		cleanedVotes = cleanVotes(cleanedVotes, notBelowIndex);
+		console.log("cleaned", 	JSON.stringify(cleanedVotes, null, 2));
 	}
 
 	// Calculate pairwise comparisons with proper handling of ranked vs unranked
 	let comparison = pairwiseResults(cleanedVotes, orderedChoices.length);
 
+	console.log("comparison", JSON.stringify(comparison, null, 2));
+
 	// Score calculation:
 	let points = calculatePoints(comparison, [1, 0.5, 0]);
+
+	console.log("points", JSON.stringify(points, null, 2));
 
 	if (options.groupBy) {
 		// Remove duplicate listings based on group
 		const { results, scores } = deduplicateResultsByGroup(orderedChoices, options.groupBy, comparison, points);
 		comparison = results;
 		points = scores;
+
+		console.log("deduplicated", JSON.stringify(results, null, 2));
 	}
 
 
