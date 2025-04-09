@@ -21,7 +21,13 @@ export function reorderVotesByGroup(
 		// Create a map that lists all choices for that group, in the order they appear in the vote.
 		const groupLists: Map<string, number[]> = new Map();
 		for (const choice of vote.choice) {
-			const group = orderedChoices[choice][groupVariableName];
+			const selection = orderedChoices[choice];
+
+			if (!selection) {
+				throw new Error(`Choice ${choice} not found in orderedChoices`);
+			}
+
+			const group = selection[groupVariableName];
 			if (!group) {
 				continue
 			}
