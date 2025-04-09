@@ -61,7 +61,7 @@ describe('results', () => {
       params,
     )
 
-		expect(results.map((r) => orderedChoices[r.key].choice)).toEqual([
+		expect(results.map((r) => orderedChoices[Number(r.key)].choice)).toEqual([
 			"B (Basic)",
 			"A (Basic)",
 			"C (Basic)",

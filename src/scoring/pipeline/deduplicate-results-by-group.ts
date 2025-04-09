@@ -1,4 +1,4 @@
-import type { Ballot, PairwiseResults, Project } from "../../types";
+import type { ScoredResult, PairwiseResults, Project } from "../../types";
 
 /**
  * Following this algorithm: https://hackmd.io/@alextnetto/spp2-algorithm
@@ -10,41 +10,32 @@ import type { Ballot, PairwiseResults, Project } from "../../types";
  * @param votes - The ballots to reorder
  * @returns An array of ballots with the choices reordered by group
  */
-export function deduplicateResultsByGroup(
+export function deduplicateScoredResultsByGroup(
 	orderedChoices: Project[],
 	groupVariableName: string,
-	results: PairwiseResults,
-	scores: Record<string, { points: number }>,
-): {
-	results: PairwiseResults;
-	scores: Record<string, { points: number }>;
-} {
+	results: ScoredResult,
+): ScoredResult {
 	
-	// Order results by score
-	const sortedScores = Object.entries(scores).sort((a, b) => b[1].points - a[1].points);
-
 	// Keep track of which groups already have an entry
 	const groupsWithEntries = new Set<string>();
-	const deduplicatedResults: PairwiseResults = {};
-	const deduplicatedScores: Record<string, { points: number }> = {};
-	// Iterate through the sorted results
-	for (const [listing, score] of sortedScores) {
-		const group = orderedChoices[Number(listing)][groupVariableName];
+	const deduplicatedResults: ScoredResult = [];
+	// Iterate through the sorted results, adding only the first entry for each group
+	for (const result of results) {
+		console.log("result", result);
+		const selection = orderedChoices[Number(result.key)];
+		if (!selection) {
+			throw new Error(`Choice ${result.key} not found in orderedChoices`);
+		}
+
+		const group = selection[groupVariableName as keyof Project];
 		if (group) {
-			if (groupsWithEntries.has(group)) {
+			if (groupsWithEntries.has(String(group))) {
 				continue;
 			}
-			groupsWithEntries.add(group);
+			groupsWithEntries.add(String(group));
 		}
-		deduplicatedResults[Number(listing)] = results[Number(listing)];
-		deduplicatedScores[listing] = score;
+		deduplicatedResults.push(result);
 	}
-
-	console.log("deduplicatedResults", JSON.stringify(deduplicatedResults, null, 2));
-	console.log("deduplicatedScores", JSON.stringify(deduplicatedScores, null, 2));
-
-	return {
-		results: deduplicatedResults,
-		scores: deduplicatedScores,
-	};
+	
+	return deduplicatedResults;
 }

@@ -27,16 +27,16 @@ export function reorderVotesByGroup(
 				throw new Error(`Choice ${choice} not found in orderedChoices`);
 			}
 
-			const group = selection[groupVariableName];
+			const group = selection[groupVariableName as keyof Project];
 			if (!group) {
 				continue
 			}
 			
-			if (!groupLists.has(group)) {
-				groupLists.set(group, []);
+			if (!groupLists.has(String(group))) {
+				groupLists.set(String(group), []);
 			}
 
-			groupLists.get(group)?.push(choice);
+			groupLists.get(String(group))?.push(choice);
 		}
 
 		// Step through all choices, adding them in the order they appear, but when we hit a group move all of those choices at once.
@@ -48,9 +48,14 @@ export function reorderVotesByGroup(
 				continue;
 			}
 
-			const group = orderedChoices[choice][groupVariableName];
+			const selection = orderedChoices[choice];
+			if (!selection) {
+				throw new Error(`Choice ${choice} not found in orderedChoices`);
+			}
+
+			const group = selection[groupVariableName as keyof Project];
 			if (group) {
-				for (const choice of groupLists.get(group) ?? []) {
+				for (const choice of groupLists.get(String(group)) ?? []) {
 					if (added.has(choice)) {
 						continue;
 					}

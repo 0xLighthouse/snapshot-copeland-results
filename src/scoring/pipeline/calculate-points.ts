@@ -1,4 +1,4 @@
-import type { PairwiseResults, ScoredResult } from '../../types'
+import type { PairwiseResults, ScoredResult, PairwiseResult } from '../../types'
 
 /**
  * Calculate points based on weights and merge with original results
@@ -10,7 +10,7 @@ import type { PairwiseResults, ScoredResult } from '../../types'
 export const calculatePoints = (
   pairwiseResults: PairwiseResults,
   weights: [number, number, number],
-): ScoredResult[] => {
+): ScoredResult => {
   return Object.entries(pairwiseResults).map(([key, results]) => ({
     key,
     ...results,
@@ -19,7 +19,7 @@ export const calculatePoints = (
       weights[1] * results.ties +
       weights[2] * results.losses,
     avgSupport: results.avgSupport || 0,
-  }))
+  } as PairwiseResult))
 }
 
 /**

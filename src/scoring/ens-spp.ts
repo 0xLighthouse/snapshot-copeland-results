@@ -1,9 +1,14 @@
 import type { Project, ScoringOptions, Ballot } from "../types";
 import { reorderVotesByGroup } from "./pipeline/reorder-votes-by-group";
-import { calculatePoints, cleanVotes, combine } from "./pipeline";
-import { pairwiseResults } from "./pipeline/pairwise-results";
 import { orderChoices } from "./pipeline/order-choices";
-import { deduplicateResultsByGroup } from "./pipeline/deduplicate-results-by-group";
+import { deduplicateScoredResultsByGroup } from "./pipeline/deduplicate-results-by-group";
+import {
+  applyPairwise,
+  calculatePoints,
+  cleanVotes,
+  initializeResults,
+  pipe,
+} from './pipeline'
 // Following this algorithm: https://hackmd.io/@alextnetto/spp2-algorithm
 
 export const ensSpp = (
@@ -24,7 +29,6 @@ export const ensSpp = (
 			options.groupBy,
 			cleanedVotes,
 		);
-		console.log("grouped", JSON.stringify(cleanedVotes, null, 2));
 	}
 	
 	
@@ -38,32 +42,25 @@ export const ensSpp = (
 			throw new Error(`${options.omitBelowChoice} not found in manifest`);
 		}
 		cleanedVotes = cleanVotes(cleanedVotes, notBelowIndex);
-		console.log("cleaned", 	JSON.stringify(cleanedVotes, null, 2));
 	}
 
-	// Calculate pairwise comparisons with proper handling of ranked vs unranked
-	let comparison = pairwiseResults(cleanedVotes, orderedChoices.length);
-
-	console.log("comparison", JSON.stringify(comparison, null, 2));
-
-	// Score calculation:
-	let points = calculatePoints(comparison, [1, 0.5, 0]);
-
-	console.log("points", JSON.stringify(points, null, 2));
+	const numberOfChoices = snapshotChoices.length
+  const emptyResults = initializeResults(numberOfChoices)
+  let results = pipe(emptyResults)
+    .through((r) => applyPairwise(r, votes, numberOfChoices))
+    .through((r) => calculatePoints(r, [1, 0.5, 0]))
+    .value()
 
 	if (options.groupBy) {
 		// Remove duplicate listings based on group
-		const { results, scores } = deduplicateResultsByGroup(orderedChoices, options.groupBy, comparison, points);
-		comparison = results;
-		points = scores;
+		results = deduplicateScoredResultsByGroup(orderedChoices, options.groupBy, results);
 
-		console.log("deduplicated", JSON.stringify(results, null, 2));
 	}
 
 
 	// Sort results by score and use average support as tiebreaker
 	return {
-		results: combine(comparison, points).sort((a, b) => {
+		results: results.sort((a, b) => {
 			// Sort by score (primary sort)
 			if (b.points !== a.points) {
 				return b.points - a.points;

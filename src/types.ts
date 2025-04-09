@@ -20,17 +20,11 @@ export interface ScoringOptions {
 }
 
 export interface PairwiseResults {
-  [key: number]: {
-    wins: number // Number of pairwise wins
-    ties: number // Number of pairwise ties
-    losses: number // Number of pairwise losses
-    avgSupport?: number // Average support (used as tiebreaker)
-    appearsInBallots: number // Number of ballots this choice appears in
-    points: number // Number of points this choice has
-  }
+  [key: number]: PairwiseResult
 }
 
-interface PairwiseResult {
+export interface PairwiseResult {
+  key: string
   wins: number
   ties: number
   losses: number
@@ -39,9 +33,7 @@ interface PairwiseResult {
   points: number
 }
 
-export interface ScoredResult extends PairwiseResult {
-  key: string
-}
+export type ScoredResult = PairwiseResult[]
 
 export interface AllocationBudget {
   twoYear: number
