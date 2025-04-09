@@ -12,6 +12,7 @@ import type { Ballot, Project } from "../../types";
  */
 export function reorderVotesByGroup(
 	orderedChoices: Project[],
+	groupVariableName: string,
 	votes: Ballot[],
 ): Ballot[] {
 	let reorderedVotes: Ballot[] = [];
@@ -20,7 +21,7 @@ export function reorderVotesByGroup(
 		// Create a map that lists all choices for that group, in the order they appear in the vote.
 		const groupLists: Map<string, number[]> = new Map();
 		for (const choice of vote.choice) {
-			const group = orderedChoices[choice].group;
+			const group = orderedChoices[choice][groupVariableName];
 			if (!group) {
 				continue
 			}
@@ -41,7 +42,7 @@ export function reorderVotesByGroup(
 				continue;
 			}
 
-			const group = orderedChoices[choice].group;
+			const group = orderedChoices[choice][groupVariableName];
 			if (group) {
 				for (const choice of groupLists.get(group) ?? []) {
 					if (added.has(choice)) {

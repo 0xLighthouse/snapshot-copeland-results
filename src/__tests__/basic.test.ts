@@ -131,6 +131,7 @@ describe("results", () => {
 	it("reorders votes as expected", () => {
 		const results = reorderVotesByGroup(
 			manifest2.data as Project[],
+			"group",
 			votes2,
 		);
 
