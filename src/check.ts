@@ -1,5 +1,8 @@
 import { copelandWeighted } from './scoring'
+import { calculateDiff } from './scoring/calculate-diff'
 import { copeland } from './scoring/copeland'
+import { displayResults } from './scoring/display-results'
+import { displayResultsWithDiff } from './scoring/display-results-with-diff'
 import { fetchProposalMetadata, fetchProposalVotes } from './snapshot/snapshot'
 import { ScoringOptions } from './types'
 
@@ -33,8 +36,25 @@ const check = async () => {
   })
   console.log(votes)
 
-  const { results, orderedChoices } = copeland(manifest, choices, votes)
+  const { results, orderedChoices } = copelandWeighted(manifest, choices, votes)
   console.log(results)
+
+  console.log('--- DISPLAY RESULTS ---')
+  console.log(displayResults(results, orderedChoices, manifest.scoring))
+
+  const baseResults = results
+
+  console.log('--- DISPLAY RESULTS WITH DIFF ---')
+  const newVotes = [
+    ...votes,
+    {
+      choice: [3, 5, 2],
+      votingPower: 200_000,
+      voter: '0xSomeVoter',
+    },
+  ]
+  const { results: newResults } = copelandWeighted(manifest, choices, newVotes)
+  console.log(calculateDiff(baseResults, newResults))
 }
 
 check()
