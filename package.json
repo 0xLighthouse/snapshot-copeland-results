@@ -20,15 +20,24 @@
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.17",
     "cli-table3": "^0.6.5",
+    "graphql-request": "^7.1.2",
     "jest": "^29.7.0",
     "jest-extended": "^4.0.2",
     "ts-jest": "^29.3.1",
     "typescript": "^5.4.5"
   },
-  "files": ["dist", "src"],
+  "files": [
+    "dist",
+    "src"
+  ],
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "testMatch": ["**/__tests__/**/*.test.ts"]
+    "testMatch": [
+      "**/__tests__/**/*.test.ts"
+    ]
+  },
+  "peerDependencies": {
+    "graphql-request": "^7.1.2"
   }
 }

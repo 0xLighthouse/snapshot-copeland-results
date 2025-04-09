@@ -1,8 +1,8 @@
 // The manifest describes the data structure for the vote
 export interface Manifest {
-	version: string
-	scoring: ScoringOptions
-	entries: Entry[]
+  version: string
+  scoring: ScoringOptions
+  entries: Entry[]
 }
 
 export interface ScoringOptions {
@@ -25,8 +25,6 @@ export interface Ballot {
   votingPower: number
   voter: string
 }
-
-
 
 export interface PairwiseResults {
   [key: number]: PairwiseResult
