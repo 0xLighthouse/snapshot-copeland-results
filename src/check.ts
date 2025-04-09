@@ -1,4 +1,5 @@
 import { copelandWeighted } from './scoring'
+import { copeland } from './scoring/copeland'
 import { fetchProposalMetadata, fetchProposalVotes } from './snapshot/snapshot'
 import { ScoringOptions } from './types'
 
@@ -8,7 +9,7 @@ import { ScoringOptions } from './types'
 // const IS_TESTNET = false
 
 // Lighthouse => https://testnet.snapshot.box/#/s-tn:1a35e1.eth/proposal/0x1d3d625f0b1e71ee5c6eb200110787b2fe301389056fb00eb8867e295105d087
-const ID = '0x1d3d625f0b1e71ee5c6eb200110787b2fe301389056fb00eb8867e295105d087'
+const ID = '0xf26d14c68c589af5de02fbbf67e37d0b5ec5a7795e17b0cf5d2b4ff9ff828424'
 const IS_TESTNET = true
 
 const check = async () => {
@@ -32,7 +33,7 @@ const check = async () => {
   })
   console.log(votes)
 
-  const { results, orderedChoices } = copelandWeighted(manifest, choices, votes)
+  const { results, orderedChoices } = copeland(manifest, choices, votes)
   console.log(results)
 }
 

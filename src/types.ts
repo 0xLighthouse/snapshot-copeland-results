@@ -8,6 +8,7 @@ export interface Manifest {
 export interface ScoringOptions {
   algorithm: 'copeland' | 'copeland-weighted'
   tiebreaker?: 'average-support'
+  // FIXME: Consider renaming to "truncateFrom"
   omitBelowChoice?: string // e.g. "None Below"
   groupBy?: string // e.g. "group"
 }

@@ -1,4 +1,4 @@
-import type { ScoringOptions, Ballot, Manifest } from '../types'
+import type { Ballot, Manifest } from '../types'
 import {
   applyPairwise,
   calculatePoints,
@@ -9,24 +9,25 @@ import {
 import { orderChoices } from './pipeline/order-choices'
 
 export const copeland = (
-  manifest: Manifest,
+  { entries, scoring }: Manifest,
   snapshotChoices: string[],
-  votes: Ballot[]
+  votes: Ballot[],
 ) => {
-  // Order our manifest based on how they were input in Snapshot.
-  const orderedChoices = orderChoices(manifest.entries, snapshotChoices)
   let _votes = votes
+
+  // Order our manifest based on how they were input in Snapshot.
+  const orderedChoices = orderChoices(entries, snapshotChoices)
 
   // If the user has specified an "omitBelowChoice" option.
   // we need to remove all votes at and below that choice.
-  if (manifest.scoring.omitBelowChoice) {
+  if (scoring.omitBelowChoice) {
     const notBelowIndex = orderedChoices.findIndex(
-      (choice) => choice.choice === manifest.scoring.omitBelowChoice,
+      (o) => o.choice === scoring.omitBelowChoice,
     )
     if (notBelowIndex === -1) {
-      throw new Error(`${manifest.scoring.omitBelowChoice} not found in manifest`)
+      throw new Error(`Expected value[${scoring.omitBelowChoice}] in manifest`)
     }
-      _votes = omitChoicesBelow(_votes, notBelowIndex)
+    _votes = omitChoicesBelow(_votes, notBelowIndex)
   }
 
   const numberOfChoices = snapshotChoices.length
