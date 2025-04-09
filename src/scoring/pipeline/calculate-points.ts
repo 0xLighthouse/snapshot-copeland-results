@@ -11,7 +11,7 @@ export const calculatePoints = (
   pairwiseResults: PairwiseResults,
   weights: [number, number, number],
 ): ScoredResult => {
-  return Object.entries(pairwiseResults).map(([key, results]) => ({
+  const results = Object.entries(pairwiseResults).map(([key, results]) => ({
     key,
     ...results,
     points:
@@ -20,6 +20,8 @@ export const calculatePoints = (
       weights[2] * results.losses,
     avgSupport: results.avgSupport || 0,
   } as PairwiseResult))
+
+  return results.sort((a, b) => b.points - a.points)
 }
 
 /**

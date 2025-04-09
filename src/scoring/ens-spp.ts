@@ -1,8 +1,9 @@
-import type { Project, ScoringOptions, Ballot } from "../types";
-import { reorderVotesByGroup } from "./pipeline/reorder-votes-by-group";
-import { orderChoices } from "./pipeline/order-choices";
-import { deduplicateScoredResultsByGroup } from "./pipeline/deduplicate-results-by-group";
+import type { Project, ScoringOptions, Ballot, ScoredResult } from "../types";
 import {
+	orderChoices,
+	reorderVotesByGroup,
+	deduplicateScoredResultsByGroup,
+	sortResultsBySupport,
   applyPairwise,
   calculatePoints,
   cleanVotes,
@@ -16,7 +17,7 @@ export const ensSpp = (
 	snapshotChoices: string[],
 	votes: Ballot[],
 	options: ScoringOptions,
-) => {
+): { orderedChoices: Project[], results: ScoredResult } => {
 	// Order our manifest based on how they were input in Snapshot.
 	const orderedChoices = orderChoices(manifest, snapshotChoices);
 	
@@ -47,32 +48,20 @@ export const ensSpp = (
 	const numberOfChoices = snapshotChoices.length
   const emptyResults = initializeResults(numberOfChoices)
   let results = pipe(emptyResults)
-    .through((r) => applyPairwise(r, votes, numberOfChoices))
+    .through((r) => applyPairwise(r, votes))
     .through((r) => calculatePoints(r, [1, 0.5, 0]))
+    .through((r) => sortResultsBySupport(r))
     .value()
 
 	if (options.groupBy) {
 		// Remove duplicate listings based on group
 		results = deduplicateScoredResultsByGroup(orderedChoices, options.groupBy, results);
-
 	}
 
 
 	// Sort results by score and use average support as tiebreaker
 	return {
-		results: results.sort((a, b) => {
-			// Sort by score (primary sort)
-			if (b.points !== a.points) {
-				return b.points - a.points;
-			}
-
-			// If scores are tied, use average support as tiebreaker (if available)
-			if (a.avgSupport !== undefined && b.avgSupport !== undefined) {
-				return b.avgSupport - a.avgSupport;
-			}
-
-			return 0;
-		}),
 		orderedChoices,
+		results,
 	};
 };

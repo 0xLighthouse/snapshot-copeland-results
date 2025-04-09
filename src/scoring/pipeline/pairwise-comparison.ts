@@ -1,17 +1,11 @@
-import type { PairwiseResults, Ballot } from '../../types'
-
-// Data structure to track match statistics for average support calculation
-interface MatchStats {
-  totalVotes: number // total support votes *received* by this candidate across matches
-  matches: number // number of pairwise matches this candidate appeared in
-}
+import type { PairwiseResults, Ballot, PairwiseResult } from '../../types'
 
 /**
  * Generate all unordered pairs of choices
  * @param numberOfChoices - Total number of choices
  * @returns Array of [choiceA, choiceB] pairs where choiceA < choiceB
  */
-export const generateUnorderedPairs = (
+const generateUnorderedPairs = (
   numberOfChoices: number,
 ): [number, number][] => {
   const pairs: [number, number][] = []
@@ -60,13 +54,15 @@ export const initializeResults = (numberOfChoices: number): PairwiseResults => {
 
   for (let i = 0; i < numberOfChoices; i++) {
     results[i] = {
+      key: i.toString(),
       wins: 0,
       ties: 0,
       losses: 0,
       points: 0,
-      avgSupport: 0,
+      totalSupport: 0,
+      appearsInMatches: 0,
       appearsInBallots: 0,
-    }
+    } as PairwiseResult
   }
 
   return results
@@ -84,26 +80,17 @@ export const initializeResults = (numberOfChoices: number): PairwiseResults => {
 export const applyPairwise = (
   results: PairwiseResults,
   votes: Ballot[],
-  numberOfChoices: number,
-): {
-  pairwiseResults: PairwiseResults
-  matchStats: Record<number, MatchStats>
-} => {
+): PairwiseResults => {
   // Use provided results or create a new one
   const pairwiseResults = results
-  const matchStats: Record<number, MatchStats> = {}
-
-  // Initialize match stats
-  for (let i = 0; i < numberOfChoices; i++) {
-    matchStats[i] = { totalVotes: 0, matches: 0 }
-  }
 
   // Compare all pairs using generateUnorderedPairs
-  const pairs = generateUnorderedPairs(numberOfChoices)
+  const pairs = generateUnorderedPairs(Object.keys(results).length)
   for (const [choiceA, choiceB] of pairs) {
     let prefA = 0
     let prefB = 0
-    let totalVotesInMatch = 0
+    let aAppearsInMatch: number = 0
+    let bAppearsInMatch: number = 0
 
     for (const ballot of votes) {
       const rankA = ballot.choice.indexOf(choiceA)
@@ -112,34 +99,32 @@ export const applyPairwise = (
 
       // If both A and B are ranked
       if (rankA !== -1 && rankB !== -1) {
+        aAppearsInMatch = 1
+        bAppearsInMatch = 1
+
         // Voter prefers A over B
         if (rankA < rankB) {
           prefA += votingPower
-          totalVotesInMatch += votingPower
         }
         // Voter prefers B over A
         else if (rankB < rankA) {
           prefB += votingPower
-          totalVotesInMatch += votingPower
         }
       } // If A is ranked but B is not, A wins
       else if (rankA !== -1 && rankB === -1) {
+        aAppearsInMatch = 1
         prefA += votingPower
-        totalVotesInMatch += votingPower
       } // If B is ranked but A is not, B wins
       else if (rankB !== -1 && rankA === -1) {
+        bAppearsInMatch = 1
         prefB += votingPower
-        totalVotesInMatch += votingPower
       }
     }
 
-    // Update average support per candidate with actual support received
-    if (totalVotesInMatch > 0) {
-      matchStats[choiceA].totalVotes += prefA
-      matchStats[choiceA].matches += 1
-      matchStats[choiceB].totalVotes += prefB
-      matchStats[choiceB].matches += 1
-    }
+    pairwiseResults[choiceA].totalSupport += prefA
+    pairwiseResults[choiceB].totalSupport += prefB
+    pairwiseResults[choiceA].appearsInMatches += aAppearsInMatch
+    pairwiseResults[choiceB].appearsInMatches += bAppearsInMatch
 
     // Update win/loss/tie scores
     if (prefA > prefB) {
@@ -154,26 +139,5 @@ export const applyPairwise = (
     }
   }
 
-  return { pairwiseResults, matchStats }
-}
-
-/**
- * Compute avgSupport for each candidate based on their match stats
- * @param scores - PairwiseResults to update with avgSupport
- * @param matchStats - Statistics about match results for calculating average support
- * @returns Updated PairwiseResults with avgSupport calculated
- */
-export const applyAvgSupport = (
-  scores: PairwiseResults,
-  matchStats: Record<number, MatchStats>,
-): PairwiseResults => {
-  // Create a copy to avoid mutating the input
-  const resultsCopy = JSON.parse(JSON.stringify(scores)) as PairwiseResults
-
-  for (const [key, stats] of Object.entries(matchStats)) {
-    const choiceKey = Number(key)
-    resultsCopy[choiceKey].avgSupport =
-      stats.matches > 0 ? stats.totalVotes / stats.matches : 0
-  }
-  return resultsCopy
+  return pairwiseResults
 }

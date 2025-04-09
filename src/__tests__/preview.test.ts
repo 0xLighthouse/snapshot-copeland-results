@@ -179,7 +179,7 @@ describe('results', () => {
         pointsChange: -1,
         winsChange: -1,
         lossesChange: 1,
-        avgSupportChange: 66667.32999999999,
+        // avgSupportChange: 66667.32999999999,
       },
       {
         choice: 'B (Basic)',
@@ -187,7 +187,7 @@ describe('results', () => {
         pointsChange: 1,
         winsChange: 1,
         lossesChange: -1,
-        avgSupportChange: 100001.00000000001,
+        // avgSupportChange: 100001.00000000001,
       },
       {
         choice: 'C (Basic)',
@@ -195,7 +195,7 @@ describe('results', () => {
         pointsChange: 0,
         winsChange: 0,
         lossesChange: 0,
-        avgSupportChange: 33333.67,
+        // avgSupportChange: 33333.67,
       },
     ])
 

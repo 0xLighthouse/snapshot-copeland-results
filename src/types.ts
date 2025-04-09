@@ -28,7 +28,8 @@ export interface PairwiseResult {
   wins: number
   ties: number
   losses: number
-  avgSupport: number
+  totalSupport: number
+  appearsInMatches: number
   appearsInBallots: number
   points: number
 }

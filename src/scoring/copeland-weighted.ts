@@ -1,10 +1,5 @@
 import type { Project, ScoringOptions, Ballot } from '../types'
-import { calculatePoints, cleanVotes, pipe } from './pipeline'
-import {
-  applyAvgSupport,
-  applyPairwise,
-  initializeResults,
-} from './pipeline/pairwise'
+import { calculatePoints, cleanVotes, pipe, sortResultsBySupport, applyPairwise, initializeResults } from './pipeline'
 import { orderChoices } from './pipeline/order-choices'
 import {
   createChoiceGroupMapping,
@@ -47,9 +42,9 @@ export const copelandWeighted = (
   const emptyResults = initializeResults(numberOfChoices)
 
   const results = pipe(emptyResults)
-    .through((r) => applyPairwise(r, _votes, numberOfChoices))
-    .through((r) => applyAvgSupport(r.pairwiseResults, r.matchStats))
+    .through((r) => applyPairwise(r, _votes))
     .through((r) => calculatePoints(r, [1, 0, 0]))
+    .through((r) => sortResultsBySupport(r))
     .value()
 
   // Sort results by score and use average support as tiebreaker
@@ -60,12 +55,10 @@ export const copelandWeighted = (
         return b.points - a.points
       }
 
-      // If scores are tied, use average support as tiebreaker (if available)
-      if (a.avgSupport !== undefined && b.avgSupport !== undefined) {
-        return b.avgSupport - a.avgSupport
-      }
-
-      return 0
+      return (
+        (b.totalSupport / b.appearsInMatches) -
+        (a.totalSupport / a.appearsInMatches)
+      )
     }),
     orderedChoices,
   }
