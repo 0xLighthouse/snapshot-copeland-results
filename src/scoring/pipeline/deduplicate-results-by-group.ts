@@ -21,7 +21,6 @@ export function deduplicateScoredResultsByGroup(
 	const deduplicatedResults: ScoredResult = [];
 	// Iterate through the sorted results, adding only the first entry for each group
 	for (const result of results) {
-		console.log("result", result);
 		const selection = orderedChoices[Number(result.key)];
 		if (!selection) {
 			throw new Error(`Choice ${result.key} not found in orderedChoices`);

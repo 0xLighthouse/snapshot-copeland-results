@@ -36,6 +36,14 @@ export interface PairwiseResult {
 
 export type ScoredResult = PairwiseResult[]
 
+export interface DiffItem extends PairwiseResult {
+  rank: number
+}
+
+export type DiffResult = {
+  [key: number]: DiffItem
+}
+
 export interface AllocationBudget {
   twoYear: number
   oneYear: number
