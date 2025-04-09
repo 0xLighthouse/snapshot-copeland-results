@@ -1,21 +1,21 @@
-import type { Project, ScoringOptions } from "../types";
+import type { Project, ScoringOptions } from '../types'
 
 export const displayResults = (
   _results: any,
   orderedChoices: Project[],
   options: ScoringOptions,
 ) => {
-  const items = [];
-  let rank = 1;
+  const items = []
+  let rank = 1
   for (const result of _results) {
-    const choice = orderedChoices[Number(result.key)]?.choice;
+    const choice = orderedChoices[Number(result.key)]?.choice
 
     if (choice === options?.omitBelowChoice) {
-      continue;
+      continue
     }
 
     if (result.points === 0) {
-      continue;
+      continue
     }
 
     items.push({
@@ -25,9 +25,9 @@ export const displayResults = (
       losses: result.losses,
       ties: result.ties,
       points: result.points,
-      avgSupport: result.avgSupport ? result.avgSupport.toFixed(2) : "0",
-    });
-    rank++;
+      avgSupport: result.avgSupport ? result.avgSupport.toFixed(2) : '0',
+    })
+    rank++
   }
-  return items;
-};
+  return items
+}

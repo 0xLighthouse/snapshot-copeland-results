@@ -3,14 +3,14 @@ import type {
   AllocationOptions,
   AllocationResult,
   Ballot,
-} from "../types";
-import { copeland } from "../scoring/copeland";
-import { displayResults } from "../scoring/display-results";
+} from '../types'
+import { copeland } from '../scoring/copeland'
+import { displayResults } from '../scoring/display-results'
 
 interface RankedCandidate {
-  rank: number;
-  choice: string;
-  budgetType: "basic" | "extended";
+  rank: number
+  choice: string
+  budgetType: 'basic' | 'extended'
 }
 
 /**
@@ -34,16 +34,16 @@ export const allocateBudgets = (
     snapshotChoices,
     votes,
     {
-      algorithm: "copeland",
+      algorithm: 'copeland',
       omitBelowChoice: options.noneBelowOption,
     },
-  );
+  )
 
   // Generate formatted results
   const scoringResults = displayResults(results, orderedChoices, {
-    algorithm: "copeland",
+    algorithm: 'copeland',
     omitBelowChoice: options.noneBelowOption,
-  });
+  })
 
   // Determine budget type for each candidate by finding head-to-head match
   const rankedCandidates: RankedCandidate[] = scoringResults.map((result) => {
@@ -51,19 +51,19 @@ export const allocateBudgets = (
     // head-to-head performance in internal matchups
     const choiceIndex = orderedChoices.findIndex(
       (c) => c.choice === result.choice,
-    );
+    )
 
     // Default to basic budget
-    let budgetType: "basic" | "extended" = "basic";
+    let budgetType: 'basic' | 'extended' = 'basic'
 
     // Find matchups against the same project group
-    const candidateGroup = orderedChoices[choiceIndex].group;
+    const candidateGroup = orderedChoices[choiceIndex].group
 
     if (candidateGroup) {
       // Filter for projects in the same group and find head-to-head matchups
       const sameGroupIndices = orderedChoices
         .map((c, idx) => (c.group === candidateGroup ? idx : -1))
-        .filter((idx) => idx !== -1 && idx !== choiceIndex);
+        .filter((idx) => idx !== -1 && idx !== choiceIndex)
 
       // Use extended budget if candidate wins its internal head-to-head matches
       if (sameGroupIndices.length > 0) {
@@ -72,16 +72,16 @@ export const allocateBudgets = (
           // Check if our candidate won against this opponent
           const matchupResult = results.find(
             (r) => Number(r.key) === choiceIndex,
-          );
+          )
 
           // Get all matchups against this opponent
-          const pairwiseWin = matchupResult?.wins > 0;
-          return pairwiseWin;
-        });
+          const pairwiseWin = matchupResult?.wins > 0
+          return pairwiseWin
+        })
 
         // Use extended budget if the candidate won all internal matchups
         if (winsInternalMatchups) {
-          budgetType = "extended";
+          budgetType = 'extended'
         }
       }
     }
@@ -90,11 +90,11 @@ export const allocateBudgets = (
       rank: result.rank,
       choice: result.choice,
       budgetType,
-    };
-  });
+    }
+  })
 
   // Track which candidates have been allocated to which streams
-  const allocations: AllocationResult[] = [];
+  const allocations: AllocationResult[] = []
 
   // Track remaining budgets
   const remainingBudget = {
@@ -106,28 +106,28 @@ export const allocateBudgets = (
       basic: options.budgets.basic.oneYear,
       extended: options.budgets.extended.oneYear,
     },
-  };
+  }
 
   // Count how many SPP1 candidates have been allocated from the 2-year stream
-  let spp1Allocated = 0;
-  const MAX_SPP1_ALLOCATIONS = 5;
+  let spp1Allocated = 0
+  const MAX_SPP1_ALLOCATIONS = 5
 
   // Process candidates in rank order
   for (const candidate of rankedCandidates) {
     // Extract candidate info
-    const { rank, choice, budgetType } = candidate;
-    const budgetAmount = options.budgets[budgetType];
+    const { rank, choice, budgetType } = candidate
+    const budgetAmount = options.budgets[budgetType]
 
     // Check if candidate should be rejected based on "None Below" option
     if (options.noneBelowOption) {
       const noneBelowIndex = orderedChoices.findIndex(
         (c) => c.choice === options.noneBelowOption,
-      );
+      )
 
       if (noneBelowIndex !== -1) {
         const candidateIndex = orderedChoices.findIndex(
           (c) => c.choice === choice,
-        );
+        )
 
         // If candidate is ranked after/below the "None Below" option, reject
         if (candidateIndex >= noneBelowIndex) {
@@ -135,16 +135,16 @@ export const allocateBudgets = (
             choice,
             rank,
             budgetType,
-            stream: "rejected",
+            stream: 'rejected',
             allocationAmount: 0,
-          });
-          continue;
+          })
+          continue
         }
       }
     }
 
     // Determine which stream to allocate from
-    const isSPP1Candidate = options.spp1Candidates.includes(choice);
+    const isSPP1Candidate = options.spp1Candidates.includes(choice)
 
     if (isSPP1Candidate && spp1Allocated < MAX_SPP1_ALLOCATIONS) {
       // Allocate from 2-year stream for top 5 SPP1 candidates
@@ -153,22 +153,22 @@ export const allocateBudgets = (
           choice,
           rank,
           budgetType,
-          stream: "2-year",
+          stream: '2-year',
           allocationAmount: budgetAmount.twoYear,
-        });
+        })
 
         // Deduct from 2-year budget
-        remainingBudget.twoYear[budgetType] -= budgetAmount.twoYear;
-        spp1Allocated++;
+        remainingBudget.twoYear[budgetType] -= budgetAmount.twoYear
+        spp1Allocated++
       } else {
         // Not enough 2-year budget, reject
         allocations.push({
           choice,
           rank,
           budgetType,
-          stream: "rejected",
+          stream: 'rejected',
           allocationAmount: 0,
-        });
+        })
       }
     } else {
       // All other candidates go to 1-year stream
@@ -177,21 +177,21 @@ export const allocateBudgets = (
           choice,
           rank,
           budgetType,
-          stream: "1-year",
+          stream: '1-year',
           allocationAmount: budgetAmount.oneYear,
-        });
+        })
 
         // Deduct from 1-year budget
-        remainingBudget.oneYear[budgetType] -= budgetAmount.oneYear;
+        remainingBudget.oneYear[budgetType] -= budgetAmount.oneYear
       } else {
         // Not enough 1-year budget, reject
         allocations.push({
           choice,
           rank,
           budgetType,
-          stream: "rejected",
+          stream: 'rejected',
           allocationAmount: 0,
-        });
+        })
       }
     }
   }
@@ -204,30 +204,30 @@ export const allocateBudgets = (
   ) {
     // Sum of remaining 2-year basic and extended budgets
     const remainingTwoYearTotal =
-      remainingBudget.twoYear.basic + remainingBudget.twoYear.extended;
+      remainingBudget.twoYear.basic + remainingBudget.twoYear.extended
 
     // Add to 1-year budget (split proportionally between basic and extended)
     const totalOneYear =
-      options.budgets.basic.oneYear + options.budgets.extended.oneYear;
+      options.budgets.basic.oneYear + options.budgets.extended.oneYear
 
     if (totalOneYear > 0) {
-      const basicProportion = options.budgets.basic.oneYear / totalOneYear;
+      const basicProportion = options.budgets.basic.oneYear / totalOneYear
 
       remainingBudget.oneYear.basic += Math.floor(
         remainingTwoYearTotal * basicProportion,
-      );
+      )
       remainingBudget.oneYear.extended += Math.floor(
         remainingTwoYearTotal * (1 - basicProportion),
-      );
+      )
 
       // Reset 2-year budgets to zero
-      remainingBudget.twoYear.basic = 0;
-      remainingBudget.twoYear.extended = 0;
+      remainingBudget.twoYear.basic = 0
+      remainingBudget.twoYear.extended = 0
     }
   }
 
-  return allocations;
-};
+  return allocations
+}
 
 /**
  * Format allocation results for display
@@ -242,5 +242,5 @@ export const displayAllocations = (allocations: AllocationResult[]) => {
     budgetType: allocation.budgetType,
     stream: allocation.stream,
     amount: allocation.allocationAmount,
-  }));
-};
+  }))
+}

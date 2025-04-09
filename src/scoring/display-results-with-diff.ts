@@ -1,32 +1,32 @@
-import type { Project, ScoringOptions } from "../types";
+import type { Project, ScoringOptions } from '../types'
 
 interface ResultItem {
-  rank: number;
-  choice: string;
-  wins: number;
-  losses: number;
-  ties: number;
-  points: number;
-  avgSupport: string;
+  rank: number
+  choice: string
+  wins: number
+  losses: number
+  ties: number
+  points: number
+  avgSupport: string
 }
 
 interface DiffItem {
-  choice: string;
-  rankChange: number;
-  pointsChange: number;
-  winsChange: number;
-  lossesChange: number;
-  avgSupportChange: number;
+  choice: string
+  rankChange: number
+  pointsChange: number
+  winsChange: number
+  lossesChange: number
+  avgSupportChange: number
 }
 
 interface ResultWithDiff extends ResultItem {
   diff?: {
-    rankChange: number;
-    pointsChange: number;
-    winsChange: number;
-    lossesChange: number;
-    avgSupportChange: number;
-  };
+    rankChange: number
+    pointsChange: number
+    winsChange: number
+    lossesChange: number
+    avgSupportChange: number
+  }
 }
 
 export const displayResultsWithDiff = (
@@ -36,24 +36,24 @@ export const displayResultsWithDiff = (
   options: ScoringOptions,
 ): ResultWithDiff[] => {
   // Create a map of diffs by choice for quick lookup
-  const diffMap = new Map(diffs.map((d) => [d.choice, d]));
+  const diffMap = new Map(diffs.map((d) => [d.choice, d]))
 
-  const items: ResultWithDiff[] = [];
-  let rank = 1;
+  const items: ResultWithDiff[] = []
+  let rank = 1
 
   for (const result of results) {
-    const choice = result.choice;
+    const choice = result.choice
 
     // Skip if choice is the omitBelowChoice
     if (choice === options?.omitBelowChoice) {
-      continue;
+      continue
     }
 
     if (result.points === 0) {
-      continue;
+      continue
     }
 
-    const diff = diffMap.get(choice);
+    const diff = diffMap.get(choice)
 
     items.push({
       ...result,
@@ -67,10 +67,10 @@ export const displayResultsWithDiff = (
             avgSupportChange: diff.avgSupportChange,
           }
         : undefined,
-    });
+    })
 
-    rank++;
+    rank++
   }
 
-  return items;
-};
+  return items
+}

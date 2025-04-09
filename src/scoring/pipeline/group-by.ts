@@ -1,4 +1,4 @@
-import type { Ballot, Project } from "../../types";
+import type { Ballot, Project } from '../../types'
 
 /**
  * Creates a mapping for choices that should be grouped together based on a common attribute.
@@ -13,34 +13,34 @@ export function createChoiceGroupMapping(
   orderedChoices: Project[],
   groupByAttribute: string,
 ): Map<number, number> {
-  const choiceMapping = new Map<number, number>();
-  const groupToFirstChoiceIndex = new Map<string, number>();
+  const choiceMapping = new Map<number, number>()
+  const groupToFirstChoiceIndex = new Map<string, number>()
 
   orderedChoices.forEach((choice, index) => {
-    const groupName = choice[groupByAttribute];
+    const groupName = choice[groupByAttribute]
 
     // If no group name, choice maps to itself
     if (!groupName) {
-      choiceMapping.set(index, index);
-      return;
+      choiceMapping.set(index, index)
+      return
     }
 
     // If we've seen this group before, map to the first choice with this group
     if (groupToFirstChoiceIndex.has(groupName)) {
-      const firstIndex = groupToFirstChoiceIndex.get(groupName);
+      const firstIndex = groupToFirstChoiceIndex.get(groupName)
       if (firstIndex === undefined) {
-        throw new Error(`No first choice index found for group ${groupName}`);
+        throw new Error(`No first choice index found for group ${groupName}`)
       }
-      choiceMapping.set(index, firstIndex);
-      return;
+      choiceMapping.set(index, firstIndex)
+      return
     }
 
     // First time seeing this group, map choice to itself
-    groupToFirstChoiceIndex.set(groupName, index);
-    choiceMapping.set(index, index);
-  });
+    groupToFirstChoiceIndex.set(groupName, index)
+    choiceMapping.set(index, index)
+  })
 
-  return choiceMapping;
+  return choiceMapping
 }
 
 /**
@@ -56,5 +56,5 @@ export function applyChoiceGrouping(
   return votes.map((vote) => ({
     ...vote,
     choice: vote.choice.map((choice) => choiceMapping.get(choice) ?? choice),
-  }));
+  }))
 }

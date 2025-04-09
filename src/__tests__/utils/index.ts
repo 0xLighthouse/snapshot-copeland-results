@@ -1,1 +1,1 @@
-export * from "./generate-votes";
+export * from './generate-votes'
