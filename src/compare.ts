@@ -1,6 +1,6 @@
 import Table from 'cli-table3'
 
-import type { Project, ScoringOptions } from './types'
+import type { Entry, ScoringOptions } from './types'
 
 import { default as metadata } from '../data/ens-with-group-by.json'
 import { generateVotes } from './__tests__/utils'
@@ -26,7 +26,7 @@ console.log(
   `Voting power deployed: ${votes.reduce((acc, vote) => acc + vote.votingPower, 0)}`,
 )
 
-const displayResults = (_results: any, orderedChoices: Project[]) => {
+const displayResults = (_results: any, orderedChoices: Entry[]) => {
   const ranking = new Table({
     head: [
       'Rank',

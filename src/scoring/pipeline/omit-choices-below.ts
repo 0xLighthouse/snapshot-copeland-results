@@ -1,6 +1,6 @@
 import type { Ballot } from '../../types'
 
-export const cleanVotes = (votes: Ballot[], notBelow?: number) => {
+export const omitChoicesBelow = (votes: Ballot[], notBelow?: number) => {
   return votes.map((vote) => {
     const index = notBelow ? vote.choice.indexOf(notBelow) : vote.choice.length
     return {

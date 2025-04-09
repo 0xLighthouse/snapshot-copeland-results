@@ -1,8 +1,8 @@
-import type { Project, ScoringOptions } from '../types'
+import type { Entry, ScoringOptions } from '../types'
 
 export const displayResults = (
   _results: any,
-  orderedChoices: Project[],
+  orderedChoices: Entry[],
   options: ScoringOptions,
 ) => {
   const items = []

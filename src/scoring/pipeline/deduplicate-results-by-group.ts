@@ -1,4 +1,4 @@
-import type { ScoredResult, PairwiseResults, Project } from "../../types";
+import type { ScoredResult, PairwiseResults, Entry } from "../../types";
 
 /**
  * Following this algorithm: https://hackmd.io/@alextnetto/spp2-algorithm
@@ -11,7 +11,7 @@ import type { ScoredResult, PairwiseResults, Project } from "../../types";
  * @returns An array of ballots with the choices reordered by group
  */
 export function deduplicateScoredResultsByGroup(
-	orderedChoices: Project[],
+	orderedChoices: Entry[],
 	groupVariableName: string,
 	results: ScoredResult,
 ): ScoredResult {
@@ -26,7 +26,7 @@ export function deduplicateScoredResultsByGroup(
 			throw new Error(`Choice ${result.key} not found in orderedChoices`);
 		}
 
-		const group = selection[groupVariableName as keyof Project];
+		const group = selection[groupVariableName as keyof Entry];
 		if (group) {
 			if (groupsWithEntries.has(String(group))) {
 				continue;

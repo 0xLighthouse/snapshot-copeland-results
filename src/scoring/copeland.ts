@@ -1,39 +1,38 @@
-import type { Project, ScoringOptions, Ballot } from '../types'
+import type { ScoringOptions, Ballot, Manifest } from '../types'
 import {
   applyPairwise,
   calculatePoints,
-  cleanVotes,
   initializeResults,
+  omitChoicesBelow,
   pipe,
 } from './pipeline'
 import { orderChoices } from './pipeline/order-choices'
 
 export const copeland = (
-  manifest: Project[],
+  manifest: Manifest,
   snapshotChoices: string[],
-  votes: Ballot[],
-  options: ScoringOptions,
+  votes: Ballot[]
 ) => {
   // Order our manifest based on how they were input in Snapshot.
-  const orderedChoices = orderChoices(manifest, snapshotChoices)
+  const orderedChoices = orderChoices(manifest.entries, snapshotChoices)
   let _votes = votes
 
   // If the user has specified an "omitBelowChoice" option.
   // we need to remove all votes at and below that choice.
-  if (options.omitBelowChoice) {
+  if (manifest.scoring.omitBelowChoice) {
     const notBelowIndex = orderedChoices.findIndex(
-      (choice) => choice.choice === options.omitBelowChoice,
+      (choice) => choice.choice === manifest.scoring.omitBelowChoice,
     )
     if (notBelowIndex === -1) {
-      throw new Error(`${options.omitBelowChoice} not found in manifest`)
+      throw new Error(`${manifest.scoring.omitBelowChoice} not found in manifest`)
     }
-    _votes = cleanVotes(votes, notBelowIndex)
+      _votes = omitChoicesBelow(_votes, notBelowIndex)
   }
 
   const numberOfChoices = snapshotChoices.length
   const emptyResults = initializeResults(numberOfChoices)
   const results = pipe(emptyResults)
-    .through((r) => applyPairwise(r, _votes, numberOfChoices))
+    .through((r) => applyPairwise(r, _votes))
     .through((r) => calculatePoints(r, [1, 0.5, 0]))
     .value()
 

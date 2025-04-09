@@ -1,5 +1,5 @@
 export * from './calculate-points'
-export * from './clean-votes'
+export * from './omit-choices-below'
 export * from './pairwise-comparison'
 export * from './sort-results-by-support'
 export * from './order-choices'

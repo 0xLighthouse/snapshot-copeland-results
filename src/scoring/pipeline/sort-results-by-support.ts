@@ -1,4 +1,4 @@
-import type { ScoredResult, PairwiseResults, Project } from "../../types";
+import type { ScoredResult, PairwiseResults, Entry } from "../../types";
 
 /**
  * Sort results by score and use average support as tiebreaker

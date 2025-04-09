@@ -1,8 +1,22 @@
-export interface Project {
+// The manifest describes the data structure for the vote
+export interface Manifest {
+	version: string
+	scoring: ScoringOptions
+	entries: Entry[]
+}
+
+export interface ScoringOptions {
+  algorithm: 'copeland' | 'copeland-weighted'
+  tiebreaker?: 'average-support'
+  omitBelowChoice?: string // e.g. "None Below"
+  groupBy?: string // e.g. "group"
+}
+
+// An entry on the ballot. Can have metadata that describes the entry for display or ranking purposes (description, etc)
+export interface Entry {
   choice: string
-  group?: string
   label: string
-  budget: number
+  [key: string]: unknown
 }
 
 export interface Ballot {
@@ -12,12 +26,7 @@ export interface Ballot {
   voter: string
 }
 
-export interface ScoringOptions {
-  algorithm: 'copeland' | 'copeland-weighted'
-  tiebreaker?: 'average-support'
-  omitBelowChoice?: string // e.g. "None Below"
-  groupBy?: string // e.g. "group"
-}
+
 
 export interface PairwiseResults {
   [key: number]: PairwiseResult

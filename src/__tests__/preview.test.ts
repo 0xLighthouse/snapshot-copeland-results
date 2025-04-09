@@ -1,8 +1,6 @@
 import { copelandWeighted } from '../scoring'
-import { displayResults } from '../scoring/display-results'
 import { calculateDiff } from '../scoring/calculate-diff'
-import { displayResultsWithDiff } from '../scoring/display-results-with-diff'
-import type { Project, ScoringOptions, DiffResult } from '../types'
+import type { Entry, Manifest, ScoringOptions, DiffResult } from '../types'
 
 const manifest = {
   version: '0.2.0',
@@ -12,7 +10,7 @@ const manifest = {
     omitBelowChoice: 'None Below',
     groupBy: 'group',
   },
-  data: [
+  entries: [
     {
       choice: 'None Below',
     },
@@ -31,48 +29,51 @@ const manifest = {
       group: 'vendorC',
       label: 'Basic Scope for 300k USD',
     },
+    {
+      choice: 'D (Basic)',
+      group: 'vendorD',
+      label: 'Basic Scope for 300k USD',
+    },  
   ],
-}
+} as Manifest
 
 // Reorder the choices to simulate how they might be input randomly in a snapshot vote
 const snapshotChoices = ['None Below', 'A (Basic)', 'B (Basic)', 'C (Basic)']
 
 const votes = [
   {
-    choice: [1, 2, 3, 4, 0],
+    choice: [1, 2, 3, 0],
     votingPower: 100_000,
     voter: '0x1',
   },
   {
-    choice: [2, 1, 3, 4, 0],
+    choice: [2, 1, 3, 0],
     votingPower: 100_001, // We expect "B (Basic)" to win because of the extra 1 vote
     voter: '0x2',
   },
 ]
 
 const originalResults = copelandWeighted(
-  manifest.data as Project[],
+  manifest,
   snapshotChoices,
   votes,
-  manifest.scoring as ScoringOptions,
-).results
+  ).results
 
 describe('results', () => {
   it('preview change as expected', () => {
     const newVotes = [
       ...votes,
       {
-        choice: [1, 2, 3, 4, 0],
+        choice: [1, 2, 3, 0],
         votingPower: 200_000, // We expect "B (Basic)" to win because of the extra 1 vote
         voter: '0x3',
       },
     ]
 
     const { results: newResults } = copelandWeighted(
-      manifest.data as Project[],
+      manifest,
       snapshotChoices,
       newVotes,
-      manifest.scoring as ScoringOptions,
     )
 
     // This added vote should cause 1 to move one step closer to rank 0

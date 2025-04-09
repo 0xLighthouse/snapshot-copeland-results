@@ -1,4 +1,4 @@
-import type { Project, ScoringOptions, Ballot, ScoredResult } from "../types";
+import type { Manifest, Ballot, ScoredResult, Entry } from "../types";
 import {
 	orderChoices,
 	reorderVotesByGroup,
@@ -6,56 +6,54 @@ import {
 	sortResultsBySupport,
   applyPairwise,
   calculatePoints,
-  cleanVotes,
+  omitChoicesBelow,
   initializeResults,
   pipe,
 } from './pipeline'
 // Following this algorithm: https://hackmd.io/@alextnetto/spp2-algorithm
 
 export const ensSpp = (
-	manifest: Project[],
+	manifest: Manifest,
 	snapshotChoices: string[],
 	votes: Ballot[],
-	options: ScoringOptions,
-): { orderedChoices: Project[], results: ScoredResult } => {
+): { orderedChoices: Entry[], results: ScoredResult } => {
 	// Order our manifest based on how they were input in Snapshot.
-	const orderedChoices = orderChoices(manifest, snapshotChoices);
+	const orderedChoices = orderChoices(manifest.entries, snapshotChoices);
 	
-	let cleanedVotes = votes;
+	let _votes = votes;
 	// If the user has specified a "groupBy" option,
 	// we need to group the choices by the specified field.
-	if (options.groupBy) {
-		cleanedVotes = reorderVotesByGroup(
+	if (manifest.scoring.groupBy) {
+		_votes = reorderVotesByGroup(
 			orderedChoices,
-			options.groupBy,
-			cleanedVotes,
+			manifest.scoring.groupBy,
+			_votes,
 		);
 	}
 	
-	
 	// If the user has specified an "omitBelowChoice" option.
 	// we need to remove all votes at and below that choice.
-	if (options.omitBelowChoice) {
+	if (manifest.scoring.omitBelowChoice) {
 		const notBelowIndex = orderedChoices.findIndex(
-			(choice) => choice.choice === options.omitBelowChoice,
+			(choice) => choice.choice === manifest.scoring.omitBelowChoice,
 		);
 		if (notBelowIndex === -1) {
-			throw new Error(`${options.omitBelowChoice} not found in manifest`);
+			throw new Error(`${manifest.scoring.omitBelowChoice} not found in manifest`);
 		}
-		cleanedVotes = cleanVotes(cleanedVotes, notBelowIndex);
+		_votes = omitChoicesBelow(_votes, notBelowIndex);
 	}
 
 	const numberOfChoices = snapshotChoices.length
   const emptyResults = initializeResults(numberOfChoices)
   let results = pipe(emptyResults)
-    .through((r) => applyPairwise(r, votes))
+    .through((r) => applyPairwise(r, _votes))
     .through((r) => calculatePoints(r, [1, 0.5, 0]))
     .through((r) => sortResultsBySupport(r))
     .value()
 
-	if (options.groupBy) {
+	if (manifest.scoring.groupBy) {
 		// Remove duplicate listings based on group
-		results = deduplicateScoredResultsByGroup(orderedChoices, options.groupBy, results);
+		results = deduplicateScoredResultsByGroup(orderedChoices, manifest.scoring.groupBy, results);
 	}
 
 

@@ -1,15 +1,15 @@
-import { cleanVotes } from '../scoring/pipeline/clean-votes'
+import { omitChoicesBelow } from '../scoring/pipeline'
 import type { Ballot } from '../types'
 
-describe('cleanVotes', () => {
-  it('should clean votes', () => {
+describe('omitChoicesBelow', () => {
+  it('should omit choices below the notBelow index', () => {
     const votes: Ballot[] = [
       { choice: [0, 1, 2], votingPower: 1, voter: '0x1' },
       { choice: [0, 2, 1], votingPower: 1, voter: '0x2' },
       { choice: [1, 0, 2], votingPower: 1, voter: '0x3' },
     ]
     const notBelow = 1
-    const result = cleanVotes(votes, notBelow)
+    const result = omitChoicesBelow(votes, notBelow)
 
     expect(result).toEqual([
       { choice: [0], votingPower: 1, voter: '0x1' },
@@ -18,13 +18,13 @@ describe('cleanVotes', () => {
     ])
   })
 
-  it('should NOT clean votes when notBelow is omitted', () => {
+  it('should NOT omit choices when notBelow is omitted', () => {
     const votes: Ballot[] = [
       { choice: [0, 1, 2], votingPower: 1, voter: '0x1' },
       { choice: [0, 2, 1], votingPower: 1, voter: '0x2' },
       { choice: [1, 0, 2], votingPower: 1, voter: '0x3' },
     ]
-    const result = cleanVotes(votes)
+    const result = omitChoicesBelow(votes, undefined)
 
     expect(result).toEqual([
       { choice: [0, 1, 2], votingPower: 1, voter: '0x1' },

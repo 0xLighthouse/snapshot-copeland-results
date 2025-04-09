@@ -1,4 +1,4 @@
-import type { Project, ScoringOptions } from '../types'
+import type { Entry, ScoringOptions } from '../types'
 
 interface ResultItem {
   rank: number
@@ -32,7 +32,7 @@ interface ResultWithDiff extends ResultItem {
 export const displayResultsWithDiff = (
   results: ResultItem[],
   diffs: DiffItem[],
-  orderedChoices: Project[],
+  orderedChoices: Entry[],
   options: ScoringOptions,
 ): ResultWithDiff[] => {
   // Create a map of diffs by choice for quick lookup

@@ -1,4 +1,4 @@
-import type { Ballot, Project } from "../../types";
+import type { Ballot, Entry } from "../../types";
 
 /**
  * Following this algorithm: https://hackmd.io/@alextnetto/spp2-algorithm
@@ -11,7 +11,7 @@ import type { Ballot, Project } from "../../types";
  * @returns An array of ballots with the choices reordered by group
  */
 export function reorderVotesByGroup(
-	orderedChoices: Project[],
+	orderedChoices: Entry[],
 	groupVariableName: string,
 	votes: Ballot[],
 ): Ballot[] {
@@ -27,7 +27,7 @@ export function reorderVotesByGroup(
 				throw new Error(`Choice ${choice} not found in orderedChoices`);
 			}
 
-			const group = selection[groupVariableName as keyof Project];
+			const group = selection[groupVariableName as keyof Entry];
 			if (!group) {
 				continue
 			}
@@ -53,7 +53,7 @@ export function reorderVotesByGroup(
 				throw new Error(`Choice ${choice} not found in orderedChoices`);
 			}
 
-			const group = selection[groupVariableName as keyof Project];
+			const group = selection[groupVariableName as keyof Entry];
 			if (group) {
 				for (const choice of groupLists.get(String(group)) ?? []) {
 					if (added.has(choice)) {

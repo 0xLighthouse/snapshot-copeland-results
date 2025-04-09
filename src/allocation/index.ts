@@ -3,6 +3,7 @@ import type {
   AllocationOptions,
   AllocationResult,
   Ballot,
+  Entry,
 } from '../types'
 import { copeland } from '../scoring/copeland'
 import { displayResults } from '../scoring/display-results'
@@ -23,7 +24,7 @@ interface RankedCandidate {
  * @returns List of allocation results
  */
 export const allocateBudgets = (
-  manifest: Project[],
+  manifest: Entry[],
   snapshotChoices: string[],
   votes: Ballot[],
   options: AllocationOptions,

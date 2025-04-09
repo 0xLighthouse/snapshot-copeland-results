@@ -1,15 +1,15 @@
 import { ensSpp } from "../scoring/ens-spp";
-import type { Project } from "../types";
+import type { Entry, Manifest } from "../types";
 
 const manifest = {
 	version: "0.2.0",
 	scoring: {
 		algorithm: "copeland",
 		tiebreaker: "average-support",
-		omitBelowChoice: "None Below",
+		// omitBelowChoice: "None Below",
 		groupBy: "group",
 	},
-	data: [
+	entries: [
 		{
 			choice: "A (Basic)", // 0
 			group: "vendorA",
@@ -41,7 +41,7 @@ const manifest = {
 			label: "Basic Scope for 300k USD",
 		},
 	],
-};
+} as Manifest
 
 const snapshotChoices = [
 	"A (Basic)", // 0
@@ -68,24 +68,18 @@ const votes = [
 describe("results", () => {
 	it("presents ENS SPP results as expected", () => {
 		const results = ensSpp(
-			manifest.data as Project[],
+			manifest,
 			snapshotChoices,
 			votes,
-			{
-				algorithm: "copeland",
-				tiebreaker: "average-support",
-				// omitBelowChoice: "None Below",
-				groupBy: "group",
-			},
 		);
 
 		let output = "";
 		for (const result of results.results) {
-			output += `${results.orderedChoices[result.key].choice} (${result.points})\n`;
+			output += `${results.orderedChoices[Number(result.key)].choice} (${result.points})\n`;
 		}
 		console.log(output);
 
-		expect(results.results.map((r) => results.orderedChoices[r.key].choice)).toEqual([
+		expect(results.results.map((r) => results.orderedChoices[Number(r.key)].choice)).toEqual([
 			"B (Basic)",
 			"A (Extended)",
 			"C (Basic)",

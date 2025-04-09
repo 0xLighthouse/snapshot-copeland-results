@@ -1,43 +1,38 @@
-import type { Project, ScoringOptions, Ballot } from '../types'
-import { calculatePoints, cleanVotes, pipe, sortResultsBySupport, applyPairwise, initializeResults } from './pipeline'
+import type { Manifest, Ballot } from '../types'
+import { calculatePoints, omitChoicesBelow, pipe, sortResultsBySupport, applyPairwise, initializeResults, reorderVotesByGroup } from './pipeline'
 import { orderChoices } from './pipeline/order-choices'
-import {
-  createChoiceGroupMapping,
-  applyChoiceGrouping,
-} from './pipeline/group-by'
 
 export const copelandWeighted = (
-  manifest: Project[],
+  manifest: Manifest,
   snapshotChoices: string[],
   votes: Ballot[],
-  options: ScoringOptions,
 ) => {
   // Order our manifest based on how they were input in Snapshot.
-  const orderedChoices = orderChoices(manifest, snapshotChoices)
+  const orderedChoices = orderChoices(manifest.entries, snapshotChoices)
   let _votes = votes
+
+// If the user has specified a "groupBy" option,
+  // we need to group the choices by the specified field.
+  if (manifest.scoring.groupBy) {
+    _votes = reorderVotesByGroup(
+      orderedChoices,
+      manifest.scoring.groupBy,
+      _votes,
+    )
+  }
 
   // If the user has specified an "omitBelowChoice" option.
   // we need to remove all votes at and below that choice.
-  if (options.omitBelowChoice) {
+  if (manifest.scoring.omitBelowChoice) {
     const notBelowIndex = orderedChoices.findIndex(
-      (choice) => choice.choice === options.omitBelowChoice,
+      (choice) => choice.choice === manifest.scoring.omitBelowChoice,
     )
     if (notBelowIndex === -1) {
-      throw new Error(`${options.omitBelowChoice} not found in manifest`)
+      throw new Error(`${manifest.scoring.omitBelowChoice} not found in manifest`)
     }
-    _votes = cleanVotes(votes, notBelowIndex)
+    _votes = omitChoicesBelow(_votes, notBelowIndex)
   }
-
-  // If the user has specified a "groupBy" option,
-  // we need to group the choices by the specified field.
-  if (options.groupBy) {
-    const groupByMapping = createChoiceGroupMapping(
-      orderedChoices,
-      options.groupBy,
-    )
-    _votes = applyChoiceGrouping(_votes, groupByMapping)
-  }
-
+  
   const numberOfChoices = snapshotChoices.length
   const emptyResults = initializeResults(numberOfChoices)
 
