@@ -1,6 +1,6 @@
 {
   "name": "@0xLighthouse/snapshot-copeland-results",
-  "version": "1.0.1",
+  "version": "1.0.6",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "publishConfig": {
@@ -25,10 +25,18 @@
     "ts-jest": "^29.3.1",
     "typescript": "^5.4.5"
   },
-  "files": ["dist", "src"],
+  "files": [
+    "dist",
+    "src"
+  ],
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "testMatch": ["**/__tests__/**/*.test.ts"]
+    "testMatch": [
+      "**/__tests__/**/*.test.ts"
+    ]
+  },
+  "dependencies": {
+    "graphql-request": "^7.1.2"
   }
 }

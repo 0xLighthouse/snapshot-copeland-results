@@ -1,14 +1,14 @@
 // The manifest describes the data structure for the vote
 export interface Manifest {
-	version: string
-	scoring: ScoringOptions
-	entries: Entry[]
+  version: string
+  scoring: ScoringOptions
+  entries: Entry[]
 }
 
 export interface ScoringOptions {
-  algorithm: 'copeland' | 'copeland-weighted'
+  algorithm: 'copeland' | 'copeland-weighted' | 'ens-spp2-2504'
   tiebreaker?: 'average-support'
-  omitBelowChoice?: string // e.g. "None Below"
+  unrankedFrom?: string // e.g. "None Below"
   groupBy?: string // e.g. "group"
 }
 
@@ -26,8 +26,6 @@ export interface Ballot {
   voter: string
 }
 
-
-
 export interface PairwiseResults {
   [key: number]: PairwiseResult
 }
@@ -41,9 +39,21 @@ export interface PairwiseResult {
   appearsInMatches: number
   appearsInBallots: number
   points: number
+  avgSupport: number
 }
 
 export type ScoredResult = PairwiseResult[]
+
+export interface FormattedResult {
+  rank: number
+  choice: string
+  wins: number
+  losses: number
+  ties: number
+  points: number
+  avgSupport: string
+}
+export type FormattedResults = FormattedResult[]
 
 export interface DiffItem extends PairwiseResult {
   rank: number

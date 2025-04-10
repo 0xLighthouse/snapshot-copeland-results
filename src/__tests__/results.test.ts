@@ -7,7 +7,7 @@ const manifest = {
   scoring: {
     algorithm: 'copeland',
     tiebreaker: 'average-support',
-    omitBelowChoice: 'None Below',
+    unrankedFrom: 'None Below',
     groupBy: 'group',
   },
   data: [

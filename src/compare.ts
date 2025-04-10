@@ -2,9 +2,9 @@ import Table from 'cli-table3'
 
 import type { Entry, ScoringOptions } from './types'
 
-import { default as metadata } from '../data/ens-with-group-by.json'
+import { default as metadata } from '../static/ens-with-group-by.json'
 import { generateVotes } from './__tests__/utils'
-import { copeland, copelandNoneBelow, copelandWeighted } from './scoring'
+import { copeland, copelandWeighted } from './scoring'
 
 const scoringOptions = metadata.scoring as ScoringOptions
 const manifestChoices = metadata.data.map((o) => o.choice)

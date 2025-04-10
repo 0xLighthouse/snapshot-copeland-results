@@ -36,14 +36,14 @@ export const allocateBudgets = (
     votes,
     {
       algorithm: 'copeland',
-      omitBelowChoice: options.noneBelowOption,
+      unrankedFrom: options.noneBelowOption,
     },
   )
 
   // Generate formatted results
   const scoringResults = displayResults(results, orderedChoices, {
     algorithm: 'copeland',
-    omitBelowChoice: options.noneBelowOption,
+    unrankedFrom: options.noneBelowOption,
   })
 
   // Determine budget type for each candidate by finding head-to-head match
