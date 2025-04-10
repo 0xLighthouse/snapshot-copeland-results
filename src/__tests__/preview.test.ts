@@ -7,7 +7,7 @@ const manifest = {
   scoring: {
     algorithm: 'copeland',
     tiebreaker: 'average-support',
-    omitBelowChoice: 'None Below',
+    unrankedFrom: 'None Below',
     groupBy: 'group',
   },
   entries: [
@@ -33,7 +33,7 @@ const manifest = {
       choice: 'D (Basic)',
       group: 'vendorD',
       label: 'Basic Scope for 300k USD',
-    },  
+    },
   ],
 } as Manifest
 
@@ -57,7 +57,7 @@ const originalResults = copelandWeighted(
   manifest,
   snapshotChoices,
   votes,
-  ).results
+).results
 
 describe('results', () => {
   it('preview change as expected', () => {
@@ -77,7 +77,7 @@ describe('results', () => {
     )
 
     // This added vote should cause 1 to move one step closer to rank 0
-    expect(calculateDiff(originalResults, newResults)).toEqual(       {
+    expect(calculateDiff(originalResults, newResults)).toEqual({
       '0': {
         key: '0',
         rank: 0,
@@ -129,7 +129,7 @@ describe('results', () => {
   // it('renders votes as expected', () => {
   //   const options = {
   //     algorithm: 'copeland',
-  //     omitBelowChoice: 'None Below',
+  //     unrankedFrom: 'None Below',
   //   } as ScoringOptions
 
   //   const { results, orderedChoices } = copelandWeighted(
@@ -179,7 +179,7 @@ describe('results', () => {
   // it('previews impact as expected', () => {
   //   const options = {
   //     algorithm: 'copeland',
-  //     omitBelowChoice: 'None Below',
+  //     unrankedFrom: 'None Below',
   //   } as ScoringOptions
 
   //   const { results, orderedChoices } = copelandWeighted(

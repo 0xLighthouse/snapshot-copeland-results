@@ -6,10 +6,9 @@ export interface Manifest {
 }
 
 export interface ScoringOptions {
-  algorithm: 'copeland' | 'copeland-weighted'
+  algorithm: 'copeland' | 'copeland-weighted' | 'ens-spp2-2504'
   tiebreaker?: 'average-support'
-  // FIXME: Consider renaming to "truncateFrom"
-  omitBelowChoice?: string // e.g. "None Below"
+  unrankedFrom?: string // e.g. "None Below"
   groupBy?: string // e.g. "group"
 }
 

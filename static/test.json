@@ -8,7 +8,7 @@
       0
     ],
     "tiebreaker": "average-support",
-    "omitBelowChoice": "None Below",
+    "unrankedFrom": "None Below",
     "groupBy": "group"
   },
   "entries": [
