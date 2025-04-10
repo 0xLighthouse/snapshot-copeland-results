@@ -1,6 +1,5 @@
 import { copelandWeighted } from './scoring'
 import { calculateDiff } from './scoring/calculate-diff'
-import { displayResults } from './scoring/display-results'
 import { fetchProposalMetadata, fetchProposalVotes } from './snapshot'
 
 // FIXME: Does not work, as no manifest was provided
@@ -29,7 +28,6 @@ const check = async () => {
   console.log('--- PARAMS ---')
   console.log(choices, manifest)
 
-  console.log('--- VOTES ---')
   /**
    * 2. Fetch proposal votes from snapshot
    */
@@ -37,7 +35,6 @@ const check = async () => {
     proposalId: ID,
     isTestnet: IS_TESTNET,
   })
-  console.log(votes)
 
   /**
    * 3. Calculate results
@@ -46,26 +43,59 @@ const check = async () => {
   console.log(results)
 
   /**
-   * 4. Display results
-   */
-  console.log('--- DISPLAY RESULTS ---')
-  console.log(displayResults(results, orderedChoices, manifest.scoring))
-
-  /**
-   * 5. Example of how to show impact of new votes on an existing set of results
+   * 4. Examples of how to show impact of new votes on an existing set of results
    */
   const baseResults = results
   console.log('--- DISPLAY RESULTS WITH DIFF ---')
   const newVotes = [
     ...votes,
     {
-      choice: [3, 5, 2],
+      choice: [1, 2, 3],
       votingPower: 200_000,
       voter: '0xSomeVoter',
     },
   ]
   const { results: newResults } = copelandWeighted(manifest, choices, newVotes)
-  console.log(calculateDiff(baseResults, newResults))
+  const diff = calculateDiff(baseResults, newResults)
+
+  // Example of how to show impact of new votes on an existing set of results
+  for (const rank of newResults) {
+    const pointLabel =
+      diff[Number(rank.key)].points > 0
+        ? `+${diff[Number(rank.key)].points}`
+        : diff[Number(rank.key)].points
+    console.log(
+      `${orderedChoices[Number(rank.key)].choice} ${rank.points} points (${pointLabel})`,
+    )
+  }
+
+  console.log('\n\n')
+
+  const moreVotes = [
+    ...newVotes,
+    {
+      choice: [4, 5, 6], //Choose a different set of option
+      votingPower: 300_000, // Increase voting power so we can flip the results
+      voter: '0xSomeVoter2',
+    },
+  ]
+  const { results: moreResults } = copelandWeighted(
+    manifest,
+    choices,
+    moreVotes,
+  )
+  const moreDiff = calculateDiff(newResults, moreResults)
+
+  // Example of how to show impact of new votes on an existing set of results
+  for (const rank of moreResults) {
+    const pointLabel =
+      moreDiff[Number(rank.key)].points > 0
+        ? `+${moreDiff[Number(rank.key)].points}`
+        : moreDiff[Number(rank.key)].points
+    console.log(
+      `${orderedChoices[Number(rank.key)].choice} ${rank.points} points (${pointLabel})`,
+    )
+  }
 }
 
 check()

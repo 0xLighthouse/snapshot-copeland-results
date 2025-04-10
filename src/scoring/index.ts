@@ -1,6 +1,4 @@
 export * from './copeland-weighted'
 export * from './ens-spp'
 export * from './pipeline'
-export * from './display-results'
-export * from './display-results-with-diff'
 export * from './calculate-diff'

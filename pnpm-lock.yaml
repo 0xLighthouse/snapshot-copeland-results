@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      graphql-request:
+        specifier: ^7.1.2
+        version: 7.1.2(graphql@16.10.0)
     devDependencies:
       '@biomejs/biome':
         specifier: 1.9.4
@@ -23,9 +27,6 @@ importers:
       cli-table3:
         specifier: ^0.6.5
         version: 0.6.5
-      graphql-request:
-        specifier: ^7.1.2
-        version: 7.1.2(graphql@16.10.0)
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.14.0)

@@ -11,48 +11,6 @@
     "omitBelowChoice": "None Below",
     "groupBy": "group"
   },
-  "metdadata": [
-    {
-      "group": "red-koala",
-      "isEligibleFor2YearFunding": false
-    },
-    {
-      "group": "blue-penguin",
-      "isEligibleFor2YearFunding": false
-    },
-    {
-      "group": "green-otter",
-      "isEligibleFor2YearFunding": false
-    },
-    {
-      "group": "orange-lemur",
-      "isEligibleFor2YearFunding": true
-    },
-    {
-      "group": "purple-owl",
-      "isEligibleFor2YearFunding": true
-    },
-    {
-      "group": "silver-fox",
-      "isEligibleFor2YearFunding": true
-    },
-    {
-      "group": "aqua-dolphin",
-      "isEligibleFor2YearFunding": true
-    },
-    {
-      "group": "gold-hummingbird",
-      "isEligibleFor2YearFunding": true
-    },
-    {
-      "group": "pink-panda",
-      "isEligibleFor2YearFunding": true
-    },
-    {
-      "group": "none-below",
-      "isEligibleFor2YearFunding": false
-    }
-  ],
   "entries": [
     {
       "choice": "Red Koala (Basic)",
