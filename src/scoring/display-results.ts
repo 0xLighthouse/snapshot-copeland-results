@@ -1,10 +1,10 @@
-import type { Entry, ScoringOptions } from '../types'
+import type { Entry, FormattedResults, ScoredResult, ScoringOptions } from '../types'
 
 export const displayResults = (
-  _results: any,
+  _results: ScoredResult,
   orderedChoices: Entry[],
   options: ScoringOptions,
-) => {
+): FormattedResults => {
   const items = []
   let rank = 1
   for (const result of _results) {

@@ -40,9 +40,21 @@ export interface PairwiseResult {
   appearsInMatches: number
   appearsInBallots: number
   points: number
+  avgSupport: number
 }
 
 export type ScoredResult = PairwiseResult[]
+
+export interface FormattedResult {
+  rank: number
+  choice: string
+  wins: number
+  losses: number
+  ties: number
+  points: number
+  avgSupport: string
+}
+export type FormattedResults = FormattedResult[]
 
 export interface DiffItem extends PairwiseResult {
   rank: number
