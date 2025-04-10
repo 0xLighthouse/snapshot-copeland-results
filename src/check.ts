@@ -1,7 +1,7 @@
 import { copelandWeighted } from './scoring'
 import { calculateDiff } from './scoring/calculate-diff'
 import { displayResults } from './scoring/display-results'
-import { fetchProposalMetadata, fetchProposalVotes } from './snapshot/snapshot'
+import { fetchProposalMetadata, fetchProposalVotes } from './snapshot'
 
 // FIXME: Does not work, as no manifest was provided
 // Netto => https://snapshot.box/#/s:spp-test.eth/proposal/0x14bc28d4202213b2f735be22be131aa5f3b2e790433b8ef232207d0c0ace81e8
