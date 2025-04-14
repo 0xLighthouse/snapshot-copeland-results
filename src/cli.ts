@@ -1,3 +1,4 @@
+import { createDefaultManifest, isValidManifest } from './manifests'
 import { copeland } from './scoring'
 import { calculateDiff } from './scoring/calculate-diff'
 import { fetchProposalMetadata, fetchProposalVotes } from './snapshot'

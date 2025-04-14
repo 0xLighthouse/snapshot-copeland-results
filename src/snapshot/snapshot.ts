@@ -1,5 +1,5 @@
 import { GraphQLClient } from 'graphql-request'
-import { createDefaultManifest } from '../manifests'
+import { createDefaultManifest, isValidManifest } from '../manifests'
 import type { Ballot, Manifest } from '../types'
 import { QUERY_PROPOSAL, QUERY_VOTES } from './queries'
 
@@ -49,9 +49,18 @@ export const fetchProposalMetadata = async ({
   if (resp.proposal.discussion.includes('.json')) {
     const _data = await fetch(resp.proposal.discussion)
     manifest = await _data.json()
+
+    // Manifest is valid, so use it
+    manifest = isValidManifest(manifest)
+      ? manifest
+      : // If the manifest is invalid, fallback to Snapshot's default settings
+        createDefaultManifest(
+          manifest,
+          resp.proposal.choices.map((o) => ({ choice: o })),
+        )
   } else {
     manifest = createDefaultManifest(
-      // TODO: Need to work out what Snapshots default is
+      // If no manifest is provided, fallback to Snapshot's default settings
       {
         algorithm: 'copeland',
         copelandPoints: [2, 1, 0],
