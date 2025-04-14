@@ -1,2 +1,2 @@
 export * from './generate-votes'
-export * from './create-manifest'
+export * from './create-default-manifest'

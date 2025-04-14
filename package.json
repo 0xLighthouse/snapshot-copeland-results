@@ -14,7 +14,11 @@
     "clean": "rm -rf dist",
     "release:patch": "pnpm version patch --no-git-tag-version && pnpm publish --access public --no-git-checks",
     "release:minor": "pnpm version minor --no-git-tag-version && pnpm publish --access public --no-git-checks",
-    "release:major": "pnpm version major --no-git-tag-version && pnpm publish --access public --no-git-checks"
+    "release:major": "pnpm version major --no-git-tag-version && pnpm publish --access public --no-git-checks",
+    "cli": "bun run src/cli.ts"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",

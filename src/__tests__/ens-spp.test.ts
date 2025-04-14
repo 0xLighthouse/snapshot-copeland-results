@@ -1,6 +1,6 @@
 import { ensSpp2025a } from '../scoring/variants/ens-spp2025a'
 import type { Manifest } from '../types'
-import { createDefaultManifest } from './utils/create-manifest'
+import { createDefaultManifest } from './utils/create-default-manifest'
 
 const manifest = {
   ...createDefaultManifest(

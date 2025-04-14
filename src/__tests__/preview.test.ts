@@ -7,7 +7,7 @@ import type {
   Manifest,
   ScoringOptions,
 } from '../types'
-import { createDefaultManifest } from './utils/create-manifest'
+import { createDefaultManifest } from './utils/create-default-manifest'
 
 const manifest = {
   ...createDefaultManifest(

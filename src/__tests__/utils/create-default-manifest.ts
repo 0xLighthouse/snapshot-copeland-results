@@ -16,9 +16,8 @@ export const createDefaultManifest = (
     entries: entry.map((e) => {
       if (e.label) {
         return e as Entry
-      } else {
-        return { ...e, label: e.choice } as Entry
       }
+      return { ...e, label: e.choice } as Entry
     }),
   }
 }

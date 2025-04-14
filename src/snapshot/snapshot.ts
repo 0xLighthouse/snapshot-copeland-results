@@ -1,7 +1,7 @@
 import { GraphQLClient } from 'graphql-request'
-import { createManifest } from '../__tests__/utils/create-manifest'
 import type { Ballot, Manifest } from '../types'
 import { QUERY_PROPOSAL, QUERY_VOTES } from './queries'
+import { createDefaultManifest } from '../__tests__/utils'
 
 interface SnapshotProposalArgs {
   proposalId: string
@@ -46,7 +46,7 @@ export const fetchProposalMetadata = async ({
     const _data = await fetch(resp.proposal.discussion)
     manifest = await _data.json()
   } else {
-    manifest = createManifest(resp.proposal.choices)
+    manifest = createDefaultManifest(resp.proposal.choices)
   }
 
   return {
