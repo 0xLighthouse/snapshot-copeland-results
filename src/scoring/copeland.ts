@@ -1,9 +1,9 @@
 import type { Ballot, Manifest } from '../types'
 import {
   calculatePoints,
-  sortResultsBySupport,
-  newCopelandPipe,
   doPairwiseComparison,
+  newCopelandPipe,
+  sortResultsBySupport,
 } from './pipeline'
 import { orderChoices } from './pipeline/order-choices'
 

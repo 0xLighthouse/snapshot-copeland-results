@@ -15,11 +15,14 @@ export const omitFromKey = (votes: Ballot[], fromKey: number) => {
   })
 }
 // Find which key represents the choice from which selections should be unranked
-export const findOmitFromKey = (orderedChoices: KeyedEntries, unrankedFrom: string): number => {
+export const findOmitFromKey = (
+  orderedChoices: KeyedEntries,
+  unrankedFrom: string,
+): number => {
   let notBelowIndex = -1
   for (const [index, entry] of Object.entries(orderedChoices)) {
     if (entry.choice === unrankedFrom) {
-      notBelowIndex = parseInt(index)
+      notBelowIndex = Number.parseInt(index)
       break
     }
   }

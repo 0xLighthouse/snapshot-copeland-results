@@ -1,14 +1,14 @@
-import type { Manifest, Ballot, ScoredResult, KeyedEntries } from '../types'
+import type { Ballot, KeyedEntries, Manifest, ScoredResult } from '../types'
 import {
+  calculatePoints,
   deduplicateScoredResultsByGroup,
+  doPairwiseComparison,
+  findOmitFromKey,
+  newCopelandPipe,
+  omitFromKey,
   orderChoices,
   reorderVotesByGroup,
-  findOmitFromKey,
-  omitFromKey,
-  newCopelandPipe,
-  doPairwiseComparison,
   sortResultsBySupport,
-  calculatePoints,
 } from './pipeline'
 
 // This is an implementation of a custom algorithm designed for the ENS SPP2 2025 vote.
@@ -18,7 +18,6 @@ export const ensSpp2025a = (
   snapshotChoices: string[],
   votes: Ballot[],
 ): { orderedChoices: KeyedEntries; results: ScoredResult } => {
-
   // This algorithm requires a groupBy and unrankedFrom value
   if (!scoring.groupBy || !scoring.unrankedFrom) {
     throw new Error('groupBy and unrankedFrom are required for this algorithm')
@@ -30,7 +29,11 @@ export const ensSpp2025a = (
   let processedVotes = votes
 
   // Reorder votes by group
-  processedVotes = reorderVotesByGroup(orderedChoices, scoring.groupBy, processedVotes)
+  processedVotes = reorderVotesByGroup(
+    orderedChoices,
+    scoring.groupBy,
+    processedVotes,
+  )
 
   // Remove votes at and below the unrankedFrom value
   const noneBelowKey = findOmitFromKey(orderedChoices, scoring.unrankedFrom)
@@ -40,9 +43,14 @@ export const ensSpp2025a = (
     .then((r) => doPairwiseComparison(r, processedVotes))
     .then((r) => calculatePoints(r, scoring.copelandPoints))
     .then((r) => sortResultsBySupport(r, scoring.tiebreaker))
-    .then((r) => deduplicateScoredResultsByGroup(r, orderedChoices, scoring.groupBy as string))
+    .then((r) =>
+      deduplicateScoredResultsByGroup(
+        r,
+        orderedChoices,
+        scoring.groupBy as string,
+      ),
+    )
     .result()
-  
 
   return {
     orderedChoices,

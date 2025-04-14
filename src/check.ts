@@ -74,11 +74,7 @@ const check = async () => {
       voter: '0xSomeVoter2',
     },
   ]
-  const { results: moreResults } = copeland(
-    manifest,
-    choices,
-    moreVotes,
-  )
+  const { results: moreResults } = copeland(manifest, choices, moreVotes)
   const moreDiff = calculateDiff(newResults, moreResults)
 
   // Example of how to show impact of new votes on an existing set of results

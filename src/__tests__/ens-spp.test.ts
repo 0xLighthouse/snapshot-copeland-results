@@ -1,6 +1,6 @@
 import { ensSpp2025a } from '../scoring/ens-spp2025a'
-import { createDefaultManifest } from './utils/create-manifest'
 import type { Manifest } from '../types'
+import { createDefaultManifest } from './utils/create-manifest'
 
 const manifest = {
   ...createDefaultManifest(
@@ -47,7 +47,7 @@ const manifest = {
         label: 'None Below',
       },
     ],
-  )
+  ),
 } as Manifest
 
 const snapshotChoices = [
@@ -62,7 +62,7 @@ const snapshotChoices = [
 
 const votes = [
   {
-    choice: [2, 3, 4, 5, 7, 1, 6 ],
+    choice: [2, 3, 4, 5, 7, 1, 6],
     votingPower: 100_000,
     voter: '0x1',
   },
@@ -81,6 +81,12 @@ describe('EnsSpp2025a', () => {
     // We should end up with only one selection for each group
     expect(
       results.results.map((r) => results.orderedChoices[Number(r.key)].choice),
-    ).toEqual(['B (Basic)', 'C (Basic)', 'A (Extended)', 'D (Basic)', 'None Below'])
+    ).toEqual([
+      'B (Basic)',
+      'C (Basic)',
+      'A (Extended)',
+      'D (Basic)',
+      'None Below',
+    ])
   })
 })

@@ -14,7 +14,7 @@ export const calculateDiff = (
       break
     }
   }
-  
+
   for (const [index, result] of originalResults.entries()) {
     const key = result.key
     // Find the new result
@@ -51,7 +51,7 @@ export const calculateDiff = (
         appearsInMatches: newResult.appearsInMatches - result.appearsInMatches,
         avgSupport: newResult.avgSupport - result.avgSupport,
       }
-    } 
+    }
   }
   return diffs
 }

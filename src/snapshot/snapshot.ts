@@ -1,7 +1,7 @@
 import { GraphQLClient } from 'graphql-request'
+import { createManifest } from '../__tests__/utils/create-manifest'
 import type { Ballot, Manifest } from '../types'
 import { QUERY_PROPOSAL, QUERY_VOTES } from './queries'
-import { createManifest } from '../__tests__/utils/create-manifest'
 
 interface SnapshotProposalArgs {
   proposalId: string
