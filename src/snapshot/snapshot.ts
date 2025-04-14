@@ -1,36 +1,39 @@
 import { GraphQLClient } from 'graphql-request'
+import { createDefaultManifest } from '../__tests__/utils'
 import type { Ballot, Manifest } from '../types'
 import { QUERY_PROPOSAL, QUERY_VOTES } from './queries'
-import { createManifest } from '../__tests__/utils/create-manifest'
 
-interface SnapshotProposalArgs {
+interface SnapshotRequestOptions {
+  apiKey?: string
+}
+
+interface SnapshotProposalArgs extends SnapshotRequestOptions {
   proposalId: string
   isTestnet: boolean
+  request?: SnapshotRequestOptions
 }
 export interface SnapshotProposalMetadata {
   choices: string[]
   manifest: Manifest
 }
 
-interface SnapshotVote {
-  voter: string
-  choice: number[]
-  vp: number
-}
+const createClient = (isTestnet: boolean, request?: SnapshotRequestOptions) => {
+  const headers = request?.apiKey ? { 'x-api-key': request.apiKey } : undefined
 
-const createClient = (isTestnet: boolean) => {
   return new GraphQLClient(
     isTestnet
       ? 'https://testnet.hub.snapshot.org/graphql'
       : 'https://hub.snapshot.org/graphql',
+    { headers },
   )
 }
 
 export const fetchProposalMetadata = async ({
   proposalId,
   isTestnet,
+  request,
 }: SnapshotProposalArgs): Promise<SnapshotProposalMetadata> => {
-  const snapshot = createClient(isTestnet)
+  const snapshot = createClient(isTestnet, request)
   // FIXME: Use codegen to generate types from the snapshot schema later
   const resp = await snapshot.request<{
     proposal: {
@@ -40,13 +43,14 @@ export const fetchProposalMetadata = async ({
   }>(QUERY_PROPOSAL, { id: proposalId })
 
   let manifest: Manifest
+
   // Test if discussion can be parsed as JSON
   // TODO: test mime/types etc
   if (resp.proposal.discussion.includes('.json')) {
     const _data = await fetch(resp.proposal.discussion)
     manifest = await _data.json()
   } else {
-    manifest = createManifest(resp.proposal.choices)
+    manifest = createDefaultManifest(resp.proposal.choices)
   }
 
   return {
@@ -58,8 +62,9 @@ export const fetchProposalMetadata = async ({
 export const fetchProposalVotes = async ({
   proposalId,
   isTestnet,
+  request,
 }: SnapshotProposalArgs): Promise<Ballot[]> => {
-  const snapshot = createClient(isTestnet)
+  const snapshot = createClient(isTestnet, request)
   const resp = await snapshot.request<{
     votes: {
       voter: string

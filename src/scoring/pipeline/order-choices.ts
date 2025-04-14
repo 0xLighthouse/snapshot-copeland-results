@@ -17,7 +17,7 @@ export const orderChoices = (entries: Entry[], snapshotList: string[]) => {
       throw new Error(`Entry [${choice}] not found in manifest`)
     }
     // Snapshot uses a 1-based index
-    orderedChoices[index+1] = entry
+    orderedChoices[index + 1] = entry
   }
 
   return orderedChoices

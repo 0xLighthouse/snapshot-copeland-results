@@ -1,11 +1,9 @@
 import { copeland } from '../scoring/copeland'
-import { displayResults } from '../scoring/display-results'
 import type {
   AllocationOptions,
   AllocationResult,
   Ballot,
   Entry,
-  Project,
 } from '../types'
 
 interface RankedCandidate {

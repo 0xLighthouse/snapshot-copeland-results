@@ -1,1 +1,5 @@
-export { fetchProposalMetadata, fetchProposalVotes, type SnapshotProposalMetadata } from './snapshot'
+export {
+  fetchProposalMetadata,
+  fetchProposalVotes,
+  type SnapshotProposalMetadata,
+} from './snapshot'

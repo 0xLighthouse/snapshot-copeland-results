@@ -6,7 +6,10 @@ import type { ScoredResult, Tiebreaker } from '../../types'
  * @param results - List of results to sort
  * @returns An array of results sorted by score and average support
  */
-export function sortResultsBySupport(results: ScoredResult, tiebreaker: Tiebreaker | undefined): ScoredResult {
+export function sortResultsBySupport(
+  results: ScoredResult,
+  tiebreaker: Tiebreaker | undefined,
+): ScoredResult {
   return results.sort((a, b) => {
     // Sort by score (primary sort)
     if (b.points !== a.points) {
@@ -15,9 +18,11 @@ export function sortResultsBySupport(results: ScoredResult, tiebreaker: Tiebreak
 
     if (tiebreaker === 'average-support') {
       return (
-        b.totalSupport / b.appearsInMatches - a.totalSupport / a.appearsInMatches
+        b.totalSupport / b.appearsInMatches -
+        a.totalSupport / a.appearsInMatches
       )
-    } else { // Tiebreaker is total support
+    } else {
+      // Tiebreaker is total support
       return b.totalSupport - a.totalSupport
     }
   })

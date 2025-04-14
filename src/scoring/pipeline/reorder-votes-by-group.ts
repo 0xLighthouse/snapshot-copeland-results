@@ -1,8 +1,8 @@
-import type { Ballot, Entry, KeyedEntries } from "../../types";
+import type { Ballot, Entry, KeyedEntries } from '../../types'
 
 /**
  * Following this algorithm: https://hackmd.io/@alextnetto/spp2-algorithm
- * 
+ *
  * Looks at each individual vote, and reorders the choices to make sure they are grouped together
  * by group, while maintaining relative order within the group.
  *
@@ -11,69 +11,68 @@ import type { Ballot, Entry, KeyedEntries } from "../../types";
  * @returns An array of ballots with the choices reordered by group
  */
 export function reorderVotesByGroup(
-	orderedChoices: KeyedEntries,
-	groupVariableName: string,
-	votes: Ballot[],
+  orderedChoices: KeyedEntries,
+  groupVariableName: string,
+  votes: Ballot[],
 ): Ballot[] {
-	let reorderedVotes: Ballot[] = [];
-	for (const vote of votes) {	
-		
-		// Create a map that lists all choices for that group, in the order they appear in the vote.
-		const groupLists: Map<string, number[]> = new Map();
-		for (const choice of vote.choice) {
-			const selection = orderedChoices[choice];
+  const reorderedVotes: Ballot[] = []
+  for (const vote of votes) {
+    // Create a map that lists all choices for that group, in the order they appear in the vote.
+    const groupLists: Map<string, number[]> = new Map()
+    for (const choice of vote.choice) {
+      const selection = orderedChoices[choice]
 
-			if (!selection) {
-				throw new Error(`Choice ${choice} not found in orderedChoices`);
-			}
+      if (!selection) {
+        throw new Error(`Choice ${choice} not found in orderedChoices`)
+      }
 
-			const group = selection[groupVariableName as keyof Entry];
-			if (!group) {
-				continue
-			}
-			
-			if (!groupLists.has(String(group))) {
-				groupLists.set(String(group), []);
-			}
+      const group = selection[groupVariableName as keyof Entry]
+      if (!group) {
+        continue
+      }
 
-			groupLists.get(String(group))?.push(choice);
-		}
+      if (!groupLists.has(String(group))) {
+        groupLists.set(String(group), [])
+      }
 
-		// Step through all choices, adding them in the order they appear, but when we hit a group move all of those choices at once.
-		// Keep track of which entries have already been added for easy skipping.
-		const newChoices: number[] = [];
-		const added = new Set<number>();
-		for (const choice of vote.choice) {
-			if (added.has(choice)) {
-				continue;
-			}
+      groupLists.get(String(group))?.push(choice)
+    }
 
-			const selection = orderedChoices[choice];
-			if (!selection) {
-				throw new Error(`Choice ${choice} not found in orderedChoices`);
-			}
+    // Step through all choices, adding them in the order they appear, but when we hit a group move all of those choices at once.
+    // Keep track of which entries have already been added for easy skipping.
+    const newChoices: number[] = []
+    const added = new Set<number>()
+    for (const choice of vote.choice) {
+      if (added.has(choice)) {
+        continue
+      }
 
-			const group = selection[groupVariableName as keyof Entry];
-			if (group) {
-				for (const choice of groupLists.get(String(group)) ?? []) {
-					if (added.has(choice)) {
-						continue;
-					}
+      const selection = orderedChoices[choice]
+      if (!selection) {
+        throw new Error(`Choice ${choice} not found in orderedChoices`)
+      }
 
-					added.add(choice);
-					newChoices.push(choice);
-				}
-			} else {
-				added.add(choice);
-				newChoices.push(choice);
-			}
-		}
+      const group = selection[groupVariableName as keyof Entry]
+      if (group) {
+        for (const choice of groupLists.get(String(group)) ?? []) {
+          if (added.has(choice)) {
+            continue
+          }
 
-		reorderedVotes.push({
-			...vote,
-			choice: newChoices,
-		});
-	}
-	
-	return reorderedVotes;
+          added.add(choice)
+          newChoices.push(choice)
+        }
+      } else {
+        added.add(choice)
+        newChoices.push(choice)
+      }
+    }
+
+    reorderedVotes.push({
+      ...vote,
+      choice: newChoices,
+    })
+  }
+
+  return reorderedVotes
 }

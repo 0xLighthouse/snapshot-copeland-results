@@ -1,5 +1,5 @@
 import { copeland, orderChoices, reorderVotesByGroup } from '../scoring'
-import { createDefaultManifest } from './utils/create-manifest'
+import { createDefaultManifest } from './utils/create-default-manifest'
 describe('weightTiebreak', () => {
   const manifest = {
     ...createDefaultManifest(
@@ -14,15 +14,15 @@ describe('weightTiebreak', () => {
           choice: 'B',
         },
         {
-        choice: 'C',
+          choice: 'C',
         },
         {
           choice: 'D',
         },
       ],
-    )
+    ),
   }
-  
+
   // Include all choices as ordered by snapshot
   const snapshotChoices = ['A', 'B', 'C', 'D']
 
@@ -56,7 +56,6 @@ describe('weightTiebreak', () => {
 })
 
 describe('reorder votes by group', () => {
-
   const manifest = {
     ...createDefaultManifest(
       {
@@ -89,9 +88,9 @@ describe('reorder votes by group', () => {
           group: 'vendorD',
         },
       ],
-    )
+    ),
   }
-      
+
   const snapshotChoices = [
     'A (Basic)',
     'A (Extended)',

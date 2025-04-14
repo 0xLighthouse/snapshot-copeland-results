@@ -49,10 +49,10 @@ export const doPairwiseComparison = (
       }
     }
 
-    // Record how much total support each choice received 
+    // Record how much total support each choice received
     pairwiseResults[choiceA].totalSupport += prefA
     pairwiseResults[choiceB].totalSupport += prefB
-  
+
     // Record wins/losses/ties
     if (prefA > prefB) {
       pairwiseResults[choiceA].wins++
@@ -74,9 +74,7 @@ export const doPairwiseComparison = (
  * @param listOfChoices - List of choices from the current result set
  * @returns Array of [choiceA, choiceB] pairs where choiceA < choiceB
  */
-const generatePairs = (
-  listOfChoices: PairwiseResults,
-): [number, number][] => {
+const generatePairs = (listOfChoices: PairwiseResults): [number, number][] => {
   const keys = Object.keys(listOfChoices)
   const pairs: [number, number][] = []
   for (let i = 0; i < keys.length; i++) {

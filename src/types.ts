@@ -13,7 +13,7 @@ export interface ScoringOptions {
   groupBy?: string // e.g. "group"
 }
 
-export type Algorithm = 'copeland' | 'ens-spp2025a'
+export type Algorithm = 'copeland' | 'variant:ens-spp2025a'
 
 export type Tiebreaker = 'average-support' | 'total-support'
 
