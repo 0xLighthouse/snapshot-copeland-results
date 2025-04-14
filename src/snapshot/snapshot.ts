@@ -55,15 +55,24 @@ export const fetchProposalMetadata = async ({
       ? manifest
       : // If the manifest is invalid, fallback to Snapshot's default settings
         createDefaultManifest(
-          manifest,
+          {
+            algorithm: 'copeland',
+            copelandPoints: [1, 0.5, 0],
+          },
           resp.proposal.choices.map((o) => ({ choice: o })),
         )
+
+    console.info(
+      isValidManifest(manifest)
+        ? 'Valid Manifest provided'
+        : 'Invalid Manifest provided, using Snapshot default settings',
+    )
   } else {
+    console.info('No manifest provided, using Snapshot default settings')
     manifest = createDefaultManifest(
-      // If no manifest is provided, fallback to Snapshot's default settings
       {
         algorithm: 'copeland',
-        copelandPoints: [2, 1, 0],
+        copelandPoints: [1, 0.5, 0],
       },
       resp.proposal.choices.map((o) => ({ choice: o })),
     )
