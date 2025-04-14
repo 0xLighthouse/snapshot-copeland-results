@@ -1,10 +1,10 @@
 import type { Ballot, KeyedEntries, Manifest, ScoredResult } from '../../types'
 import {
   calculatePoints,
+  createCopelandResults,
   deduplicateScoredResultsByGroup,
   doPairwiseComparison,
   findOmitFromKey,
-  createCopelandResults,
   omitFromKey,
   orderChoices,
   reorderVotesByGroup,

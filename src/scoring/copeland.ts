@@ -1,8 +1,8 @@
 import type { Ballot, Manifest } from '../types'
 import {
   calculatePoints,
-  doPairwiseComparison,
   createCopelandResults,
+  doPairwiseComparison,
   sortResultsBySupport,
 } from './pipeline'
 import { orderChoices } from './pipeline/order-choices'
