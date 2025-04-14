@@ -1,15 +1,15 @@
-import type { Ballot, KeyedEntries, Manifest, ScoredResult } from '../types'
+import type { Ballot, KeyedEntries, Manifest, ScoredResult } from '../../types'
 import {
   calculatePoints,
   deduplicateScoredResultsByGroup,
   doPairwiseComparison,
   findOmitFromKey,
-  newCopelandPipe,
+  createCopelandResults,
   omitFromKey,
   orderChoices,
   reorderVotesByGroup,
   sortResultsBySupport,
-} from './pipeline'
+} from '../pipeline'
 
 // This is an implementation of a custom algorithm designed for the ENS SPP2 2025 vote.
 // Option 1, grouping basic and extended scopes next to each other: https://hackmd.io/@alextnetto/spp2-algorithm
@@ -39,7 +39,7 @@ export const ensSpp2025a = (
   const noneBelowKey = findOmitFromKey(orderedChoices, scoring.unrankedFrom)
   processedVotes = omitFromKey(processedVotes, noneBelowKey)
 
-  const results = newCopelandPipe(snapshotChoices.length)
+  const results = createCopelandResults(snapshotChoices.length)
     .then((r) => doPairwiseComparison(r, processedVotes))
     .then((r) => calculatePoints(r, scoring.copelandPoints))
     .then((r) => sortResultsBySupport(r, scoring.tiebreaker))
@@ -50,7 +50,7 @@ export const ensSpp2025a = (
         scoring.groupBy as string,
       ),
     )
-    .result()
+    .results()
 
   return {
     orderedChoices,

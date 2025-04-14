@@ -10,7 +10,7 @@ type pipeFunction<T, R> = (arg: T) => R
 
 export const copelandPipe = <T>(initialValue: T) => ({
   then: <R>(fn: pipeFunction<T, R>) => copelandPipe(fn(initialValue)),
-  result: () => initialValue,
+  results: () => initialValue,
 })
 
 /**
@@ -18,7 +18,7 @@ export const copelandPipe = <T>(initialValue: T) => ({
  * @param numberOfChoices - Total number of choices
  * @returns Empty PairwiseResults with zeroed values
  */
-export const newCopelandPipe = (
+export const createCopelandResults = (
   numberOfChoices: number,
 ): ReturnType<typeof copelandPipe<PairwiseResults>> => {
   const results: PairwiseResults = {}
