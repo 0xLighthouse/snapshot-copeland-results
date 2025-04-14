@@ -1,13 +1,7 @@
 import { copeland } from '../scoring'
 import { calculateDiff } from '../scoring/calculate-diff'
-import type {
-  Ballot,
-  DiffResult,
-  Entry,
-  Manifest,
-  ScoringOptions,
-} from '../types'
-import { createDefaultManifest } from './utils/create-default-manifest'
+import type { Ballot, DiffResult, Manifest } from '../types'
+import { createDefaultManifest } from '../manifests'
 
 const manifest = {
   ...createDefaultManifest(

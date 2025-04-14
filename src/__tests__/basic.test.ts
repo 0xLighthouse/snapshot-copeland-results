@@ -1,5 +1,5 @@
 import { copeland, orderChoices, reorderVotesByGroup } from '../scoring'
-import { createDefaultManifest } from './utils/create-default-manifest'
+import { createDefaultManifest } from '../manifests'
 describe('weightTiebreak', () => {
   const manifest = {
     ...createDefaultManifest(

@@ -1,5 +1,5 @@
 import { GraphQLClient } from 'graphql-request'
-import { createDefaultManifest } from '../__tests__/utils'
+import { createDefaultManifest } from '../manifests'
 import type { Ballot, Manifest } from '../types'
 import { QUERY_PROPOSAL, QUERY_VOTES } from './queries'
 
@@ -50,7 +50,14 @@ export const fetchProposalMetadata = async ({
     const _data = await fetch(resp.proposal.discussion)
     manifest = await _data.json()
   } else {
-    manifest = createDefaultManifest(resp.proposal.choices)
+    manifest = createDefaultManifest(
+      // TODO: Need to work out what Snapshots default is
+      {
+        algorithm: 'copeland',
+        copelandPoints: [2, 1, 0],
+      },
+      resp.proposal.choices.map((o) => ({ choice: o })),
+    )
   }
 
   return {
@@ -62,9 +69,8 @@ export const fetchProposalMetadata = async ({
 export const fetchProposalVotes = async ({
   proposalId,
   isTestnet,
-  request,
 }: SnapshotProposalArgs): Promise<Ballot[]> => {
-  const snapshot = createClient(isTestnet, request)
+  const snapshot = createClient(isTestnet)
   const resp = await snapshot.request<{
     votes: {
       voter: string

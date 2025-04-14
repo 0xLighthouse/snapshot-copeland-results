@@ -1,5 +1,5 @@
-import type { Entry, Manifest } from '../../types'
-import { VERSION } from '../../version'
+import type { Entry, Manifest } from '../types'
+import { VERSION } from '../version'
 
 export const createDefaultManifest = (
   scoring: { [key: string]: any },
