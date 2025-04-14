@@ -1,10 +1,4 @@
-import {
-  applyPairwise,
-  calculatePoints,
-  initializeResults,
-  pipe,
-  sortResultsBySupport,
-} from '../scoring/pipeline'
+import { calculatePoints, sortResultsBySupport } from '../scoring/pipeline'
 import type { Ballot } from '../types'
 
 // TODO: We need to revisit this

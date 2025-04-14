@@ -25,7 +25,7 @@ export interface Entry {
 }
 
 export type KeyedEntries = {
-  [key: string]: Entry
+  [key: number]: Entry
 }
 
 export interface Ballot {
