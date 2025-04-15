@@ -1,4 +1,4 @@
-import type { PairwiseChoices, ScoredResult, Tiebreaker } from '../../types'
+import type { PairwiseChoices, SortedResult, Tiebreaker } from '../../types'
 
 /**
  * Sort results by score and use average support as tiebreaker
@@ -9,7 +9,7 @@ import type { PairwiseChoices, ScoredResult, Tiebreaker } from '../../types'
 export function sortResults(
   results: PairwiseChoices,
   tiebreaker: Tiebreaker | undefined,
-): ScoredResult {
+): SortedResult {
   const resultsArray = Object.values(results)
   return resultsArray.sort((a, b) => {
     // Sort by score (primary sort)

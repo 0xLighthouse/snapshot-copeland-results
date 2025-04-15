@@ -1,29 +1,33 @@
-import type { Ballot, Manifest } from '../types'
+import type {
+  Ballot,
+  KeyedChoices,
+  ScoringOptions,
+  SortedResult,
+} from '../types'
 import {
   calculatePoints,
   fromChoiceCount,
   doPairwiseComparison,
   sortResults,
 } from './pipeline'
-import { orderChoices } from './pipeline/order-choices'
 
-// This is the standard Copeland algorithm, which scores choices and sorts the results by score.
+/**
+ * Run the Copeland algorithm on the given choices and votes.
+ *
+ * @param choices - The choices to score.
+ * @param scoring - The scoring options.
+ * @param votes - The votes to score.
+ *
+ * @returns The results of the Copeland algorithm.
+ */
 export const copeland = (
-  { entries, scoring }: Manifest,
-  snapshotChoices: string[],
+  choices: KeyedChoices,
+  scoring: ScoringOptions,
   votes: Ballot[],
-) => {
-  // Assign index numbers to the choices, based on the order Snapshot is using.
-  const orderedChoices = orderChoices(entries, snapshotChoices)
-
-  const results = fromChoiceCount(snapshotChoices.length)
+): SortedResult => {
+  return fromChoiceCount(Object.keys(choices).length)
     .pipe((r) => doPairwiseComparison(r, votes))
     .pipe((r) => calculatePoints(r, scoring.copelandPoints))
     .pipe((r) => sortResults(r, scoring.tiebreaker))
     .results()
-
-  return {
-    results,
-    orderedChoices,
-  }
 }

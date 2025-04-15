@@ -1,8 +1,8 @@
-import { copeland, orderChoices, reorderVotesByGroup } from '../scoring'
-import { createDefaultManifest } from '../manifests'
+import { copeland, reorderVotesByGroup } from '../scoring'
+import { createManifest, mapSnapshotKeysToChoices } from '../manifests'
 describe('weightTiebreak', () => {
   const manifest = {
-    ...createDefaultManifest(
+    ...createManifest(
       {
         tiebreaker: 'average-support',
       },
@@ -40,13 +40,11 @@ describe('weightTiebreak', () => {
   ]
 
   it('ranks projects as expected', () => {
-    const { results, orderedChoices } = copeland(
-      manifest,
-      snapshotChoices,
-      votes,
-    )
+    const choices = mapSnapshotKeysToChoices(manifest, snapshotChoices)
 
-    expect(results.map((r) => orderedChoices[r.key].choice)).toEqual([
+    const results = copeland(choices, manifest.scoring, votes)
+
+    expect(results.map((r) => choices[r.key].choice)).toEqual([
       'C',
       'B',
       'D',
@@ -57,7 +55,7 @@ describe('weightTiebreak', () => {
 
 describe('reorder votes by group', () => {
   const manifest = {
-    ...createDefaultManifest(
+    ...createManifest(
       {
         tiebreaker: 'average-support',
         groupBy: 'group',
@@ -115,8 +113,8 @@ describe('reorder votes by group', () => {
     },
   ]
   it('reorders votes as expected', () => {
-    const orderedChoices = orderChoices(manifest.entries, snapshotChoices)
-    const results = reorderVotesByGroup(orderedChoices, 'group', votes)
+    const choices = mapSnapshotKeysToChoices(manifest, snapshotChoices)
+    const results = reorderVotesByGroup(choices, 'group', votes)
 
     expect(results.map((r) => r.choice)).toEqual([
       [2, 1, 3, 4, 5, 6], // A's and C's together, A extended and C basic are still first.

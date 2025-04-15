@@ -53,7 +53,7 @@ export type PairwiseChoice = {
   avgSupport: number
 }
 
-export type ScoredResult = PairwiseChoice[]
+export type SortedResult = PairwiseChoice[]
 
 export interface DiffItem extends PairwiseChoice {
   rank: number

@@ -1,5 +1,5 @@
 import { GraphQLClient } from 'graphql-request'
-import { createDefaultManifest, isValidManifest } from '../manifests'
+import { createManifest, isValidManifest } from '../manifests'
 import type { Ballot, Manifest } from '../types'
 import { QUERY_PROPOSAL, QUERY_VOTES } from './queries'
 
@@ -54,7 +54,7 @@ export const fetchProposalMetadata = async ({
     manifest = isValidManifest(manifest)
       ? manifest
       : // If the manifest is invalid, fallback to Snapshot's default settings
-        createDefaultManifest(
+        createManifest(
           {
             algorithm: 'copeland',
             copelandPoints: [1, 0.5, 0],
@@ -69,7 +69,7 @@ export const fetchProposalMetadata = async ({
     )
   } else {
     console.info('No manifest provided, using Snapshot default settings')
-    manifest = createDefaultManifest(
+    manifest = createManifest(
       {
         algorithm: 'copeland',
         copelandPoints: [1, 0.5, 0],

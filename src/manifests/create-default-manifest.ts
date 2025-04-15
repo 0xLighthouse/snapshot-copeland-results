@@ -1,23 +1,28 @@
-import type { Choice, Manifest } from '../types'
+import type { Choice, Manifest, Algorithm } from '../types'
 import { VERSION } from '../version'
 
-export const createDefaultManifest = (
-  scoring: { [key: string]: any },
-  entry: { choice: string; [key: string]: any }[],
+export const createManifest = (
+  additionalScoringOptions: { [key: string]: unknown },
+  choices: { choice: string; [key: string]: unknown }[],
 ): Manifest => {
   return {
     version: VERSION,
     scoring: {
-      algorithm: scoring.algorithm || 'copeland',
-      copelandPoints: scoring.copelandPoints || [2, 1, 0],
-      ...scoring,
+      algorithm:
+        (additionalScoringOptions.algorithm as Algorithm) || 'copeland',
+      copelandPoints: (additionalScoringOptions.copelandPoints as [
+        number,
+        number,
+        number,
+      ]) || [1, 0.5, 0],
+      ...additionalScoringOptions,
     },
     // Mapping standard choices to entries for compatibility of proposals without a manifest
-    entries: entry.map((e) => {
-      if (e.label) {
-        return e as Choice
+    entries: choices.map((c) => {
+      if (c.label) {
+        return c as Choice
       }
-      return { ...e, label: e.choice } as Choice
+      return { ...c, label: c.choice } as Choice
     }),
   }
 }

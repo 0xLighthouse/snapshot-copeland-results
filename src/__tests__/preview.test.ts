@@ -1,10 +1,10 @@
 import { copeland } from '../scoring'
 import { calculateDiff } from '../scoring/calculate-diff'
 import type { Ballot, DiffResult, Manifest } from '../types'
-import { createDefaultManifest } from '../manifests'
+import { createManifest, mapSnapshotKeysToChoices } from '../manifests'
 
 const manifest = {
-  ...createDefaultManifest(
+  ...createManifest(
     {
       copelandPoints: [1, 0, 0], // To make calculating easy
     },
@@ -28,6 +28,8 @@ const manifest = {
 // Reorder the choices to simulate how they might be input randomly in a snapshot vote
 const snapshotChoices = ['A', 'B', 'C', 'D']
 
+const choices = mapSnapshotKeysToChoices(manifest, snapshotChoices)
+
 describe('previewChange', () => {
   it('shows the change when a new vote is added', () => {
     const votes = [
@@ -43,13 +45,9 @@ describe('previewChange', () => {
       },
     ]
 
-    const { results: originalResults } = copeland(
-      manifest,
-      snapshotChoices,
-      votes,
-    )
+    const originalResults = copeland(choices, manifest.scoring, votes)
 
-    const { results: newResults } = copeland(manifest, snapshotChoices, [
+    const newResults = copeland(choices, manifest.scoring, [
       ...votes,
       {
         choice: [2, 3, 4, 1], // 2 should now win
@@ -84,8 +82,8 @@ describe('previewChange', () => {
 
 describe('previewChangeFromZero', () => {
   it('shows the change when the first vote is added', () => {
-    const { results: noVotes } = copeland(manifest, snapshotChoices, [])
-    const { results: newResults } = copeland(manifest, snapshotChoices, [
+    const noVotes = copeland(choices, manifest.scoring, [])
+    const newResults = copeland(choices, manifest.scoring, [
       {
         choice: [1, 2, 3, 4],
         votingPower: 200_000,
