@@ -7,13 +7,15 @@ export interface Manifest {
 
 export interface ScoringOptions {
   algorithm: Algorithm
-  copelandPoints: [number, number, number]
+  copelandPoints: CopelandPoints
   tiebreaker?: Tiebreaker
   unrankedFrom?: string // e.g. "None Below"
   groupBy?: string // e.g. "group"
 }
 
 export type Algorithm = 'copeland' | 'variant:ens-spp2025a'
+
+export type CopelandPoints = [number, number, number]
 
 export type Tiebreaker = 'average-support' | 'total-support'
 
@@ -53,7 +55,7 @@ export type PairwiseChoice = {
   avgSupport: number
 }
 
-export type SortedResult = PairwiseChoice[]
+export type SortedResults = PairwiseChoice[]
 
 export interface DiffItem extends PairwiseChoice {
   rank: number

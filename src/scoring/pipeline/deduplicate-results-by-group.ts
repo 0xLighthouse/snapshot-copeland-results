@@ -1,4 +1,4 @@
-import type { Choice, KeyedChoices, SortedResult } from '../../types'
+import type { Choice, KeyedChoices, SortedResults } from '../../types'
 
 /**
  * Following this algorithm: https://hackmd.io/@alextnetto/spp2-algorithm
@@ -11,13 +11,13 @@ import type { Choice, KeyedChoices, SortedResult } from '../../types'
  * @returns An array of ballots with the choices reordered by group
  */
 export function deduplicateScoredResultsByGroup(
-  results: SortedResult,
+  results: SortedResults,
   orderedChoices: KeyedChoices,
   groupVariableName: string,
-): SortedResult {
+): SortedResults {
   // Keep track of which groups already have an entry
   const groupsWithEntries = new Set<string>()
-  const deduplicatedResults: SortedResult = []
+  const deduplicatedResults: SortedResults = []
 
   // Iterate through the sorted results, adding only the first entry for each group
   for (const result of results) {

@@ -2,14 +2,14 @@ import { omitFromKey } from '../scoring/pipeline'
 import type { Ballot } from '../types'
 
 describe('omitChoicesBelow', () => {
-  it('should omit choices below the notBelow index', () => {
+  it('should omit choices below the unrankedFrom index', () => {
     const votes: Ballot[] = [
       { choice: [1, 2, 3], votingPower: 1, voter: '0x1' },
       { choice: [1, 3, 2], votingPower: 1, voter: '0x2' },
       { choice: [2, 1, 3], votingPower: 1, voter: '0x3' },
     ]
-    const notBelow = 2
-    const result = omitFromKey(votes, notBelow)
+    const unrankedFrom = 2
+    const result = omitFromKey(votes, unrankedFrom)
 
     expect(result).toEqual([
       { choice: [1], votingPower: 1, voter: '0x1' },

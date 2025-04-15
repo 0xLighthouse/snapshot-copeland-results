@@ -1,4 +1,8 @@
-import type { PairwiseChoice, PairwiseChoices, SortedResult } from '../../types'
+import type {
+  PairwiseChoice,
+  PairwiseChoices,
+  SortedResults,
+} from '../../types'
 
 /**
  * Score the results and return them unordered

@@ -1,4 +1,4 @@
-import type { Choice, Manifest, Algorithm } from '../types'
+import type { Choice, Manifest, Algorithm, CopelandPoints } from '../types'
 import { VERSION } from '../version'
 
 export const createManifest = (
@@ -10,11 +10,10 @@ export const createManifest = (
     scoring: {
       algorithm:
         (additionalScoringOptions.algorithm as Algorithm) || 'copeland',
-      copelandPoints: (additionalScoringOptions.copelandPoints as [
-        number,
-        number,
-        number,
-      ]) || [1, 0.5, 0],
+      copelandPoints:
+        (additionalScoringOptions.copelandPoints as CopelandPoints) || [
+          1, 0.5, 0,
+        ],
       ...additionalScoringOptions,
     },
     // Mapping standard choices to entries for compatibility of proposals without a manifest

@@ -1,9 +1,9 @@
-import type { DiffResult, SortedResult } from '../types'
+import type { DiffResult, SortedResults } from '../types'
 
 // Takes a new and old scored result and returns a diff of the changes for each entry
 export const calculateDiff = (
-  originalResults: SortedResult,
-  newResults: SortedResult,
+  originalResults: SortedResults,
+  newResults: SortedResults,
 ): DiffResult => {
   const diffs: DiffResult = {}
 

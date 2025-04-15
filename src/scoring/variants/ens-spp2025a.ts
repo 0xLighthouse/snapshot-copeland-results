@@ -1,7 +1,7 @@
 import type {
   Ballot,
   KeyedChoices,
-  SortedResult,
+  SortedResults,
   ScoringOptions,
 } from '../../types'
 import {
@@ -21,7 +21,7 @@ export const ensSpp2025a = (
   choices: KeyedChoices,
   scoring: ScoringOptions,
   votes: Ballot[],
-): SortedResult => {
+): SortedResults => {
   // This algorithm requires a groupBy and unrankedFrom value
   if (!scoring.groupBy || !scoring.unrankedFrom) {
     throw new Error('groupBy and unrankedFrom are required for this algorithm')
