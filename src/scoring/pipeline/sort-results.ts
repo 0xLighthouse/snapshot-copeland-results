@@ -1,4 +1,4 @@
-import type { ScoredResult, Tiebreaker } from '../../types'
+import type { PairwiseChoices, ScoredResult, Tiebreaker } from '../../types'
 
 /**
  * Sort results by score and use average support as tiebreaker
@@ -6,11 +6,12 @@ import type { ScoredResult, Tiebreaker } from '../../types'
  * @param results - List of results to sort
  * @returns An array of results sorted by score and average support
  */
-export function sortResultsBySupport(
-  results: ScoredResult,
+export function sortResults(
+  results: PairwiseChoices,
   tiebreaker: Tiebreaker | undefined,
 ): ScoredResult {
-  return results.sort((a, b) => {
+  const resultsArray = Object.values(results)
+  return resultsArray.sort((a, b) => {
     // Sort by score (primary sort)
     if (b.points !== a.points) {
       return b.points - a.points
@@ -21,9 +22,8 @@ export function sortResultsBySupport(
         b.totalSupport / b.appearsInMatches -
         a.totalSupport / a.appearsInMatches
       )
-    } else {
-      // Tiebreaker is total support
-      return b.totalSupport - a.totalSupport
     }
+    // Tiebreaker is total support
+    return b.totalSupport - a.totalSupport
   })
 }

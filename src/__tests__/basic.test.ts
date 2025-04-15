@@ -46,7 +46,7 @@ describe('weightTiebreak', () => {
       votes,
     )
 
-    expect(results.map((r) => orderedChoices[Number(r.key)].choice)).toEqual([
+    expect(results.map((r) => orderedChoices[r.key].choice)).toEqual([
       'C',
       'B',
       'D',

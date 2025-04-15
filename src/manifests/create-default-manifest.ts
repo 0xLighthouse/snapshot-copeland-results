@@ -1,4 +1,4 @@
-import type { Entry, Manifest } from '../types'
+import type { Choice, Manifest } from '../types'
 import { VERSION } from '../version'
 
 export const createDefaultManifest = (
@@ -15,9 +15,9 @@ export const createDefaultManifest = (
     // Mapping standard choices to entries for compatibility of proposals without a manifest
     entries: entry.map((e) => {
       if (e.label) {
-        return e as Entry
+        return e as Choice
       }
-      return { ...e, label: e.choice } as Entry
+      return { ...e, label: e.choice } as Choice
     }),
   }
 }

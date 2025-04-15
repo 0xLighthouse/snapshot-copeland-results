@@ -1,5 +1,5 @@
 import { orderChoices } from '../scoring/pipeline/order-choices'
-import type { Entry, KeyedEntries } from '../types'
+import type { Choice, KeyedChoices } from '../types'
 
 const manifest = {
   version: '0.2.0',
@@ -59,11 +59,11 @@ const votes = [
 ]
 
 describe('results', () => {
-  let orderedChoices: KeyedEntries
+  let orderedChoices: KeyedChoices
 
   it('it matches the order of the snapshot choices', () => {
     // Order our manifest based on how they were input in Snapshot.
-    orderedChoices = orderChoices(manifest.data as Entry[], snapshotChoices)
+    orderedChoices = orderChoices(manifest.data as Choice[], snapshotChoices)
 
     expect(orderedChoices).toEqual({
       1: {

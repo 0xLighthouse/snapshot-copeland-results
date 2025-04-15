@@ -1,9 +1,9 @@
 import type { Ballot, Manifest } from '../types'
 import {
   calculatePoints,
-  createCopelandResults,
+  fromChoiceCount,
   doPairwiseComparison,
-  sortResultsBySupport,
+  sortResults,
 } from './pipeline'
 import { orderChoices } from './pipeline/order-choices'
 
@@ -16,10 +16,10 @@ export const copeland = (
   // Assign index numbers to the choices, based on the order Snapshot is using.
   const orderedChoices = orderChoices(entries, snapshotChoices)
 
-  const results = createCopelandResults(snapshotChoices.length)
-    .then((r) => doPairwiseComparison(r, votes))
-    .then((r) => calculatePoints(r, scoring.copelandPoints))
-    .then((r) => sortResultsBySupport(r, scoring.tiebreaker))
+  const results = fromChoiceCount(snapshotChoices.length)
+    .pipe((r) => doPairwiseComparison(r, votes))
+    .pipe((r) => calculatePoints(r, scoring.copelandPoints))
+    .pipe((r) => sortResults(r, scoring.tiebreaker))
     .results()
 
   return {

@@ -1,4 +1,4 @@
-import type { Entry, KeyedEntries } from '../../types'
+import type { Choice, KeyedChoices } from '../../types'
 
 /**
  * Order the choices based on the manifest and snapshot list.
@@ -8,8 +8,8 @@ import type { Entry, KeyedEntries } from '../../types'
  *
  * @returns An array of ordered choices.
  */
-export const orderChoices = (entries: Entry[], snapshotList: string[]) => {
-  const orderedChoices: KeyedEntries = {}
+export const orderChoices = (entries: Choice[], snapshotList: string[]) => {
+  const orderedChoices: KeyedChoices = {}
 
   for (const [index, choice] of snapshotList.entries()) {
     const entry = entries.find((entry) => entry.choice === choice)
