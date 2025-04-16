@@ -19,25 +19,10 @@ export const isValidManifest = (manifest: Manifest): boolean => {
 
   if (
     manifest.scoring.algorithm !== 'copeland' &&
-    manifest.scoring.algorithm !== 'variant:ens-spp2025a'
+    !manifest.scoring.algorithm.startsWith('copeland:')
   ) {
     console.error(
-      'Invalid algorithm in manifest.scoring. Must be either "copeland" or "variant:ens-spp2025a"',
-    )
-    return false
-  }
-
-  if (!manifest.scoring.tiebreaker) {
-    console.error('Tiebreaker not provided in manifest')
-    return false
-  }
-
-  if (
-    manifest.scoring.tiebreaker !== 'average-support' &&
-    manifest.scoring.tiebreaker !== 'total-support'
-  ) {
-    console.error(
-      'Invalid tiebreaker in manifest.scoring. Must be either "average-support" or "total-support"',
+      'Invalid algorithm in manifest.scoring. Must be either "copeland" or start with "copeland:"',
     )
     return false
   }

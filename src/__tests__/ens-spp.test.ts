@@ -1,4 +1,4 @@
-import { ensSpp2025a } from '../scoring/variants/ens-spp2025a'
+import { ensSpp2025a } from '../scoring/variants/ens-spp2'
 import type { Manifest } from '../types'
 import { createManifest, mapSnapshotKeysToChoices } from '../manifests'
 

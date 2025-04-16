@@ -1,7 +1,7 @@
 {
   "version": "0.4.0",
   "scoring": {
-    "algorithm": "copeland-weighted",
+    "algorithm": "copeland:ens-spp2",
     "copelandPoints": [2, 1, 0],
     "tiebreaker": "average-support",
     "unrankedFrom": "None Below",

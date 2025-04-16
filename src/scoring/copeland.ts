@@ -6,7 +6,7 @@ import type {
 } from '../types'
 import {
   calculatePoints,
-  fromChoiceCount,
+  fromChoiceList,
   doPairwiseComparison,
   sortResults,
 } from './pipeline'
@@ -25,7 +25,7 @@ export const copeland = (
   scoring: ScoringOptions,
   votes: Ballot[],
 ): SortedResults => {
-  return fromChoiceCount(Object.keys(choices).length)
+  return fromChoiceList(choices)
     .pipe((r) => doPairwiseComparison(r, votes))
     .pipe((r) => calculatePoints(r, scoring.copelandPoints))
     .pipe((r) => sortResults(r, scoring.tiebreaker))

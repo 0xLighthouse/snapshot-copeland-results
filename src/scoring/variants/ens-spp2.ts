@@ -9,7 +9,7 @@ import {
   deduplicateScoredResultsByGroup,
   doPairwiseComparison,
   findUnrankedMarkerKey,
-  fromChoiceCount,
+  fromChoiceList,
   omitFromKey,
   reorderVotesByGroup,
   sortResults,
@@ -36,7 +36,7 @@ export const ensSpp2025a = (
   const unrankedMarkerKey = findUnrankedMarkerKey(choices, scoring.unrankedFrom)
   processedVotes = omitFromKey(processedVotes, unrankedMarkerKey)
 
-  return fromChoiceCount(Object.keys(choices).length)
+  return fromChoiceList(choices)
     .pipe((r) => doPairwiseComparison(r, processedVotes))
     .pipe((r) => calculatePoints(r, scoring.copelandPoints))
     .pipe((r) => sortResults(r, scoring.tiebreaker))
