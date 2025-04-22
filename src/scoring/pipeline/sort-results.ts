@@ -16,13 +16,6 @@ export function sortResults(
     if (b.points !== a.points) {
       return b.points - a.points
     }
-
-    if (tiebreaker === 'average-support') {
-      return (
-        b.totalSupport / b.appearsInMatches -
-        a.totalSupport / a.appearsInMatches
-      )
-    }
     // Tiebreaker is total support
     return b.totalSupport - a.totalSupport
   })
