@@ -1,4 +1,4 @@
-import type { Ballot, PairwiseResult, PairwiseResults } from '../../types'
+import type { Ballot, PairwiseChoice, PairwiseChoices } from '../../types'
 
 /**
  * Calculate pairwise results for all projects based on voter preferences
@@ -10,9 +10,9 @@ import type { Ballot, PairwiseResult, PairwiseResults } from '../../types'
  * @returns PairwiseResults with wins, ties, losses
  */
 export const doPairwiseComparison = (
-  results: PairwiseResults,
+  results: PairwiseChoices,
   votes: Ballot[],
-): PairwiseResults => {
+): PairwiseChoices => {
   const pairwiseResults = results
   const pairs = generatePairs(results)
 
@@ -53,6 +53,14 @@ export const doPairwiseComparison = (
     pairwiseResults[choiceA].totalSupport += prefA
     pairwiseResults[choiceB].totalSupport += prefB
 
+    // Keep avg support updated
+    pairwiseResults[choiceA].avgSupport =
+      pairwiseResults[choiceA].totalSupport /
+      pairwiseResults[choiceA].appearsInMatches
+    pairwiseResults[choiceB].avgSupport =
+      pairwiseResults[choiceB].totalSupport /
+      pairwiseResults[choiceB].appearsInMatches
+
     // Record wins/losses/ties
     if (prefA > prefB) {
       pairwiseResults[choiceA].wins++
@@ -74,7 +82,7 @@ export const doPairwiseComparison = (
  * @param listOfChoices - List of choices from the current result set
  * @returns Array of [choiceA, choiceB] pairs where choiceA < choiceB
  */
-const generatePairs = (listOfChoices: PairwiseResults): [number, number][] => {
+const generatePairs = (listOfChoices: PairwiseChoices): [number, number][] => {
   const keys = Object.keys(listOfChoices)
   const pairs: [number, number][] = []
   for (let i = 0; i < keys.length; i++) {

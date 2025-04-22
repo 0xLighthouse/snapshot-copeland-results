@@ -1,4 +1,4 @@
-import type { PairwiseResult, PairwiseResults } from '../../types'
+import type { KeyedChoices, PairwiseChoice, PairwiseChoices } from '../../types'
 
 /**
  * A pipeline for doing Copeland method calculations, allowing you to modify
@@ -9,7 +9,7 @@ import type { PairwiseResult, PairwiseResults } from '../../types'
 type pipeFunction<T, R> = (arg: T) => R
 
 export const copelandPipe = <T>(initialValue: T) => ({
-  then: <R>(fn: pipeFunction<T, R>) => copelandPipe(fn(initialValue)),
+  pipe: <R>(fn: pipeFunction<T, R>) => copelandPipe(fn(initialValue)),
   results: () => initialValue,
 })
 
@@ -18,22 +18,22 @@ export const copelandPipe = <T>(initialValue: T) => ({
  * @param numberOfChoices - Total number of choices
  * @returns Empty PairwiseResults with zeroed values
  */
-export const createCopelandResults = (
-  numberOfChoices: number,
-): ReturnType<typeof copelandPipe<PairwiseResults>> => {
-  const results: PairwiseResults = {}
+export const fromChoiceList = (
+  choices: KeyedChoices,
+): ReturnType<typeof copelandPipe<PairwiseChoices>> => {
+  const results: PairwiseChoices = {}
 
   // Snapshot uses 1-based indexing when referencing choices
-  for (let i = 1; i <= numberOfChoices; i++) {
-    results[i] = {
-      key: i.toString(),
+  for (const key of Object.keys(choices)) {
+    results[Number(key)] = {
+      key: Number(key),
       wins: 0,
       ties: 0,
       losses: 0,
       points: 0,
       totalSupport: 0,
       appearsInMatches: 0,
-    } as PairwiseResult
+    } as PairwiseChoice
   }
 
   return copelandPipe(results)

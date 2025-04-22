@@ -1,4 +1,8 @@
-import { createDefaultManifest, isValidManifest } from './manifests'
+import {
+  createManifest,
+  isValidManifest,
+  mapSnapshotKeysToChoices,
+} from './manifests'
 import { copeland } from './scoring'
 import { calculateDiff } from './scoring/calculate-diff'
 import { fetchProposalMetadata, fetchProposalVotes } from './snapshot'
@@ -45,6 +49,8 @@ async function main() {
       isTestnet,
     })
 
+    const mappedChoices = mapSnapshotKeysToChoices(manifest, choices)
+
     console.log('--- PARAMS ---')
     console.log('Version:', VERSION)
     console.log('Choices:', choices)
@@ -61,14 +67,14 @@ async function main() {
     /**
      * 3. Calculate results
      */
-    const { results, orderedChoices } = copeland(manifest, choices, votes)
+    const sortedResults = copeland(mappedChoices, manifest.scoring, votes)
     console.log('\n--- RESULTS ---')
-    console.log(results)
+    console.log(sortedResults)
 
     /**
      * 4. Examples of how to show impact of new votes on an existing set of results
      */
-    const baseResults = results
+    const baseResults = sortedResults
     console.log('\n--- DISPLAY RESULTS WITH DIFF ---')
     const newVotes = [
       ...votes,
@@ -78,7 +84,7 @@ async function main() {
         voter: '0xSomeVoter',
       },
     ]
-    const { results: newResults } = copeland(manifest, choices, newVotes)
+    const newResults = copeland(mappedChoices, manifest.scoring, newVotes)
     const diff = calculateDiff(baseResults, newResults)
 
     // Example of how to show impact of new votes on an existing set of results
@@ -88,7 +94,7 @@ async function main() {
           ? `+${diff[Number(rank.key)].points}`
           : diff[Number(rank.key)].points
       console.log(
-        `${orderedChoices[Number(rank.key)].choice} ${rank.points} points (${pointLabel})`,
+        `${mappedChoices[Number(rank.key)].choice} ${rank.points} points (${pointLabel})`,
       )
     }
   } catch (error) {

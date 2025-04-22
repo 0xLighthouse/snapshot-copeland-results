@@ -1,4 +1,4 @@
-import type { Ballot, KeyedEntries } from '../../types'
+import type { Ballot, KeyedChoices } from '../../types'
 
 export const omitFromKey = (votes: Ballot[], fromKey: number) => {
   return votes.map((vote) => {
@@ -15,19 +15,19 @@ export const omitFromKey = (votes: Ballot[], fromKey: number) => {
   })
 }
 // Find which key represents the choice from which selections should be unranked
-export const findOmitFromKey = (
-  orderedChoices: KeyedEntries,
+export const findUnrankedMarkerKey = (
+  orderedChoices: KeyedChoices,
   unrankedFrom: string,
 ): number => {
-  let notBelowIndex = -1
+  let unrankedMarkerKey = -1
   for (const [index, entry] of Object.entries(orderedChoices)) {
     if (entry.choice === unrankedFrom) {
-      notBelowIndex = Number.parseInt(index)
+      unrankedMarkerKey = Number(index)
       break
     }
   }
-  if (notBelowIndex === -1) {
+  if (unrankedMarkerKey === -1) {
     throw new Error(`${unrankedFrom} not found in manifest entries`)
   }
-  return notBelowIndex
+  return unrankedMarkerKey
 }

@@ -1,9 +1,9 @@
-import { ensSpp2025a } from '../scoring/variants/ens-spp2025a'
+import { ensSpp2025a } from '../scoring/variants/ens-spp2'
 import type { Manifest } from '../types'
-import { createDefaultManifest } from '../manifests'
+import { createManifest, mapSnapshotKeysToChoices } from '../manifests'
 
 const manifest = {
-  ...createDefaultManifest(
+  ...createManifest(
     {
       algorithm: 'copeland',
       tiebreaker: 'average-support',
@@ -60,6 +60,8 @@ const snapshotChoices = [
   'None Below', // 7
 ]
 
+const choices = mapSnapshotKeysToChoices(manifest, snapshotChoices)
+
 const votes = [
   {
     choice: [2, 3, 4, 5, 7, 1, 6],
@@ -75,13 +77,11 @@ const votes = [
 
 describe('EnsSpp2025a', () => {
   it('presents ENS SPP2 2025a results as expected', () => {
-    const results = ensSpp2025a(manifest, snapshotChoices, votes)
+    const results = ensSpp2025a(choices, manifest.scoring, votes)
 
     // D and None Below should get no score and be tied for last
     // We should end up with only one selection for each group
-    expect(
-      results.results.map((r) => results.orderedChoices[Number(r.key)].choice),
-    ).toEqual([
+    expect(results.map((r) => choices[r.key].choice)).toEqual([
       'B (Basic)',
       'C (Basic)',
       'A (Extended)',

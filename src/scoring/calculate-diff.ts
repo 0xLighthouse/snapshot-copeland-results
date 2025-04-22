@@ -1,9 +1,9 @@
-import type { DiffResult, ScoredResult } from '../types'
+import type { DiffResult, SortedResults } from '../types'
 
 // Takes a new and old scored result and returns a diff of the changes for each entry
 export const calculateDiff = (
-  originalResults: ScoredResult,
-  newResults: ScoredResult,
+  originalResults: SortedResults,
+  newResults: SortedResults,
 ): DiffResult => {
   const diffs: DiffResult = {}
 
@@ -27,7 +27,7 @@ export const calculateDiff = (
 
     if (!originalHasVotes) {
       // If there were no vote previously, most things are not a diff
-      diffs[Number(key)] = {
+      diffs[key] = {
         key: key,
         rank: 0, // No change in rank
         wins: newResult.wins,
@@ -40,7 +40,7 @@ export const calculateDiff = (
       }
     } else {
       // Show the differences between the new and old results
-      diffs[Number(key)] = {
+      diffs[key] = {
         key: key,
         rank: newResultIndex - index,
         wins: newResult.wins - result.wins,

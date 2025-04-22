@@ -1,4 +1,4 @@
-import type { Ballot, Entry, KeyedEntries } from '../../types'
+import type { Ballot, Choice, KeyedChoices } from '../../types'
 
 /**
  * Following this algorithm: https://hackmd.io/@alextnetto/spp2-algorithm
@@ -11,7 +11,7 @@ import type { Ballot, Entry, KeyedEntries } from '../../types'
  * @returns An array of ballots with the choices reordered by group
  */
 export function reorderVotesByGroup(
-  orderedChoices: KeyedEntries,
+  orderedChoices: KeyedChoices,
   groupVariableName: string,
   votes: Ballot[],
 ): Ballot[] {
@@ -26,7 +26,7 @@ export function reorderVotesByGroup(
         throw new Error(`Choice ${choice} not found in orderedChoices`)
       }
 
-      const group = selection[groupVariableName as keyof Entry]
+      const group = selection[groupVariableName as keyof Choice]
       if (!group) {
         continue
       }
@@ -52,7 +52,7 @@ export function reorderVotesByGroup(
         throw new Error(`Choice ${choice} not found in orderedChoices`)
       }
 
-      const group = selection[groupVariableName as keyof Entry]
+      const group = selection[groupVariableName as keyof Choice]
       if (group) {
         for (const choice of groupLists.get(String(group)) ?? []) {
           if (added.has(choice)) {
