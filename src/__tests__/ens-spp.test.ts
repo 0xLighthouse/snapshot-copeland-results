@@ -1,7 +1,7 @@
 import {
-  ensSpp2,
+  ensSpp2Voting,
   ensSpp2GroupPreprocessing,
-} from '../scoring/variants/ens-spp2'
+} from '../ens-spp2/ens-voting'
 import type { Manifest } from '../types'
 import { createManifest, mapSnapshotKeysToChoices } from '../manifests'
 import { reorderVotesByMovingUp } from '../scoring/pipeline'
@@ -121,7 +121,7 @@ describe('EnsSpp2', () => {
       },
     ]
 
-    const results = ensSpp2(choices, manifest.scoring, votes)
+    const results = ensSpp2Voting(choices, manifest.scoring, votes)
 
     // D and None Below should get no score and be tied for last
     // We should end up with only one selection for each group
