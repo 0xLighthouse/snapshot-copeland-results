@@ -1,6 +1,10 @@
-import { ensSpp2, ensSpp2VotePreprocessing } from '../scoring/variants/ens-spp2'
+import {
+  ensSpp2,
+  ensSpp2GroupPreprocessing,
+} from '../scoring/variants/ens-spp2'
 import type { Manifest } from '../types'
 import { createManifest, mapSnapshotKeysToChoices } from '../manifests'
+import { reorderVotesByMovingUp } from '../scoring/pipeline'
 
 const manifest = {
   ...createManifest(
@@ -16,35 +20,49 @@ const manifest = {
         choice: 'A (Basic)', // 1
         group: 'vendorA',
         label: 'Basic Scope for 300k USD',
+        isEligibleFor2YearFunding: true,
+        isExtended: false,
       },
       {
         choice: 'A (Extended)', // 2
         group: 'vendorA',
         label: 'Basic Scope for 300k USD',
+        isEligibleFor2YearFunding: true,
+        isExtended: true,
       },
       {
         choice: 'B (Basic)', // 3
         group: 'vendorB',
         label: 'Basic Scope for 300k USD',
+        isEligibleFor2YearFunding: true,
+        isExtended: false,
       },
       {
         choice: 'C (Basic)', // 4
         group: 'vendorC',
         label: 'Basic Scope for 300k USD',
+        isEligibleFor2YearFunding: true,
+        isExtended: false,
       },
       {
         choice: 'C (Extended)', // 5
         group: 'vendorC',
         label: 'Basic Scope for 300k USD',
+        isEligibleFor2YearFunding: true,
+        isExtended: true,
       },
       {
         choice: 'D (Basic)', // 6
         group: 'vendorD',
         label: 'Basic Scope for 300k USD',
+        isEligibleFor2YearFunding: true,
+        isExtended: false,
       },
       {
         choice: 'None Below', // 7
         label: 'None Below',
+        isEligibleFor2YearFunding: false,
+        isExtended: false,
       },
     ],
   ),
@@ -71,8 +89,20 @@ describe('reorderVotesByMovingUp', () => {
         voter: '0x1',
       },
     ]
-    const results = ensSpp2VotePreprocessing(choices, manifest.scoring, votes)
-    expect(results[0].choice).toEqual([1, 2, 4, 5, 7])
+
+    const groupOrdering = ensSpp2GroupPreprocessing(choices, manifest.scoring)
+
+    expect(groupOrdering.get(2)).toEqual(1)
+    expect(groupOrdering.get(5)).toEqual(4)
+    expect(!groupOrdering.has(1))
+    expect(!groupOrdering.has(3))
+    expect(!groupOrdering.has(5))
+    expect(!groupOrdering.has(6))
+    expect(!groupOrdering.has(7))
+
+    const processedVotes = reorderVotesByMovingUp(groupOrdering, votes)
+
+    expect(processedVotes[0].choice).toEqual([1, 2, 4, 5, 7])
   })
 })
 

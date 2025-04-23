@@ -3,15 +3,14 @@ import type {
   KeyedChoices,
   SortedResults,
   ScoringOptions,
+  Choice,
 } from '../../types'
 import {
   calculatePoints,
-  deduplicateScoredResultsByGroup,
   doPairwiseComparison,
   findUnrankedMarkerKey,
   fromChoiceList,
   omitFromKey,
-  reorderVotesByGroup,
   getListOfGroups,
   getListOfChoicesForGroup,
   sortResults,
@@ -34,10 +33,26 @@ export const ensSpp2 = (
     throw new Error('groupBy and unrankedFrom are required for this algorithm')
   }
 
-  // Reorder votes by order enforcement map
-  let processedVotes = ensSpp2VotePreprocessing(choices, scoring, votes)
+  // All choices must include isEligibleFor2YearFunding and isExtended
+  for (const choice of Object.values(choices)) {
+    if (
+      choice.isEligibleFor2YearFunding === undefined ||
+      choice.isExtended === undefined
+    ) {
+      throw new Error(
+        'all choices must include isEligibleFor2YearFunding and isExtended',
+      )
+    }
+  }
 
-  // Remove votes at and below the unrankedFrom value
+  // Preprocess groups to ensure each group has one basic and one extended scope
+  // Create mapping for enforcing order
+  const groupOrdering = ensSpp2GroupPreprocessing(choices, scoring)
+
+  // Preprocess votes according to the map we made (basic must always be above extended)
+  let processedVotes = reorderVotesByMovingUp(groupOrdering, votes)
+
+  // Remove selections that are ranked below the unrankedFrom value in each ballot
   const unrankedMarkerKey = findUnrankedMarkerKey(choices, scoring.unrankedFrom)
   processedVotes = omitFromKey(processedVotes, unrankedMarkerKey, true)
 
@@ -48,11 +63,10 @@ export const ensSpp2 = (
     .results()
 }
 
-export const ensSpp2VotePreprocessing = (
+export const ensSpp2GroupPreprocessing = (
   choices: KeyedChoices,
   scoring: ScoringOptions,
-  votes: Ballot[],
-) => {
+): Map<number, number> => {
   // Add keys to choices so we can track them
   const choicesWithKeys = Array.from(Object.entries(choices)).map(
     ([key, value]) => ({
@@ -74,16 +88,31 @@ export const ensSpp2VotePreprocessing = (
       scoring.groupBy,
       groupName,
     )
-    // Find the basic scope, if there is one
-    const basicScope = choicesForGroup.find((c) => c.choice.includes('Basic'))
-    const extendedScope = choicesForGroup.find((c) =>
-      c.choice.includes('Extended'),
-    )
+
+    let basicScope: Choice | undefined = undefined
+    let extendedScope: Choice | undefined = undefined
+    choicesForGroup.map((c) => {
+      if (c.isExtended) {
+        if (extendedScope) {
+          throw new Error('multiple extended scopes in group')
+        }
+        extendedScope = c
+      } else {
+        if (basicScope) {
+          throw new Error('multiple basic scopes in group')
+        }
+        basicScope = c
+      }
+    })
+
     if (basicScope && extendedScope) {
       // Extended scope must always be preceded by basic scope
-      groupOrdering.set(extendedScope.key as number, basicScope.key as number)
+      groupOrdering.set(
+        (extendedScope as Choice).key as number,
+        (basicScope as Choice).key as number,
+      )
     }
   }
 
-  return reorderVotesByMovingUp(groupOrdering, votes)
+  return groupOrdering
 }
