@@ -5,6 +5,7 @@ import {
 import type { Manifest } from '../types'
 import { createManifest, mapSnapshotKeysToChoices } from '../manifests'
 import { reorderVotesByMovingUp } from '../scoring/pipeline'
+import { ensSpp2Allocation } from '../ens-spp2/ens-allocation'
 
 const manifest = {
   ...createManifest(
@@ -19,23 +20,26 @@ const manifest = {
       {
         choice: 'A (Basic)', // 1
         group: 'vendorA',
-        label: 'Basic Scope for 300k USD',
+        label: 'Basic Scope for 1M USD',
         isEligibleFor2YearFunding: true,
         isExtended: false,
+        budget: 1_000_000,
       },
       {
         choice: 'A (Extended)', // 2
         group: 'vendorA',
-        label: 'Basic Scope for 300k USD',
+        label: 'Basic Scope for 500k USD',
         isEligibleFor2YearFunding: true,
         isExtended: true,
+        budget: 500_000,
       },
       {
         choice: 'B (Basic)', // 3
         group: 'vendorB',
-        label: 'Basic Scope for 300k USD',
-        isEligibleFor2YearFunding: true,
+        label: 'Basic Scope for 500k USD',
+        isEligibleFor2YearFunding: false,
         isExtended: false,
+        budget: 500_000,
       },
       {
         choice: 'C (Basic)', // 4
@@ -43,6 +47,7 @@ const manifest = {
         label: 'Basic Scope for 300k USD',
         isEligibleFor2YearFunding: true,
         isExtended: false,
+        budget: 300_000,
       },
       {
         choice: 'C (Extended)', // 5
@@ -50,6 +55,7 @@ const manifest = {
         label: 'Basic Scope for 300k USD',
         isEligibleFor2YearFunding: true,
         isExtended: true,
+        budget: 3_000_000,
       },
       {
         choice: 'D (Basic)', // 6
@@ -57,12 +63,15 @@ const manifest = {
         label: 'Basic Scope for 300k USD',
         isEligibleFor2YearFunding: true,
         isExtended: false,
+        budget: 300_000,
       },
       {
         choice: 'None Below', // 7
+        group: 'none-below',
         label: 'None Below',
         isEligibleFor2YearFunding: false,
         isExtended: false,
+        budget: 0,
       },
     ],
   ),
@@ -134,5 +143,41 @@ describe('EnsSpp2', () => {
       'None Below',
       'D (Basic)',
     ])
+  })
+})
+
+describe('ensSpp2Allocation', () => {
+  it('allocates budgets as expected', () => {
+    const votes = [
+      {
+        choice: [1, 2, 3, 4, 5, 7, 6],
+        votingPower: 100_000,
+        voter: '0x1',
+      },
+    ]
+
+    const voteResults = ensSpp2Voting(choices, manifest.scoring, votes)
+
+    const results = ensSpp2Allocation(choices, manifest.scoring, voteResults)
+
+    expect(results[1].fundedFrom1YearStream).toEqual(0)
+    expect(results[1].fundedFrom2YearStream).toEqual(1_000_000)
+
+    expect(results[2].fundedFrom1YearStream).toEqual(0)
+    expect(results[2].fundedFrom2YearStream).toEqual(500_000)
+
+    // 2 year stream is now exhausted
+
+    expect(results[3].fundedFrom1YearStream).toEqual(500_000)
+    expect(results[3].fundedFrom2YearStream).toEqual(0)
+
+    expect(results[4].fundedFrom1YearStream).toEqual(300_000) // Eligible for 2 year, but pushed into 1 year
+    expect(results[4].fundedFrom2YearStream).toEqual(0)
+
+    expect(results[5].fundedFrom1YearStream).toEqual(0) // Does not fit in budget
+    expect(results[5].fundedFrom2YearStream).toEqual(0)
+
+    expect(results[6].fundedFrom1YearStream).toEqual(0) // Placed below none below
+    expect(results[6].fundedFrom2YearStream).toEqual(0)
   })
 })

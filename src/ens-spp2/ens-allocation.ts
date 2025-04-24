@@ -32,7 +32,7 @@ export const ensSpp2Allocation = (
       choice.budget === undefined
     ) {
       throw new Error(
-        'all choices must include isEligibleFor2YearFunding, isExtended, group, and budget',
+        `${choice.choice} must include isEligibleFor2YearFunding, isExtended, group, and budget`,
       )
     }
   }
