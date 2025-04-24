@@ -146,7 +146,7 @@ describe('EnsSpp2', () => {
   })
 })
 
-describe('ensSpp2Allocation', () => {
+describe('ensSpp2CoreAllocation', () => {
   it('allocates budgets as expected', () => {
     const votes = [
       {
@@ -181,3 +181,35 @@ describe('ensSpp2Allocation', () => {
     expect(results[6].fundedFrom2YearStream).toEqual(0)
   })
 })
+
+// describe('ensSpp2AllocationEdgeCase', () => {
+//   it('rejects a project whose extended budget fits but basic budget does not', () => {
+//     const votes = [
+//       {
+//         choice: [3, 4, 5, 1, 2, 6, 7],
+//         votingPower: 100_000,
+//         voter: '0x1',
+//       },
+//     ]
+
+//     const voteResults = ensSpp2Voting(choices, manifest.scoring, votes)
+
+//     const results = ensSpp2Allocation(choices, manifest.scoring, voteResults)
+
+//     // Option 1 (basic) is for 1M which does not fit. Option 2 (extended) is for 500k which does.
+//     // However, neither should be funded because extended can't be funded without funding basic first.
+
+//     expect(results[3].fundedFrom1YearStream).toEqual(500_000)
+//     expect(results[3].fundedFrom2YearStream).toEqual(0)
+
+//     expect(results[4].fundedFrom1YearStream).toEqual(0) // Eligible for 2 year, but pushed into 1 year
+//     expect(results[4].fundedFrom2YearStream).toEqual(300_000)
+
+//     expect(results[5].fundedFrom1YearStream).toEqual(30) // Does not fit in budget
+//     expect(results[5].fundedFrom2YearStream).toEqual(0)
+
+//     // After entries 3, 4, and 5 are funded, there will be 700k left.
+//     expect(results[6].fundedFrom1YearStream).toEqual(0) // Placed below none below
+//     expect(results[6].fundedFrom2YearStream).toEqual(0)
+//   })
+// })

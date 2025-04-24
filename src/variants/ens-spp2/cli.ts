@@ -47,10 +47,15 @@ async function main() {
       isTestnet,
     })
 
-    console.log('--- PARAMS ---')
-    console.log('Version:', VERSION)
-    console.log('Choices:', choices)
-    console.log('Manifest:', manifest)
+    console.log('---                       ---')
+    console.log('--- SNAPSHOT COPELAND CLI ---')
+    console.log('---                       ---')
+    console.log('CLI Version:', VERSION)
+    console.log('Manifest Version:', manifest.version)
+    console.log('Choices:')
+    for (const [index, choice] of choices.entries()) {
+      console.log(`  ${index + 1}: ${choice}`)
+    }
 
     /**
      * 2. Fetch proposal votes from snapshot

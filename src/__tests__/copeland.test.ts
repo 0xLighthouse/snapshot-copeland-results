@@ -174,9 +174,6 @@ describe('handleUnrankedFrom', () => {
 
   it('removes choices below None Below', () => {
     const choices = mapSnapshotKeysToChoices(manifest, snapshotChoices)
-
-    console.log('choices', choices)
-
     const results = copeland(choices, manifest.scoring, votes)
 
     // A should come last even though it ranked higher in two ballots, because it was below the None Below marker.
