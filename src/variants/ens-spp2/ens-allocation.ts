@@ -3,8 +3,8 @@ import type {
   KeyedChoices,
   ScoringOptions,
   SortedResults,
-} from '../types'
-import { findUnrankedMarkerKey } from '../scoring/pipeline'
+} from '../../types'
+import { findUnrankedMarkerKey } from '../../scoring/pipeline'
 export interface AllocatedChoice extends Choice {
   fundedFrom1YearStream: number
   fundedFrom2YearStream: number

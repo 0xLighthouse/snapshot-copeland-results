@@ -4,7 +4,7 @@ import type {
   SortedResults,
   ScoringOptions,
   Choice,
-} from '../types'
+} from '../../types'
 import {
   calculatePoints,
   doPairwiseComparison,
@@ -15,7 +15,7 @@ import {
   getListOfChoicesForGroup,
   sortResults,
   reorderVotesByMovingUp,
-} from '../scoring/pipeline'
+} from '../../scoring/pipeline'
 
 // This is an implementation of a custom algorithm designed for the ENS SPP2 2025 vote.
 // Option 1, grouping basic and extended scopes next to each other: https://hackmd.io/@alextnetto/spp2-algorithm

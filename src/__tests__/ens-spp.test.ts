@@ -1,11 +1,11 @@
 import {
   ensSpp2Voting,
   ensSpp2GroupPreprocessing,
-} from '../ens-spp2/ens-voting'
+} from '../variants/ens-spp2/ens-voting'
 import type { Manifest } from '../types'
 import { createManifest, mapSnapshotKeysToChoices } from '../manifests'
 import { reorderVotesByMovingUp } from '../scoring/pipeline'
-import { ensSpp2Allocation } from '../ens-spp2/ens-allocation'
+import { ensSpp2Allocation } from '../variants/ens-spp2/ens-allocation'
 
 const manifest = {
   ...createManifest(
