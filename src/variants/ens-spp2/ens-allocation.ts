@@ -76,8 +76,8 @@ export const ensSpp2Allocation = (
       // Allocate this budget to the 2-year stream
       allocatedChoices[choice.key].fundedFrom2YearStream =
         entry.budget as number
-      remaining2YearBudget -= entry.budget as number
       remainingTotalBudget -= entry.budget as number
+      remaining2YearBudget -= entry.budget as number
       fundedBasicGroupNames.add(entry.group as string)
       continue
     }
@@ -87,6 +87,12 @@ export const ensSpp2Allocation = (
       allocatedChoices[choice.key].fundedFrom1YearStream =
         entry.budget as number
       remainingTotalBudget -= entry.budget as number
+      // If this causes the total budget to fall below what we have reserved for the 2-year stream,
+      // we need to adjust the 2-year budget to match the remaining total budget.
+      remaining2YearBudget =
+        remaining2YearBudget > remainingTotalBudget
+          ? remainingTotalBudget
+          : remaining2YearBudget
       fundedBasicGroupNames.add(entry.group as string)
     }
 
