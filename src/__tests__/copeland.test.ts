@@ -1,5 +1,6 @@
 import { copeland, reorderVotesByGroup } from '../scoring'
 import { createManifest, mapSnapshotKeysToChoices } from '../manifests'
+
 describe('weightTiebreak', () => {
   const manifest = {
     ...createManifest(
@@ -119,6 +120,68 @@ describe('reorder votes by group', () => {
     expect(results.map((r) => r.choice)).toEqual([
       [2, 1, 3, 4, 5, 6], // A's and C's together, A extended and C basic are still first.
       [3, 4, 5, 2, 1, 6],
+    ])
+  })
+})
+
+describe('handleUnrankedFrom', () => {
+  const manifest = {
+    ...createManifest(
+      {
+        tiebreaker: 'average-support',
+        unrankedFrom: 'None Below',
+      },
+      [
+        {
+          choice: 'A',
+        },
+        {
+          choice: 'B',
+        },
+        {
+          choice: 'C',
+        },
+        {
+          choice: 'D',
+        },
+        {
+          choice: 'None Below',
+        },
+      ],
+    ),
+  }
+
+  // Include all choices as ordered by snapshot
+  const snapshotChoices = ['A', 'B', 'C', 'D', 'None Below']
+
+  const votes = [
+    {
+      choice: [2, 3, 4, 5, 1],
+      votingPower: 1,
+      voter: '0x1',
+    },
+    {
+      choice: [3, 2, 5, 1, 4],
+      votingPower: 1,
+      voter: '0x2',
+    },
+    {
+      choice: [3, 2, 5, 1, 4],
+      votingPower: 1,
+      voter: '0x3',
+    },
+  ]
+
+  it('removes choices below None Below', () => {
+    const choices = mapSnapshotKeysToChoices(manifest, snapshotChoices)
+    const results = copeland(choices, manifest.scoring, votes)
+
+    // A should come last even though it ranked higher in two ballots, because it was below the None Below marker.
+    expect(results.map((r) => choices[r.key].choice)).toEqual([
+      'C',
+      'B',
+      'D',
+      'A',
     ])
   })
 })

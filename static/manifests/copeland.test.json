@@ -1,0 +1,67 @@
+{
+  "version": "0.5.0",
+  "scoring": {
+    "algorithm": "copeland",
+    "copelandPoints": [2, 1, 0],
+    "tiebreaker": "total-support",
+    "unrankedFrom": "None Below",
+    "groupBy": "group"
+  },
+  "entries": [
+    {
+      "choice": "Red Koala (A)",
+      "group": "red-koala",
+      "label": "Project A"
+    },
+    {
+      "choice": "Blue Penguin (B)",
+      "group": "blue-penguin",
+      "label": "Project B"
+    },
+    {
+      "choice": "Green Otter (C)",
+      "group": "green-otter",
+      "label": "Project C"
+    },
+    {
+      "choice": "Green Otter (D)",
+      "group": "green-otter",
+      "label": "Project D"
+    },
+    {
+      "choice": "Orange Lemur (E)",
+      "group": "orange-lemur",
+      "label": "Project E"
+    },
+    {
+      "choice": "Orange Lemur (F)",
+      "group": "orange-lemur",
+      "label": "Project F"
+    },
+    {
+      "choice": "Purple Owl (G)",
+      "group": "purple-owl",
+      "label": "Project G"
+    },
+    {
+      "choice": "Purple Owl (H)",
+      "group": "purple-owl",
+      "label": "Project H"
+    },
+    {
+      "choice": "Silver Fox (I)",
+      "group": "silver-fox",
+      "label": "Project I"
+    },
+    {
+      "choice": "Aqua Dolphin (J)",
+      "group": "aqua-dolphin",
+      "label": "Project J"
+    },
+    {
+      "choice": "None Below",
+      "group": "none-below",
+      "label": "None Below"
+    }
+  ]
+}

@@ -9,6 +9,9 @@ import {
   fromChoiceList,
   doPairwiseComparison,
   sortResults,
+  omitFromKey,
+  findUnrankedMarkerKey,
+  omitChoiceByKey,
 } from './pipeline'
 
 /**
@@ -25,8 +28,16 @@ export const copeland = (
   scoring: ScoringOptions,
   votes: Ballot[],
 ): SortedResults => {
-  return fromChoiceList(choices)
-    .pipe((r) => doPairwiseComparison(r, votes))
+  let processedVotes = votes
+  let processedChoices = choices
+  if (scoring.unrankedFrom) {
+    const unrankedFrom = findUnrankedMarkerKey(choices, scoring.unrankedFrom)
+    processedVotes = omitFromKey(votes, unrankedFrom)
+    processedChoices = omitChoiceByKey(choices, unrankedFrom)
+  }
+
+  return fromChoiceList(processedChoices)
+    .pipe((r) => doPairwiseComparison(r, processedVotes))
     .pipe((r) => calculatePoints(r, scoring.copelandPoints))
     .pipe((r) => sortResults(r, scoring.tiebreaker))
     .results()

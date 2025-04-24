@@ -10,11 +10,11 @@ import type { Ballot, Choice, KeyedChoices } from '../../types'
  * @param votes - The ballots to reorder
  * @returns An array of ballots with the choices reordered by group
  */
-export function reorderVotesByGroup(
+export const reorderVotesByGroup = (
   orderedChoices: KeyedChoices,
   groupVariableName: string,
   votes: Ballot[],
-): Ballot[] {
+): Ballot[] => {
   const reorderedVotes: Ballot[] = []
   for (const vote of votes) {
     // Create a map that lists all choices for that group, in the order they appear in the vote.
@@ -75,4 +75,77 @@ export function reorderVotesByGroup(
   }
 
   return reorderedVotes
+}
+
+// If two choices on the ballot appear as a k-v pair in the order map, then choice v will be moved above choice k.
+// E.g. { 1: 2} means that any ballots in which 2 comes after 1, we will move 2 above 1.
+export const reorderVotesByMovingUp = (
+  order: Map<number, number>,
+  votes: Ballot[],
+): Ballot[] => {
+  const reorderedVotes: Ballot[] = []
+  for (const ballot of votes) {
+    const newChoices: number[] = []
+    const alreadyMoved = new Set<number>()
+
+    for (const [index, choice] of ballot.choice.entries()) {
+      if (alreadyMoved.has(choice)) {
+        continue
+      }
+
+      if (order.has(choice)) {
+        /// Iterate over the remaining choices in the vote, and move them up if they are in the order map.
+        for (let i = index + 1; i < ballot.choice.length; i++) {
+          if (order.get(choice) === ballot.choice[i]) {
+            newChoices.push(ballot.choice[i])
+            alreadyMoved.add(ballot.choice[i])
+            break
+          }
+        }
+      }
+
+      newChoices.push(choice)
+      alreadyMoved.add(choice)
+    }
+
+    reorderedVotes.push({
+      ...ballot,
+      choice: newChoices,
+    })
+  }
+
+  return reorderedVotes
+}
+
+// Returns all unique groups in the orderedChoices
+export const getListOfGroups = (
+  orderedChoices: KeyedChoices,
+  groupVariableName: string,
+): string[] => {
+  const groups: string[] = []
+  for (const choice of Object.values(orderedChoices)) {
+    const group = choice[groupVariableName as keyof Choice]
+    if (group) {
+      groups.push(String(group))
+    }
+  }
+
+  return groups
+}
+
+// Returns all choices for a given group, injecting the key
+export const getListOfChoicesForGroup = (
+  orderedChoices: KeyedChoices,
+  groupVariableName: string,
+  group: string,
+): Choice[] => {
+  const choices: Choice[] = []
+  for (const [key, value] of Object.entries(orderedChoices)) {
+    const choiceGroup = value[groupVariableName as keyof Choice]
+    if (choiceGroup === group) {
+      choices.push({ key: Number(key), ...value })
+    }
+  }
+
+  return choices
 }
