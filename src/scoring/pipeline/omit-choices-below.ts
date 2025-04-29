@@ -34,8 +34,11 @@ export const findUnrankedMarkerKey = (
   unrankedFrom: string,
 ): number => {
   let unrankedMarkerKey = -1
+
+  const normalise = (str: string) => str.toLowerCase().trim()
+
   for (const [index, entry] of Object.entries(orderedChoices)) {
-    if (entry.choice === unrankedFrom) {
+    if (normalise(entry.choice) === normalise(unrankedFrom)) {
       unrankedMarkerKey = Number(index)
       break
     }
