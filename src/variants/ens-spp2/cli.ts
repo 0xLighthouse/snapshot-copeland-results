@@ -110,7 +110,7 @@ async function main() {
         { content: entry.losses } as Cell,
         { content: entry.totalSupport } as Cell,
         { content: entry.points } as Cell,
-        { content: allocation.fundedFrom1YearStream } as Cell,
+        { content: allocation.funding1Year + allocation.funding2Year } as Cell,
       ])
     })
 

@@ -160,56 +160,65 @@ describe('ensSpp2CoreAllocation', () => {
 
     const results = ensSpp2Allocation(choices, manifest.scoring, voteResults)
 
-    expect(results[1].fundedFrom1YearStream).toEqual(0)
-    expect(results[1].fundedFrom2YearStream).toEqual(1_000_000)
+    expect(results[0].funding1Year).toEqual(0)
+    expect(results[0].funding2Year).toEqual(1_000_000)
 
-    expect(results[2].fundedFrom1YearStream).toEqual(0)
-    expect(results[2].fundedFrom2YearStream).toEqual(500_000)
+    expect(results[1].funding1Year).toEqual(0)
+    expect(results[1].funding2Year).toEqual(500_000)
 
     // 2 year stream is now exhausted
 
-    expect(results[3].fundedFrom1YearStream).toEqual(500_000)
-    expect(results[3].fundedFrom2YearStream).toEqual(0)
+    expect(results[2].funding1Year).toEqual(500_000)
+    expect(results[2].funding2Year).toEqual(0)
 
-    expect(results[4].fundedFrom1YearStream).toEqual(300_000) // Eligible for 2 year, but pushed into 1 year
-    expect(results[4].fundedFrom2YearStream).toEqual(0)
+    expect(results[3].funding1Year).toEqual(300_000) // Eligible for 2 year, but pushed into 1 year
+    expect(results[3].funding2Year).toEqual(0)
 
-    expect(results[5].fundedFrom1YearStream).toEqual(0) // Does not fit in budget
-    expect(results[5].fundedFrom2YearStream).toEqual(0)
+    expect(results[4].funding1Year).toEqual(0) // Does not fit in budget
+    expect(results[4].funding2Year).toEqual(0)
 
-    expect(results[6].fundedFrom1YearStream).toEqual(0) // Placed below none below
-    expect(results[6].fundedFrom2YearStream).toEqual(0)
+    expect(results[5].funding1Year).toEqual(0) // Placed below none below
+    expect(results[5].funding2Year).toEqual(0)
   })
 })
 
-// describe('ensSpp2AllocationEdgeCase', () => {
-//   it('rejects a project whose extended budget fits but basic budget does not', () => {
-//     const votes = [
-//       {
-//         choice: [3, 4, 5, 1, 2, 6, 7],
-//         votingPower: 100_000,
-//         voter: '0x1',
-//       },
-//     ]
+describe('ensSpp2AllocationEdgeCase', () => {
+  it('rejects a project whose extended budget fits but basic budget does not', () => {
+    const votes = [
+      {
+        choice: [3, 4, 5, 1, 2, 6, 7],
+        votingPower: 100_000,
+        voter: '0x1',
+      },
+    ]
 
-//     const voteResults = ensSpp2Voting(choices, manifest.scoring, votes)
+    const voteResults = ensSpp2Voting(choices, manifest.scoring, votes)
 
-//     const results = ensSpp2Allocation(choices, manifest.scoring, voteResults)
+    const results = ensSpp2Allocation(choices, manifest.scoring, voteResults)
 
-//     // Option 1 (basic) is for 1M which does not fit. Option 2 (extended) is for 500k which does.
-//     // However, neither should be funded because extended can't be funded without funding basic first.
+    // Option 3 comes in first and is added to 1-year stream
+    expect(results[0].funding1Year).toEqual(500_000)
+    expect(results[0].funding2Year).toEqual(0)
 
-//     expect(results[3].fundedFrom1YearStream).toEqual(500_000)
-//     expect(results[3].fundedFrom2YearStream).toEqual(0)
+    /// Option 4 fits 2-year stream
+    expect(results[1].funding1Year).toEqual(0)
+    expect(results[1].funding2Year).toEqual(300_000)
 
-//     expect(results[4].fundedFrom1YearStream).toEqual(0) // Eligible for 2 year, but pushed into 1 year
-//     expect(results[4].fundedFrom2YearStream).toEqual(300_000)
+    // Option 5 (extended) does not and is added to 1-year stream.
+    expect(results[2].funding1Year).toEqual(3_000_000)
+    expect(results[2].funding2Year).toEqual(0)
 
-//     expect(results[5].fundedFrom1YearStream).toEqual(30) // Does not fit in budget
-//     expect(results[5].fundedFrom2YearStream).toEqual(0)
+    // After the above (total of 3.8M), there will be 700k left.
+    // Option 1 (basic) does not fit the budget, so it is skipped.
+    expect(results[3].funding1Year).toEqual(0)
+    expect(results[3].funding2Year).toEqual(0)
 
-//     // After entries 3, 4, and 5 are funded, there will be 700k left.
-//     expect(results[6].fundedFrom1YearStream).toEqual(0) // Placed below none below
-//     expect(results[6].fundedFrom2YearStream).toEqual(0)
-//   })
-// })
+    // Option 2 (extended) would fit the budget, but since the paired basic budget was not funded, it is also skipped.
+    expect(results[4].funding1Year).toEqual(0)
+    expect(results[4].funding2Year).toEqual(0)
+
+    // Option 6 does fit, so it is added even though options 1 and 2 missed out.
+    expect(results[5].funding1Year).toEqual(0)
+    expect(results[5].funding2Year).toEqual(300_000)
+  })
+})

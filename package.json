@@ -1,6 +1,6 @@
 {
   "name": "@0xLighthouse/snapshot-copeland-results",
-  "version": "1.4.0",
+  "version": "1.5.5",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "publishConfig": {
