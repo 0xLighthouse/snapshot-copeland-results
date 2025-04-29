@@ -7,8 +7,8 @@ import type {
 } from '../../types'
 import { findUnrankedMarkerKey } from '../../scoring/pipeline'
 export interface AllocatedChoice extends Choice {
-  fundedFrom1YearStream: number
-  fundedFrom2YearStream: number
+  funding1Year: number
+  funding2Year: number
 }
 
 export type AllocatedChoices = {
@@ -16,8 +16,9 @@ export type AllocatedChoices = {
 }
 
 export type PairwiseChoiceWithAllocation = PairwiseChoice & {
-  fundedFrom1YearStream: number
-  fundedFrom2YearStream: number
+  funding1Year: number
+  funding2Year: number
+  isWinner: boolean
 }
 
 export type SortedResultsWithAllocation = PairwiseChoiceWithAllocation[]
@@ -50,8 +51,8 @@ export const ensSpp2Allocation = (
       key,
       {
         ...choice,
-        fundedFrom1YearStream: 0,
-        fundedFrom2YearStream: 0,
+        funding1Year: 0,
+        funding2Year: 0,
       },
     ]),
   )
@@ -87,8 +88,7 @@ export const ensSpp2Allocation = (
       remaining2YearBudget >= (entry.budget as number)
     ) {
       // Allocate this budget to the 2-year stream
-      allocatedChoices[choice.key].fundedFrom2YearStream =
-        entry.budget as number
+      allocatedChoices[choice.key].funding2Year = entry.budget as number
       remaining2YearBudget -= entry.budget as number
       remainingTotalBudget -= entry.budget as number
       fundedBasicGroupNames.add(entry.group as string)
@@ -97,8 +97,7 @@ export const ensSpp2Allocation = (
 
     if (remainingTotalBudget >= (entry.budget as number)) {
       // Allocate this budget to the 1-year stream
-      allocatedChoices[choice.key].fundedFrom1YearStream =
-        entry.budget as number
+      allocatedChoices[choice.key].funding1Year = entry.budget as number
       remainingTotalBudget -= entry.budget as number
       fundedBasicGroupNames.add(entry.group as string)
     }
@@ -109,8 +108,12 @@ export const ensSpp2Allocation = (
   const sortedResultsWithAllocation: SortedResultsWithAllocation =
     rankedChoices.map((choice) => ({
       ...choice,
-      fundedFrom1YearStream: allocatedChoices[choice.key].fundedFrom1YearStream,
-      fundedFrom2YearStream: allocatedChoices[choice.key].fundedFrom2YearStream,
+      funding1Year: allocatedChoices[choice.key].funding1Year,
+      funding2Year: allocatedChoices[choice.key].funding2Year,
+      isWinner:
+        allocatedChoices[choice.key].funding1Year +
+          allocatedChoices[choice.key].funding2Year >
+        0,
     }))
 
   return sortedResultsWithAllocation
