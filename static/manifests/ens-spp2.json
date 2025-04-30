@@ -4,92 +4,60 @@
     "algorithm": "copeland:ens-spp2",
     "copelandPoints": [2, 1, 0],
     "tiebreaker": "total-support",
-    "unrankedFrom": "None Below",
+    "unrankedFrom": "None below",
     "groupBy": "group"
   },
   "entries": [
     {
-      "choice": "AlphaGrowth (Basic)",
-      "group": "alphagrowth",
-      "label": "Basic Scope for 400k USD",
-      "budget": 400000,
+      "choice": "None below",
+      "group": "none-below",
+      "label": "None below",
+      "budget": 0,
       "isEligibleFor2YearFunding": false,
       "isExtended": false
     },
     {
-      "choice": "AlphaGrowth (Extended)",
-      "group": "alphagrowth",
-      "label": "Extended Scope for additional 400k USD",
-      "budget": 400000,
-      "isEligibleFor2YearFunding": false,
-      "isExtended": true
-    },
-    {
-      "choice": "ZK.Email (Basic)",
-      "group": "zk-email",
-      "label": "Basic Scope for 400k USD",
-      "budget": 400000,
-      "isEligibleFor2YearFunding": false,
-      "isExtended": false
-    },
-    {
-      "choice": "ZK.Email (Extended)",
-      "group": "zk-email",
-      "label": "Extended Scope for additional 400k USD",
-      "budget": 400000,
-      "isEligibleFor2YearFunding": false,
-      "isExtended": true
-    },
-    {
-      "choice": "Blockful (Basic)",
-      "group": "blockful",
-      "label": "Basic Scope for 400k USD",
-      "budget": 400000,
-      "isEligibleFor2YearFunding": false,
-      "isExtended": false
-    },
-    {
-      "choice": "Blockful (Extended)",
-      "group": "blockful",
-      "label": "Extended Scope for additional 300k USD",
-      "budget": 300000,
-      "isEligibleFor2YearFunding": false,
-      "isExtended": true
-    },
-    {
-      "choice": "Unruggable (Basic)",
-      "group": "unruggable",
-      "label": "Basic Scope for 400k USD",
-      "budget": 400000,
+      "choice": "EthLimo (Basic)",
+      "group": "ethlimo",
+      "label": "Basic Scope for 700k USD",
+      "budget": 700000,
       "isEligibleFor2YearFunding": true,
       "isExtended": false
     },
     {
-      "choice": "Unruggable (Extended)",
-      "group": "unruggable",
-      "label": "Extended Scope for additional 300k USD",
-      "budget": 300000,
+      "choice": "EthLimo (Ext)",
+      "group": "ethlimo",
+      "label": "Extended Scope for additional 100k USD",
+      "budget": 100000,
       "isEligibleFor2YearFunding": true,
       "isExtended": true
     },
     {
-      "choice": "3DNS (Basic)",
-      "group": "3dns",
-      "label": "Basic Scope for 500k USD",
-      "budget": 500000,
+      "choice": "Lighthouse Labs",
+      "group": "lighthouse-labs",
+      "label": "Basic Scope for 300k USD",
+      "budget": 300000,
       "isEligibleFor2YearFunding": false,
       "isExtended": false
     },
     {
-      "choice": "3DNS (Extended)",
-      "group": "3dns",
-      "label": "Extended Scope for additional 200k USD",
-      "budget": 200000,
+      "choice": "PYOR",
+      "group": "pyor",
+      "label": "Basic Scope for 300k USD",
+      "budget": 300000,
       "isEligibleFor2YearFunding": false,
-      "isExtended": true
+      "isExtended": false
     },
     {
-      "choice": "Ethereum.Identity.Foundation (Basic)",
+      "choice": "JustaName",
+      "group": "justaname",
+      "label": "Basic Scope for 300k USD",
+      "budget": 300000,
+      "isEligibleFor2YearFunding": false,
+      "isExtended": false
+    },
+    {
+      "choice": "Ethereum.Identity.Foun...(Basic)",
       "group": "ethereum-identity-foundation",
       "label": "Basic Scope for 500k USD",
       "budget": 500000,
@@ -97,59 +65,11 @@
       "isExtended": false
     },
     {
-      "choice": "Ethereum.Identity.Foundation (Extended)",
+      "choice": "Ethereum.Identity.Foun...(Ext)",
       "group": "ethereum-identity-foundation",
       "label": "Extended Scope for additional 200k USD",
       "budget": 200000,
       "isEligibleFor2YearFunding": true,
-      "isExtended": true
-    },
-    {
-      "choice": "JustaName (Basic)",
-      "group": "justaname",
-      "label": "Basic Scope for 400k USD",
-      "budget": 400000,
-      "isEligibleFor2YearFunding": false,
-      "isExtended": false
-    },
-    {
-      "choice": "JustaName (Extended)",
-      "group": "justaname",
-      "label": "Extended Scope for additional 200k USD",
-      "budget": 200000,
-      "isEligibleFor2YearFunding": false,
-      "isExtended": true
-    },
-    {
-      "choice": "NameHash.Labs (Basic)",
-      "group": "namehash-labs",
-      "label": "Basic Scope for 1.1M USD",
-      "budget": 1100000,
-      "isEligibleFor2YearFunding": false,
-      "isExtended": false
-    },
-    {
-      "choice": "NameHash.Labs (Extended)",
-      "group": "namehash-labs",
-      "label": "Extended Scope for additional 200k USD",
-      "budget": 200000,
-      "isEligibleFor2YearFunding": false,
-      "isExtended": true
-    },
-    {
-      "choice": "Namespace (Basic)",
-      "group": "namespace",
-      "label": "Basic Scope for 400k USD",
-      "budget": 400000,
-      "isEligibleFor2YearFunding": false,
-      "isExtended": false
-    },
-    {
-      "choice": "Namespace (Extended)",
-      "group": "namespace",
-      "label": "Extended Scope for additional 200k USD",
-      "budget": 200000,
-      "isEligibleFor2YearFunding": false,
       "isExtended": true
     },
     {
@@ -161,12 +81,44 @@
       "isExtended": false
     },
     {
-      "choice": "Agora (Extended)",
+      "choice": "Agora (Ext)",
       "group": "agora",
       "label": "Extended Scope for additional 100k USD",
       "budget": 100000,
       "isEligibleFor2YearFunding": false,
       "isExtended": true
+    },
+    {
+      "choice": "AlphaGrowth (Basic)",
+      "group": "alphagrowth",
+      "label": "Basic Scope for 400k USD",
+      "budget": 400000,
+      "isEligibleFor2YearFunding": false,
+      "isExtended": false
+    },
+    {
+      "choice": "AlphaGrowth (Ext)",
+      "group": "alphagrowth",
+      "label": "Extended Scope for additional 400k USD",
+      "budget": 400000,
+      "isEligibleFor2YearFunding": false,
+      "isExtended": true
+    },
+    {
+      "choice": "Web3bio",
+      "group": "web3bio",
+      "label": "Basic Scope for 500k USD",
+      "budget": 500000,
+      "isEligibleFor2YearFunding": false,
+      "isExtended": false
+    },
+    {
+      "choice": "GovPal",
+      "group": "govpal",
+      "label": "Basic Scope for 300k USD",
+      "budget": 300000,
+      "isEligibleFor2YearFunding": false,
+      "isExtended": false
     },
     {
       "choice": "dWeb.host (Basic)",
@@ -177,7 +129,7 @@
       "isExtended": false
     },
     {
-      "choice": "dWeb.host (Extended)",
+      "choice": "dWeb.host (Ext)",
       "group": "dweb-host",
       "label": "Extended Scope for additional 100k USD",
       "budget": 100000,
@@ -185,78 +137,31 @@
       "isExtended": true
     },
     {
-      "choice": "EthLimo (Basic)",
-      "group": "ethlimo",
-      "label": "Basic Scope for 700k USD",
-      "budget": 700000,
-      "isEligibleFor2YearFunding": true,
-      "isExtended": false
-    },
-    {
-      "choice": "EthLimo (Extended)",
-      "group": "ethlimo",
-      "label": "Extended Scope for additional 100k USD",
-      "budget": 100000,
-      "isEligibleFor2YearFunding": true,
-      "isExtended": true
-    },
-    {
-      "choice": "Wildcard.Labs (Basic)",
-      "group": "wildcard-labs",
-      "label": "Basic Scope for 300k USD",
-      "budget": 300000,
-      "isEligibleFor2YearFunding": false,
-      "isExtended": false
-    },
-    {
-      "choice": "Wildcard.Labs (Extended)",
-      "group": "wildcard-labs",
-      "label": "Extended Scope for additional 100k USD",
-      "budget": 100000,
-      "isEligibleFor2YearFunding": false,
-      "isExtended": true
-    },
-    {
-      "choice": "Curia.Lab (Basic)",
-      "group": "curia-lab",
-      "label": "Basic Scope for 300k USD",
-      "budget": 300000,
-      "isEligibleFor2YearFunding": false,
-      "isExtended": false
-    },
-    {
-      "choice": "Decent (Basic)",
-      "group": "decent",
-      "label": "Basic Scope for 300k USD",
-      "budget": 300000,
-      "isEligibleFor2YearFunding": false,
-      "isExtended": false
-    },
-    {
-      "choice": "Enscribe (Basic)",
-      "group": "enscribe",
+      "choice": "Namespace",
+      "group": "namespace",
       "label": "Basic Scope for 400k USD",
       "budget": 400000,
-      "isEligibleFor2YearFunding": false
-    },
-    {
-      "choice": "GovPal (Basic)",
-      "group": "govpal",
-      "label": "Basic Scope for 300k USD",
-      "budget": 300000,
-      "isEligibleFor2YearFunding": false,
+      "isEligibleFor2YearFunding": true,
       "isExtended": false
     },
     {
-      "choice": "Lighthouse_Labs (Basic)",
-      "group": "lighthouse-labs",
+      "choice": "ZK.Email (Basic)",
+      "group": "zk-email",
       "label": "Basic Scope for 400k USD",
       "budget": 400000,
       "isEligibleFor2YearFunding": false,
       "isExtended": false
     },
     {
-      "choice": "Namestone (Basic)",
+      "choice": "ZK.Email (Ext)",
+      "group": "zk-email",
+      "label": "Extended Scope for additional 400k USD",
+      "budget": 400000,
+      "isEligibleFor2YearFunding": false,
+      "isExtended": true
+    },
+    {
+      "choice": "Namestone",
       "group": "namestone",
       "label": "Basic Scope for 800k USD",
       "budget": 800000,
@@ -264,47 +169,23 @@
       "isExtended": false
     },
     {
-      "choice": "PYOR (Basic)",
-      "group": "pyor",
-      "label": "Basic Scope for 300k USD",
-      "budget": 300000,
-      "isEligibleFor2YearFunding": false,
-      "isExtended": false
-    },
-    {
-      "choice": "Tally (Basic)",
-      "group": "tally",
-      "label": "Basic Scope for 300k USD",
-      "budget": 300000,
-      "isEligibleFor2YearFunding": false,
-      "isExtended": false
-    },
-    {
-      "choice": "Unicorn.eth (Basic)",
-      "group": "unicorn-eth",
-      "label": "Basic Scope for 300k USD",
-      "budget": 300000,
+      "choice": "Blockful (Basic)",
+      "group": "blockful",
+      "label": "Basic Scope for 700k USD",
+      "budget": 700000,
       "isEligibleFor2YearFunding": true,
       "isExtended": false
     },
     {
-      "choice": "Web3bio (Basic)",
-      "group": "web3bio",
-      "label": "Basic Scope for 500k USD",
-      "budget": 500000,
-      "isEligibleFor2YearFunding": false,
-      "isExtended": false
+      "choice": "Blockful (Ext)",
+      "group": "blockful",
+      "label": "Extended Scope for additional 100k USD",
+      "budget": 100000,
+      "isEligibleFor2YearFunding": true,
+      "isExtended": true
     },
     {
-      "choice": "WebHash (Basic)",
-      "group": "webhash",
-      "label": "Basic Scope for 300k USD",
-      "budget": 300000,
-      "isEligibleFor2YearFunding": false,
-      "isExtended": false
-    },
-    {
-      "choice": "x23.ai (Basic)",
+      "choice": "x23.ai",
       "group": "x23-ai",
       "label": "Basic Scope for 300k USD",
       "budget": 300000,
@@ -312,11 +193,107 @@
       "isExtended": false
     },
     {
-      "choice": "None Below",
-      "group": "none-below",
-      "label": "None Below",
-      "budget": 0,
+      "choice": "Unicorn.eth",
+      "group": "unicorn-eth",
+      "label": "Basic Scope for 300k USD",
+      "budget": 300000,
+      "isEligibleFor2YearFunding": true,
+      "isExtended": false
+    },
+    {
+      "choice": "WebHash",
+      "group": "webhash",
+      "label": "Basic Scope for 300k USD",
+      "budget": 300000,
       "isEligibleFor2YearFunding": false,
+      "isExtended": false
+    },
+    {
+      "choice": "Curia.Lab",
+      "group": "curia-lab",
+      "label": "Basic Scope for 300k USD",
+      "budget": 300000,
+      "isEligibleFor2YearFunding": false,
+      "isExtended": false
+    },
+    {
+      "choice": "Enscribe",
+      "group": "enscribe",
+      "label": "Basic Scope for 400k USD",
+      "budget": 400000,
+      "isEligibleFor2YearFunding": false,
+      "isExtended": false
+    },
+    {
+      "choice": "Wildcard.Labs (Basic)",
+      "group": "wildcard-labs",
+      "label": "Basic Scope for 300k USD",
+      "budget": 300000,
+      "isEligibleFor2YearFunding": true,
+      "isExtended": false
+    },
+    {
+      "choice": "Wildcard.Labs (Ext)",
+      "group": "wildcard-labs",
+      "label": "Extended Scope for additional 100k USD",
+      "budget": 100000,
+      "isEligibleFor2YearFunding": true,
+      "isExtended": true
+    },
+    {
+      "choice": "Unruggable (Basic)",
+      "group": "unruggable",
+      "label": "Basic Scope for 400k USD",
+      "budget": 400000,
+      "isEligibleFor2YearFunding": true,
+      "isExtended": false
+    },
+    {
+      "choice": "Unruggable (Ext)",
+      "group": "unruggable",
+      "label": "Extended Scope for additional 300k USD",
+      "budget": 300000,
+      "isEligibleFor2YearFunding": true,
+      "isExtended": true
+    },
+    {
+      "choice": "Tally",
+      "group": "tally",
+      "label": "Basic Scope for 300k USD",
+      "budget": 300000,
+      "isEligibleFor2YearFunding": false,
+      "isExtended": false
+    },
+    {
+      "choice": "3DNS (Basic)",
+      "group": "3dns",
+      "label": "Basic Scope for 500k USD",
+      "budget": 500000,
+      "isEligibleFor2YearFunding": false,
+      "isExtended": false
+    },
+    {
+      "choice": "3DNS (Ext)",
+      "group": "3dns",
+      "label": "Extended Scope for additional 200k USD",
+      "budget": 200000,
+      "isEligibleFor2YearFunding": false,
+      "isExtended": true
+    },
+    {
+      "choice": "Decent",
+      "group": "decent",
+      "label": "Basic Scope for 300k USD",
+      "budget": 300000,
+      "isEligibleFor2YearFunding": false,
+      "isExtended": false
+    },
+    {
+      "choice": "NameHash.Labs",
+      "group": "namehash-labs",
+      "label": "Basic Scope for 1.1M USD",
+      "budget": 1100000,
+      "isEligibleFor2YearFunding": true,
       "isExtended": false
     }
   ]
