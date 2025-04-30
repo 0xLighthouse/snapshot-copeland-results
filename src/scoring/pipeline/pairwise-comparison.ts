@@ -16,6 +16,8 @@ export const doPairwiseComparison = (
   const pairwiseResults = results
   const pairs = generatePairs(results)
 
+  const numberOfMatchupsPerChoice = Object.keys(results).length - 1
+
   for (const [choiceA, choiceB] of pairs) {
     let prefA = 0
     let prefB = 0
@@ -27,16 +29,11 @@ export const doPairwiseComparison = (
       let rankB = ballot.choice.indexOf(choiceB)
 
       // If either doesn't appear in the ballot, rank it as last
-      // Record how many matchups each choice appeared in
-      if (rankA > -1) {
-        pairwiseResults[choiceA].appearsInMatches++
-      } else {
+      if (rankA === -1) {
         rankA = ballot.choice.length
       }
 
-      if (rankB > -1) {
-        pairwiseResults[choiceB].appearsInMatches++
-      } else {
+      if (rankB === -1) {
         rankB = ballot.choice.length
       }
 
@@ -55,11 +52,9 @@ export const doPairwiseComparison = (
 
     // Keep avg support updated
     pairwiseResults[choiceA].avgSupport =
-      pairwiseResults[choiceA].totalSupport /
-      pairwiseResults[choiceA].appearsInMatches
+      pairwiseResults[choiceA].totalSupport / numberOfMatchupsPerChoice
     pairwiseResults[choiceB].avgSupport =
-      pairwiseResults[choiceB].totalSupport /
-      pairwiseResults[choiceB].appearsInMatches
+      pairwiseResults[choiceB].totalSupport / numberOfMatchupsPerChoice
 
     // Record wins/losses/ties
     if (prefA > prefB) {

@@ -92,6 +92,7 @@ async function main() {
         'Total VP',
         'Points',
         'Funding',
+        'Stream',
       ],
       style: {
         head: ['green'],
@@ -100,7 +101,7 @@ async function main() {
     })
 
     sortedResults.forEach((entry, index) => {
-      const allocation = allocatedResults[Number(entry.key)]
+      const allocation = allocatedResults[index]
       table.push([
         { content: index + 1 } as Cell,
         { content: keyedChoices[Number(entry.key)].choice } as Cell,
@@ -111,6 +112,14 @@ async function main() {
         { content: entry.totalSupport } as Cell,
         { content: entry.points } as Cell,
         { content: allocation.funding1Year + allocation.funding2Year } as Cell,
+        {
+          content:
+            allocation.funding1Year > 0
+              ? '1Y'
+              : allocation.funding2Year > 0
+                ? '2Y'
+                : '-',
+        } as Cell,
       ])
     })
 
