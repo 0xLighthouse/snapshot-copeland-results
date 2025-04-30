@@ -100,7 +100,6 @@ describe('previewChangeFromZero', () => {
           wins: 3,
           losses: 0,
           ties: 0,
-          appearsInMatches: 3,
         }),
         2: expect.objectContaining({
           rank: 0,
@@ -108,7 +107,6 @@ describe('previewChangeFromZero', () => {
           wins: 2,
           losses: 1,
           ties: 0,
-          appearsInMatches: 3,
         }),
         3: expect.objectContaining({
           rank: 0,
@@ -116,7 +114,6 @@ describe('previewChangeFromZero', () => {
           wins: 1,
           losses: 2,
           ties: 0,
-          appearsInMatches: 3,
         }),
         4: expect.objectContaining({
           rank: 0,
@@ -124,7 +121,6 @@ describe('previewChangeFromZero', () => {
           wins: 0,
           losses: 3,
           ties: 0,
-          appearsInMatches: 3,
         }),
       }),
     )

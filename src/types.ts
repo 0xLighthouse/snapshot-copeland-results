@@ -51,7 +51,6 @@ export type PairwiseChoice = {
   losses: number
   points: number
   totalSupport: number
-  appearsInMatches: number
   avgSupport: number
 }
 

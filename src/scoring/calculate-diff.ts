@@ -35,7 +35,6 @@ export const calculateDiff = (
         losses: newResult.losses,
         points: newResult.points,
         totalSupport: newResult.totalSupport,
-        appearsInMatches: newResult.appearsInMatches,
         avgSupport: newResult.avgSupport,
       }
     } else {
@@ -48,7 +47,6 @@ export const calculateDiff = (
         losses: newResult.losses - result.losses,
         points: newResult.points - result.points,
         totalSupport: newResult.totalSupport - result.totalSupport,
-        appearsInMatches: newResult.appearsInMatches - result.appearsInMatches,
         avgSupport: newResult.avgSupport - result.avgSupport,
       }
     }
