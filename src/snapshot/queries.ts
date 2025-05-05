@@ -12,7 +12,10 @@ export const QUERY_PROPOSAL = gql`
 
 export const QUERY_VOTES = gql`
   query SnapshotVotes($id: String!) {
-    votes(where: { proposal: $id }) {
+    votes(
+    first: 1000
+    where: { proposal: $id }
+    ) {
       voter
       choice
       vp
