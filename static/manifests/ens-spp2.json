@@ -3,7 +3,7 @@
   "scoring": {
     "algorithm": "copeland:ens-spp2",
     "copelandPoints": [2, 1, 0],
-    "tiebreaker": "total-support",
+    "tiebreaker": "average-support",
     "unrankedFrom": "None below",
     "groupBy": "group"
   },
@@ -17,16 +17,16 @@
       "isExtended": false
     },
     {
-      "choice": "EthLimo (Basic)",
-      "group": "ethlimo",
+      "choice": "Eth Limo (Basic)",
+      "group": "eth-limo",
       "label": "Basic Scope for 700k USD",
       "budget": 700000,
       "isEligibleFor2YearFunding": true,
       "isExtended": false
     },
     {
-      "choice": "EthLimo (Ext)",
-      "group": "ethlimo",
+      "choice": "Eth Limo (Ext)",
+      "group": "eth-limo",
       "label": "Extended Scope for additional 100k USD",
       "budget": 100000,
       "isEligibleFor2YearFunding": true,
@@ -49,15 +49,15 @@
       "isExtended": false
     },
     {
-      "choice": "JustaName",
-      "group": "justaname",
+      "choice": "Justa Name",
+      "group": "justa-name",
       "label": "Basic Scope for 300k USD",
       "budget": 300000,
       "isEligibleFor2YearFunding": false,
       "isExtended": false
     },
     {
-      "choice": "Ethereum.Identity.Foun...(Basic)",
+      "choice": "Ethereum Identity Fnd (Basic)",
       "group": "ethereum-identity-foundation",
       "label": "Basic Scope for 500k USD",
       "budget": 500000,
@@ -65,7 +65,7 @@
       "isExtended": false
     },
     {
-      "choice": "Ethereum.Identity.Foun...(Ext)",
+      "choice": "Ethereum Identity Fnd (Ext)",
       "group": "ethereum-identity-foundation",
       "label": "Extended Scope for additional 200k USD",
       "budget": 200000,
@@ -89,16 +89,16 @@
       "isExtended": true
     },
     {
-      "choice": "AlphaGrowth (Basic)",
-      "group": "alphagrowth",
+      "choice": "Alpha Growth (Basic)",
+      "group": "alpha-growth",
       "label": "Basic Scope for 400k USD",
       "budget": 400000,
       "isEligibleFor2YearFunding": false,
       "isExtended": false
     },
     {
-      "choice": "AlphaGrowth (Ext)",
-      "group": "alphagrowth",
+      "choice": "Alpha Growth (Ext)",
+      "group": "alpha-growth",
       "label": "Extended Scope for additional 400k USD",
       "budget": 400000,
       "isEligibleFor2YearFunding": false,
@@ -121,7 +121,7 @@
       "isExtended": false
     },
     {
-      "choice": "dWeb.host (Basic)",
+      "choice": "dWeb host (Basic)",
       "group": "dweb-host",
       "label": "Basic Scope for 300k USD",
       "budget": 300000,
@@ -129,7 +129,7 @@
       "isExtended": false
     },
     {
-      "choice": "dWeb.host (Ext)",
+      "choice": "dWeb host (Ext)",
       "group": "dweb-host",
       "label": "Extended Scope for additional 100k USD",
       "budget": 100000,
@@ -145,7 +145,7 @@
       "isExtended": false
     },
     {
-      "choice": "ZK.Email (Basic)",
+      "choice": "ZK Email (Basic)",
       "group": "zk-email",
       "label": "Basic Scope for 400k USD",
       "budget": 400000,
@@ -153,7 +153,7 @@
       "isExtended": false
     },
     {
-      "choice": "ZK.Email (Ext)",
+      "choice": "ZK Email (Ext)",
       "group": "zk-email",
       "label": "Extended Scope for additional 400k USD",
       "budget": 400000,
@@ -201,15 +201,15 @@
       "isExtended": false
     },
     {
-      "choice": "WebHash",
-      "group": "webhash",
+      "choice": "Web Hash",
+      "group": "web-hash",
       "label": "Basic Scope for 300k USD",
       "budget": 300000,
       "isEligibleFor2YearFunding": false,
       "isExtended": false
     },
     {
-      "choice": "Curia.Lab",
+      "choice": "Curia Lab",
       "group": "curia-lab",
       "label": "Basic Scope for 300k USD",
       "budget": 300000,
@@ -225,7 +225,7 @@
       "isExtended": false
     },
     {
-      "choice": "Wildcard.Labs (Basic)",
+      "choice": "Wildcard Labs (Basic)",
       "group": "wildcard-labs",
       "label": "Basic Scope for 300k USD",
       "budget": 300000,
@@ -233,7 +233,7 @@
       "isExtended": false
     },
     {
-      "choice": "Wildcard.Labs (Ext)",
+      "choice": "Wildcard Labs (Ext)",
       "group": "wildcard-labs",
       "label": "Extended Scope for additional 100k USD",
       "budget": 100000,
@@ -289,7 +289,7 @@
       "isExtended": false
     },
     {
-      "choice": "NameHash.Labs",
+      "choice": "NameHash Labs",
       "group": "namehash-labs",
       "label": "Basic Scope for 1.1M USD",
       "budget": 1100000,
